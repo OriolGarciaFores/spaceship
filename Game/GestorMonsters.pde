@@ -10,19 +10,37 @@ class GestorMonsters{
   int monsterShotBornDist = int(3*FRAMES);
   float monsterShotRad = 20f;
   
+  ArrayList<Meteorito> meteoritos = new ArrayList<Meteorito>();
+  int meteoBornTimer;
+  int meteoBornDist = int(10*FRAMES);
+  float meteoRad = 30f;
+  
   private int bornShipsInBoss = 0;
   private MonsterBoss mb;
   
   private Player player;
-  private final int maxScoreForBoss = 200;
   
-  public GestorMonsters(Player player){
+  private GestorNiveles gn;
+  
+  public GestorMonsters(Player player, GestorNiveles gn){
     this.player = player;
     this.monsterEasyBornTimer = 0;
     this.mb = new MonsterBoss(this.player,new PVector(WIDTH+20,0));
+    this.gn = gn;
   }
   
   void update(ArrayList<Bala> balas){
+    
+    for(int i = 0; i < meteoritos.size();i++){
+      Meteorito met = meteoritos.get(i);
+      met.updateMet(balas);
+      met.update();
+      if(met.isDie){
+        meteoritos.remove(i);
+      }
+      met.paint();
+    }
+    
     for(int i = 0; i < monsterEasy.size(); i++){
       Monster_easy mEasy = monsterEasy.get(i);
       mEasy.updateEasy(balas);
@@ -34,7 +52,6 @@ class GestorMonsters{
       mEasy.paint();
     }
     
-     //BOSS 1r
     //CUANDO ESTEN TODO
     mechanicalBoss(balas);
     
@@ -50,30 +67,44 @@ class GestorMonsters{
       mShot.paint();
     }
 
-    if(this.player.score < this.maxScoreForBoss){
+    if(this.player.score < this.gn.getMaxScore()){
           timer();
     }
     
-    //FINAL DE JUEGO TEMPORAL
+    
     if(mb.isDie){
-      over = true;
-      endGame = true;
+      switch(this.gn.getLevel()){
+        case 1:
+        //PANTALLA DE RESULTADOS Y RESETEAR EL SCORE
+          this.player.score = 0;
+          this.gn.setLevel(2);
+        break;
+        case 2:
+        break;
+      }
     }
 
   }
   
   private void mechanicalBoss(ArrayList<Bala> balas){
-    if(this.player.score >= this.maxScoreForBoss && (monsterEasy.isEmpty() && monsterShooter.isEmpty() || mb.getIsStarted()) && !mb.isDie){
-       mb.updateBoss(balas);
-      if(!mb.getIsStarted()){
-        this.player.setAutoMove(true);
-        mb.update();
-      }else{
-        this.player.setAutoMove(false);
-        timerBoss();
+   switch(this.gn.getLevel()){
+     case 1:
+       if(this.player.score >= this.gn.getMaxScore() && (monsterEasy.isEmpty() && monsterShooter.isEmpty() || mb.getIsStarted()) && !mb.isDie){
+         mb.updateBoss(balas);
+        if(!mb.getIsStarted()){
+          this.player.setAutoMove(true);
+          mb.update();
+        }else{
+          this.player.setAutoMove(false);
+          timerBoss();
+        }
+        mb.paint();
       }
-      mb.paint();
-    } 
+     break;
+     case 2:
+       //BOSS 2n
+     break;
+   }  
   }
   
   private void timer(){
@@ -86,6 +117,11 @@ class GestorMonsters{
     if(monsterShotBornTimer >= monsterShotBornDist){
       addMonsterShooter(1);
       monsterShotBornTimer = 0;
+    }
+    meteoBornTimer++;
+    if(meteoBornTimer >= meteoBornDist){
+      addMeteo(1);
+      meteoBornTimer = 0;
     }
   }
   
@@ -134,7 +170,7 @@ class GestorMonsters{
   }
   
   private void addMonsterEasy(int i){
-    if(monsterEasy.size()<10){
+    if(monsterEasy.size() < this.gn.getMaxMonsterEasy()){
       for(int c = 0; c < i; c++){
         monsterEasy.add(new Monster_easy(this.player,respawn(monsterEasyRad, false)));
       }
@@ -142,7 +178,7 @@ class GestorMonsters{
   }
   
   private void addMonsterEasyBoss(int i){
-     if(monsterEasy.size()<100){
+     if(monsterEasy.size() < 100){
       for(int c = 0; c < i; c++){
         monsterEasy.add(new Monster_easy(this.player,respawnInBoss(monsterEasyRad)));
       }
@@ -150,7 +186,7 @@ class GestorMonsters{
   }
   
   private void addMonsterShooter(int i){
-    if(monsterShooter.size()<3){
+    if(monsterShooter.size() < this.gn.getMaxMonsterShooter()){
       for(int c = 0; c < i; c++){
         monsterShooter.add(new Monster_shooter(this.player,respawn(monsterShotRad, true)));
       }
@@ -163,6 +199,14 @@ class GestorMonsters{
     monsterShooter.add(new Monster_shooter(this.player,new PVector(WIDTH-50,HEIGHT/3),20));
     monsterShooter.add(new Monster_shooter(this.player,new PVector(WIDTH-50,(HEIGHT/2)+100),20));
     monsterShooter.add(new Monster_shooter(this.player, new PVector(WIDTH-50,HEIGHT-50),20));
+  }
+  
+  private void addMeteo(int i){
+    if(meteoritos.size() < this.gn.getMaxMeteoritos()){
+      for(int c = 0; c < i; c++){
+        meteoritos.add(new Meteorito(this.player,new PVector(0,0)));
+      }
+    }
   }
   
   //SPAWN EN LOS MARGENES
@@ -198,8 +242,7 @@ class GestorMonsters{
     float rx = random(WIDTH,WIDTH-rad-50);
     float ry = random(HEIGHT/4,HEIGHT-(HEIGHT/4));
     
-    return new PVector(rx, ry);
-    
+    return new PVector(rx, ry); 
   }
 
 }

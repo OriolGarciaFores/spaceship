@@ -21,7 +21,7 @@ int CENTRO_VENTANA_X = WIDTH / 2;
 int CENTRO_VENTANA_Y = HEIGHT / 2;
 boolean endGame = false;
 
-final String version = "Pre-Alfa 0.04.0";
+final String version = "Alfa 0.1.0";
 
 //Objetos
 GestorEstados ge;
@@ -54,7 +54,7 @@ void draw(){
     over = false;
     outGameOver = false;
   }
-   //<>//
+  
   if(isShowFps){
     showFPS();
   }
