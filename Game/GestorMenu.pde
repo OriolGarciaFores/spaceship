@@ -34,6 +34,7 @@ class GestorMenu implements EstadoJuego{
      textSize(24f);
      textAlign(CENTER);
      text("ENTER to exit", CENTRO_VENTANA_X, 400);
+     
    }
  }
  
