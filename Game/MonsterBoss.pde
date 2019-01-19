@@ -19,7 +19,7 @@ class MonsterBoss extends Monster{
     this.acc = new PVector();
     this.maxSpeed = 1;
     init_monster(player);
-    this.score = 5;
+    this.score = 50;
     this.isStarted = false;
     this.rad = 480f;
   }

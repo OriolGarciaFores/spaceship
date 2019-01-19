@@ -25,7 +25,7 @@ class GestorGameOver implements EstadoJuego {
     if(this.title.length() != this.sizeTitle){
       timer();
     }else{
-      if(KEYBOARD.enter ){
+      if(KEYBOARD.space ){
         outGameOver = true;
       }
     }
@@ -87,7 +87,7 @@ class GestorGameOver implements EstadoJuego {
     }
     
     if(this.title.length() == this.sizeTitle){
-      this.subTitle = "Enter to restart";
+      this.subTitle = "Space to restart";
     }
   }
   

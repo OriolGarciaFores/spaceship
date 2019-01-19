@@ -76,7 +76,7 @@ class GestorMonsters{
       switch(this.gn.getLevel()){
         case 1:
         //PANTALLA DE RESULTADOS Y RESETEAR EL SCORE
-          this.player.score = 0;
+          //this.player.score = 0;
           this.gn.setLevel(2);
         break;
         case 2:
@@ -162,6 +162,8 @@ class GestorMonsters{
       case 4:
         //DAÑO A LA NAVE
         if(mb.shield <= 0){
+          this.player.setScore(mb.score);
+          finalScore = this.player.getScore();
           mb.isDie = true;
         }
        break;
