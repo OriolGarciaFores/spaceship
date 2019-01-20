@@ -33,7 +33,9 @@ class Player{
     //debugArea(r*5); //AREA no respawn enemigos.
     //debuArea(r);
     popMatrix();
-    showPositions();
+    if(isShowPositions){
+      showPositions();
+    }
     showScore();
   }
   
@@ -114,7 +116,7 @@ class Player{
   public void showScore(){
     fill(255);
     textSize(18);
-    text("SCORE: " + this.score,20,80);
+    text("SCORE: " + this.score,CENTRO_VENTANA_X,20);
   }
   
   public void setAutoMove(boolean isAuto){

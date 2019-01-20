@@ -28,14 +28,16 @@ class GestorNiveles{
     switch(this.level){
       case 1:
         this.maxMonsterEasy = 20;
-        this.maxMonsterShooter = 4;
+        this.maxMonsterShooter = 5;
         this.maxScore = 200;
       break;
       case 2:
         //CAMBIOS DE DIFICULTAD
-        this.maxMonsterEasy = 30;
-        this.maxScore = 300;
-        this.maxMeteoritos = 3;
+        endGame = true;
+        over = true;
+        //this.maxMonsterEasy = 30;
+        //this.maxScore = 300;
+        //this.maxMeteoritos = 3;
       break;
       case 3:
         over = true;

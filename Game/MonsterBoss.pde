@@ -10,6 +10,7 @@ class MonsterBoss extends Monster{
   private int fase = 1;
   boolean loadShooters = false;
   private color puntoDebil = color(#F50A0A);
+  private color shieldColor = color(#9B9B9B);
   private float timer;
   private final float timerFrame = (0.5*FRAMES);
   
@@ -21,7 +22,7 @@ class MonsterBoss extends Monster{
     init_monster(player);
     this.score = 50;
     this.isStarted = false;
-    this.rad = 480f;
+    this.rad = 560f;
   }
   
   public void init_monster(Player player){
@@ -52,7 +53,7 @@ class MonsterBoss extends Monster{
     translate(pos.x, pos.y);//POSICIONAMIENTO
  
     fill(puntoDebil);
-    ellipse(WIDTH/4,HEIGHT/2,this.rad-220f,this.rad-220f);//PUNTO DEBIL CENTRAL
+    ellipse(WIDTH/4,HEIGHT/2,this.rad-300f,this.rad-300f);//PUNTO DEBIL CENTRAL
     
     fill(255);
     triangle( WIDTH/4, 0, WIDTH/4, HEIGHT/4, 0, HEIGHT/4);
@@ -62,7 +63,7 @@ class MonsterBoss extends Monster{
     stroke(c);
     strokeWeight(4);
     if(shield > 0 && this.fase <= 3){
-      stroke(#9B9B9B);
+      stroke(shieldColor);
       ellipse(WIDTH/4,HEIGHT/2,this.rad,this.rad);
     }
 
@@ -77,6 +78,10 @@ class MonsterBoss extends Monster{
     timer++;
     if(this.puntoDebil == color(#D66D0B) && timer >= timerFrame){
       this.puntoDebil = color(#F50A0A);
+      timer = 0;
+    }
+    if(this.shieldColor == COLOR_DMG && timer >= timerFrame){
+      this.shieldColor = color(#9B9B9B);
       timer = 0;
     }
   }
@@ -102,6 +107,7 @@ class MonsterBoss extends Monster{
       if(this.fase < 3){
         if(PVector.dist(hitBox,balas.get(i).pos)<=balas.get(i).rad/2+this.rad/2){
           if(shield > 0 && this.fase == 2){
+            this.shieldColor = COLOR_DMG;
             shield--;
           }
           balas.get(i).isDie = true;

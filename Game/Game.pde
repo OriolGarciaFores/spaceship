@@ -10,7 +10,8 @@ import java.awt.event.KeyEvent;
 
 // VARIABLES
 Boolean isFull = false;
-Boolean isShowFps = true;
+Boolean isShowFps = false;
+Boolean isShowPositions = false;
 Boolean inGame = false;
 Boolean over = false;
 Boolean outGameOver = false;
