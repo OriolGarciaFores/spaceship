@@ -35,6 +35,7 @@ void settings(){
  }else{
   size(WIDTH,HEIGHT,P2D);
  }
+ PJOGL.setIcon("icono_spaceship.png");
 }
 
 void setup(){
