@@ -1,5 +1,8 @@
 class Monster_easy extends Monster{
   
+  private int timerColor = 0;
+  private final float timerColorFrame = (0.2*FRAMES);
+  
   public Monster_easy(Player player,PVector pos){
     this.pos = new PVector(pos.x, pos.y);
     this.speed = new PVector();
@@ -16,10 +19,17 @@ class Monster_easy extends Monster{
   
   public void updateEasy(ArrayList<Bala> balas){
    pos = new PVector(pos.x, pos.y);
-   colision(balas);
+   if(!this.inmortal){
+     colision(balas);
+   }
   }
   
   public void paint(){
+    if(this.inmortal){
+      timerColor();
+    }else{
+      this.c = color(#3399cc);
+    }
     noFill();
     strokeWeight(4);
     stroke(c);
@@ -47,5 +57,17 @@ class Monster_easy extends Monster{
       i++;
     }
   }
+  
+ private void timerColor(){
+   this.timerColor++;
+   if(this.timerColor > this.timerColorFrame){
+     if(this.c == color(#3399cc)){
+       this.c = COLOR_INMORTAL;
+     }else{
+       this.c = color(#3399cc);
+     }
+     this.timerColor = 0;
+   }
+ }
   
 }

@@ -27,9 +27,9 @@ class GestorNiveles{
   private void updateLevel(){
     switch(this.level){
       case 1:
-        this.maxMonsterEasy = 10;
-        this.maxMonsterShooter = 3;
-        this.maxScore = 125;
+        this.maxMonsterEasy = 20;
+        this.maxMonsterShooter = 4;
+        this.maxScore = 200;
       break;
       case 2:
         //CAMBIOS DE DIFICULTAD

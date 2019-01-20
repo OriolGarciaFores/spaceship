@@ -4,13 +4,17 @@ class Monster{
  protected color c;
  protected PVector target;
  protected int health;
+ protected boolean inmortal = true;
  
  protected Player player;
  protected int score;
+ private int inmortalTimer;
+ private float inmortalTimerFrame = FRAMES;
  
  float rad = 20f;
  
  protected boolean isDie = false;
+ protected boolean isMovil = true;
  
  public void setPlayer(Player player){
    this.player = player;
@@ -46,8 +50,20 @@ class Monster{
  }
  
  public void update(){
-   setTarget(player.pos);
-   move();
+   if(this.isMovil){
+     setTarget(player.pos);
+     move();
+   }
+
+   timerInmortal();
+ }
+ 
+ private void timerInmortal(){
+   this.inmortalTimer++;
+   if(this.inmortalTimer > this.inmortalTimerFrame){
+     this.inmortal = false;
+     this.inmortalTimer = 0;
+   }
  }
  
 }

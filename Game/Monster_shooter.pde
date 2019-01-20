@@ -8,6 +8,9 @@ class Monster_shooter extends Monster{
   private float timer;
   private final float timerFrame = (0.5*FRAMES);
   
+  private int timerColor = 0;
+  private final float timerColorFrame = (0.2*FRAMES);
+  
   public Monster_shooter(Player player,PVector pos){
     this.pos = new PVector(pos.x, pos.y);
     this.speed = new PVector();
@@ -17,6 +20,7 @@ class Monster_shooter extends Monster{
     this.score = 5;
     this.health = 1;
     this.gde = new GestorDisparosEnemigos(this);
+    this.isMovil = false;
   }
   
   public Monster_shooter(Player player, PVector pos, int health){
@@ -29,6 +33,7 @@ class Monster_shooter extends Monster{
     this.health = health;
     this.gde = new GestorDisparosEnemigos(this);
     this.rad = 35f;
+    this.isMovil = false;
   }
   
   public void init_monster(Player player){
@@ -38,8 +43,11 @@ class Monster_shooter extends Monster{
   
   public void updateShot(ArrayList<Bala> balas){
    //pos = new PVector(pos.x, pos.y);
-   gde.update();
-   colision(balas, gde.getBalas());
+   if(!this.inmortal){
+     gde.update();
+     colision(balas, gde.getBalas());
+   }
+   
   }
   
   public void paint(){
@@ -57,10 +65,24 @@ class Monster_shooter extends Monster{
   
   public void timerColor(){
     timer++;
-    if(this.c == color(#D66D0B) && timer >= timerFrame){
+    if(this.c == COLOR_DMG && timer >= timerFrame){
       this.c = color(#FAD91C);
       timer = 0;
     }
+   
+   if(this.inmortal){
+     this.timerColor++;
+     if(this.timerColor > this.timerColorFrame){
+       if(this.c == color(#FAD91C)){
+         this.c = COLOR_INMORTAL;
+       }else{
+         this.c = color(#FAD91C);
+       }
+       this.timerColor = 0;
+     }
+   }else if(this.c == COLOR_INMORTAL){
+     this.c = color(#FAD91C);
+   }
   }
   
   public void colision(ArrayList<Bala> balas, ArrayList<Bala> balasE){
@@ -90,7 +112,7 @@ class Monster_shooter extends Monster{
         if(this.health <= 0){
           this.isDie = true;
         }
-        this.c = color(#D66D0B);
+        this.c = COLOR_DMG;
       }
       i++;
     }

@@ -59,7 +59,7 @@ class GestorMonsters{
     for(int i = 0; i < monsterShooter.size(); i++){
       Monster_shooter mShot = monsterShooter.get(i);
       mShot.updateShot(balas);
-      //mShot.update();
+      mShot.update();
       if(mShot.isDie){
         this.player.setScore(mShot.score);
         monsterShooter.remove(i);
