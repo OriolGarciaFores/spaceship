@@ -32,6 +32,7 @@ class Bala{
   void paint(){
     pushMatrix();
     translate(pos.x, pos.y);
+    strokeWeight(4);
     stroke(c);
     fill(c);
     rect(-2,-2,5,5);

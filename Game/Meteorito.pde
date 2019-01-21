@@ -4,18 +4,20 @@ class Meteorito extends Monster{
   
   private int contador = 0;
   
-   public Meteorito(Player player,PVector pos){
+  public Meteorito(Player player,PVector pos){
     this.pos = new PVector(pos.x, pos.y);
     this.speed = new PVector();
     this.acc = new PVector();
-    this.maxSpeed = 1;
-    init_monster(player);
+    this.maxSpeed = 5;
+    init_monster(player, int(pos.x));
     this.score = 0;
-    this.rad = 30f;
+    this.rad = 80f;
+    this.isFollower = false;
   }
   
-  public void init_monster(Player player){
+  public void init_monster(Player player,int posX){
     setPlayer(player);
+    setTarget(new PVector(posX,HEIGHT));
     c = color(#3399cc);
   }
   
@@ -36,7 +38,7 @@ class Meteorito extends Monster{
 
     for (int i = 0; i<4; i++) {
       rotate(HALF_PI*i);
-      triangle(0, 0, 1*30f, 1*this.rad, 0, 1.41*this.rad);
+      triangle(0, 0, 1*30f, 1*30f, 0, 1.41*30f);
     }
     //debugArea(rad);
     popMatrix();
@@ -56,6 +58,9 @@ class Meteorito extends Monster{
         //this.isDie = true;
       }
       i++;
+    }
+    if(this.pos.y >= HEIGHT){
+      this.isDie = true;
     }
   }
 }

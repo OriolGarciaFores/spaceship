@@ -15,6 +15,7 @@ class Monster{
  
  protected boolean isDie = false;
  protected boolean isMovil = true;
+ protected boolean isFollower = true;
  
  public void setPlayer(Player player){
    this.player = player;
@@ -51,7 +52,9 @@ class Monster{
  
  public void update(){
    if(this.isMovil){
-     setTarget(player.pos);
+     if(this.isFollower){
+       setTarget(player.pos);
+     }
      move();
    }
 

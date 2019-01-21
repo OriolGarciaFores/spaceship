@@ -12,14 +12,18 @@ class GestorMonsters{
   
   ArrayList<Meteorito> meteoritos = new ArrayList<Meteorito>();
   int meteoBornTimer;
-  int meteoBornDist = int(10*FRAMES);
+  int meteoBornDist = int(FRAMES/2);
   float meteoRad = 30f;
   
+  ArrayList <MonsterWifi> monsterWifi = new ArrayList<MonsterWifi>();
+  int monsterWifiBornTimer;
+  int monsterWifiBornDist = int(0.5*FRAMES);
+  float monsterWifiRad = 20f;
+  
   private int bornShipsInBoss = 0;
+  
   private MonsterBoss mb;
-  
   private Player player;
-  
   private GestorNiveles gn;
   
   public GestorMonsters(Player player, GestorNiveles gn){
@@ -66,6 +70,17 @@ class GestorMonsters{
       }
       mShot.paint();
     }
+    
+    for(int i = 0; i < monsterWifi.size(); i++){
+      MonsterWifi mWifi = monsterWifi.get(i);
+      mWifi.updateEasy(balas);
+      mWifi.update();
+      if(mWifi.isDie){
+        this.player.setScore(mWifi.score);
+        monsterWifi.remove(i);
+      }
+      mWifi.paint();
+    }    
 
     if(this.player.score < this.gn.getMaxScore()){
           timer();
@@ -122,6 +137,11 @@ class GestorMonsters{
     if(meteoBornTimer >= meteoBornDist){
       addMeteo(1);
       meteoBornTimer = 0;
+    }
+    monsterWifiBornTimer++;
+    if(monsterWifiBornTimer >= monsterWifiBornDist){
+      addMonsterWifi(1);
+      monsterWifiBornTimer = 0;
     }
   }
   
@@ -195,6 +215,14 @@ class GestorMonsters{
     }
   }
   
+  private void addMonsterWifi(int i){
+    if(monsterWifi.size() < this.gn.getMaxMonsterWifi()){
+      for(int c = 0; c < i; c++){
+        monsterWifi.add(new MonsterWifi(this.player,respawn(monsterWifiRad, false)));
+      }
+    }
+  }  
+  
   private void addMonsterShooterBoss(){
     monsterShooter.add(new Monster_shooter(this.player,new PVector(WIDTH-50,50),20));
     monsterShooter.add(new Monster_shooter(this.player,new PVector(WIDTH-50,HEIGHT/2),20));
@@ -206,7 +234,7 @@ class GestorMonsters{
   private void addMeteo(int i){
     if(meteoritos.size() < this.gn.getMaxMeteoritos()){
       for(int c = 0; c < i; c++){
-        meteoritos.add(new Meteorito(this.player,new PVector(0,0)));
+        meteoritos.add(new Meteorito(this.player,new PVector(random(50,WIDTH),0)));
       }
     }
   }

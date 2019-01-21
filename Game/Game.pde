@@ -10,8 +10,8 @@ import java.awt.event.KeyEvent;
 
 // VARIABLES
 Boolean isFull = false;
-Boolean isShowFps = false;
-Boolean isShowPositions = false;
+Boolean isShowFps = true;
+Boolean isShowPositions = true;
 Boolean inGame = false;
 Boolean over = false;
 Boolean outGameOver = false;
@@ -21,11 +21,13 @@ int HEIGHT = 560;
 int CENTRO_VENTANA_X = WIDTH / 2;
 int CENTRO_VENTANA_Y = HEIGHT / 2;
 boolean endGame = false;
+boolean isSelection = false;
 
-final String version = "Pre-Alfa 0.04.3";
+private final String version = "Pre-Alfa 0.05.0";
 
 //Objetos
-GestorEstados ge;
+private GestorEstados ge;
+GestorNiveles gestorNiveles;
 
 void settings(){
 //VENTANA
@@ -36,14 +38,15 @@ void settings(){
   size(WIDTH,HEIGHT,P2D);
  }
  PJOGL.setIcon("icono_spaceship.png");
+ noSmooth(); //no anti-aliasing
 }
 
 void setup(){
   println("Game Started");
   frameRate(60);
   loadScreen();
+  this.gestorNiveles = new GestorNiveles();
   loadStatus();
-  noSmooth(); //no anti-aliasing
 }
 
 void draw(){
@@ -75,12 +78,18 @@ private void loadStatus(){
 }
 
 private void changeStatus(){
-  if(ge.getIndexEstadoActual() != 0 && !inGame && !over){
-    ge.setEstado(0);
-  }else if(ge.getIndexEstadoActual() != 1 && inGame && !over){
-    ge.setEstado(1);
-  } else if(over && ge.getIndexEstadoActual() != 2){
-    ge.setEstado(2);
+ if(!over){
+   if(isSelection){
+     ge.setEstado(1);
+   }else{
+     if(ge.getIndexEstadoActual() != 0 && !inGame){
+       ge.setEstado(0);
+     }else if(ge.getIndexEstadoActual() != 2 && inGame){
+       ge.setEstado(2);
+     }
+   }
+ }else{
+    ge.setEstado(3);
   }
 }
 

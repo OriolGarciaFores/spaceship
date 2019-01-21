@@ -10,13 +10,21 @@ class GestorNiveles{
   private int maxMonsterShooter;
   private int maxScore;
   private int maxMeteoritos;
+  private int maxMonsterWifi;
+  private int maxLevel;
+  
+  private Configuration config;
   
   public GestorNiveles(){
+    println("GESTOR NIVELES INICIALIZADO");
     this.maxMonsterEasy = 0;
     this.maxMonsterShooter = 0;
     this.maxScore = 0;
     this.maxMeteoritos = 0;
+    this.maxMonsterWifi = 0;
     this.level = 1;
+    this.config = new Configuration();
+    this.maxLevel = Integer.parseInt(this.config.getInfo("maxLevel"));
     updateLevel();
   }
   
@@ -32,12 +40,13 @@ class GestorNiveles{
         this.maxScore = 200;
       break;
       case 2:
+        setMaxLevel(this.level);
         //CAMBIOS DE DIFICULTAD
-        endGame = true;
-        over = true;
-        //this.maxMonsterEasy = 30;
-        //this.maxScore = 300;
-        //this.maxMeteoritos = 3;
+        this.maxMonsterEasy = 5;
+        this.maxMonsterShooter = 0;
+        this.maxScore = 500;
+        this.maxMeteoritos = 20;
+        this.maxMonsterWifi = 15;
       break;
       case 3:
         over = true;
@@ -73,6 +82,21 @@ class GestorNiveles{
   
   public int getMaxMeteoritos(){
     return this.maxMeteoritos;
+  }
+  
+  public int getMaxLevel(){
+    return this.maxLevel;
+  }
+  
+  public void setMaxLevel(int maxLvl){
+    if(this.maxLevel < maxLvl){
+      this.maxLevel = maxLvl;
+      this.config.update("maxLevel",""+this.maxLevel);
+    }
+  }
+  
+  public int getMaxMonsterWifi(){
+    return this.maxMonsterWifi;
   }
   
 }

@@ -90,7 +90,8 @@ class GestorMenu implements EstadoJuego{
    if(KEYBOARD.enter){
      switch(this.position){
        case 0:
-           inGame = true;
+           isSelection = true;
+           delay(300);
          break;
        case 1:
            isMenuControls = true;

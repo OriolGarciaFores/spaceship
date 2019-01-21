@@ -41,7 +41,7 @@ class Player{
   
   private void body(){
     noStroke();
-    fill(230,100,50);;
+    fill(230,100,50);
     rect(-10, -10, 20, 20);
   }
   

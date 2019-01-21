@@ -34,6 +34,7 @@ class Monster_shooter extends Monster{
     this.gde = new GestorDisparosEnemigos(this);
     this.rad = 35f;
     this.isMovil = false;
+    this.isFollower = false;
   }
   
   public void init_monster(Player player){

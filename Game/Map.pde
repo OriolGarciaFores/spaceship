@@ -5,10 +5,10 @@ class Map{
   
   public Map(GestorNiveles gn){
     this.gn = gn;
-    setup();
+    init();
   }
   
-  void setup(){
+  void init(){
     switch(gn.getLevel()){
       case 1:
         noStroke();
@@ -24,8 +24,9 @@ class Map{
   public void update(){
     switch(gn.getLevel()){
       case 1:
+        fill(255);
         nebula.set("time", millis() / 500.0);  
-        shader(nebula);  
+        shader(nebula);
         rect(0,0,WIDTH,HEIGHT);
         resetShader();
       break;
