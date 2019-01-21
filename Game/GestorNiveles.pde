@@ -45,8 +45,8 @@ class GestorNiveles{
         this.maxMonsterEasy = 5;
         this.maxMonsterShooter = 0;
         this.maxScore = 500;
-        this.maxMeteoritos = 20;
-        this.maxMonsterWifi = 15;
+        this.maxMeteoritos = 4;
+        this.maxMonsterWifi = 8;
       break;
       case 3:
         over = true;

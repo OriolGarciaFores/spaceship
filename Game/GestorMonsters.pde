@@ -12,13 +12,13 @@ class GestorMonsters{
   
   ArrayList<Meteorito> meteoritos = new ArrayList<Meteorito>();
   int meteoBornTimer;
-  int meteoBornDist = int(FRAMES/2);
+  int meteoBornDist = 45;
   float meteoRad = 30f;
   
   ArrayList <MonsterWifi> monsterWifi = new ArrayList<MonsterWifi>();
   int monsterWifiBornTimer;
   int monsterWifiBornDist = int(0.5*FRAMES);
-  float monsterWifiRad = 20f;
+  float monsterWifiRad = 40f;
   
   private int bornShipsInBoss = 0;
   
@@ -34,12 +34,13 @@ class GestorMonsters{
   }
   
   void update(ArrayList<Bala> balas){
-    
+    //lv 2 -> Mas de 1 pantalla? x puntos cambiar.
     for(int i = 0; i < meteoritos.size();i++){
       Meteorito met = meteoritos.get(i);
       met.updateMet(balas);
       met.update();
       if(met.isDie){
+        this.player.setScore(met.score);
         meteoritos.remove(i);
       }
       met.paint();
@@ -234,7 +235,7 @@ class GestorMonsters{
   private void addMeteo(int i){
     if(meteoritos.size() < this.gn.getMaxMeteoritos()){
       for(int c = 0; c < i; c++){
-        meteoritos.add(new Meteorito(this.player,new PVector(random(50,WIDTH),0)));
+        meteoritos.add(new Meteorito(this.player,new PVector(random(20,WIDTH-20),0)));
       }
     }
   }

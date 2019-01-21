@@ -1,6 +1,9 @@
 class MonsterWifi extends Monster{
   private int timerColor = 0;
   private final float timerColorFrame = (0.2*FRAMES);
+  private int timerAnimation = 0;
+  private int timerAnimationFrame = 3;
+  private int cont = 0;
   
   public MonsterWifi(Player player,PVector pos){
     this.pos = new PVector(pos.x, pos.y);
@@ -9,6 +12,7 @@ class MonsterWifi extends Monster{
     this.maxSpeed = 2;
     init_monster(player);
     this.score = 8;
+    this.rad = 40f;
   }
   
   public void init_monster(Player player){
@@ -34,9 +38,31 @@ class MonsterWifi extends Monster{
     fill(c);
     pushMatrix();
     translate(pos.x,pos.y);
-    ellipse(0,0,this.rad,this.rad);
+    ellipse(0,0,this.rad-20f,this.rad-20f);
     //debugArea(rad);
+    timer();
     popMatrix();
+  }
+  
+  void timer(){
+    noFill();
+    stroke(c);
+    strokeWeight(1);
+    timerAnimation++;
+    if(timerAnimation >= timerAnimationFrame){
+      cont++;
+      if(cont%2==0){
+        ellipse(0,0,30,30);
+        cont = 0;
+      }else{
+        ellipse(0,0,30,30);
+        ellipse(0,0,40,40);
+        
+      }
+      
+      timerAnimation = 0;
+    }
+    
   }
   
   public void colision(ArrayList<Bala> balas){

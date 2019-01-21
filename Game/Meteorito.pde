@@ -8,9 +8,9 @@ class Meteorito extends Monster{
     this.pos = new PVector(pos.x, pos.y);
     this.speed = new PVector();
     this.acc = new PVector();
-    this.maxSpeed = 5;
+    this.maxSpeed = 4;
     init_monster(player, int(pos.x));
-    this.score = 0;
+    this.score = 12;
     this.rad = 80f;
     this.isFollower = false;
   }
