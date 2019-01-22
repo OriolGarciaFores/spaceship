@@ -44,8 +44,8 @@ class GestorNiveles{
         //CAMBIOS DE DIFICULTAD
         this.maxMonsterEasy = 5;
         this.maxMonsterShooter = 0;
-        this.maxScore = 500;
-        this.maxMeteoritos = 4;
+        this.maxScore = 0;//500
+        this.maxMeteoritos = 5;
         this.maxMonsterWifi = 8;
       break;
       case 3:

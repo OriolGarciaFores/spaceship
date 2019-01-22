@@ -19,7 +19,7 @@ class Monster_shooter extends Monster{
     init_monster(player);
     this.score = 5;
     this.health = 1;
-    this.gde = new GestorDisparosEnemigos(this);
+    this.gde = new GestorDisparosEnemigos(this.pos);
     this.isMovil = false;
   }
   
@@ -31,7 +31,7 @@ class Monster_shooter extends Monster{
     init_monster(player);
     this.score = 0;
     this.health = health;
-    this.gde = new GestorDisparosEnemigos(this);
+    this.gde = new GestorDisparosEnemigos(this.pos);
     this.rad = 35f;
     this.isMovil = false;
     this.isFollower = false;

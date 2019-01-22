@@ -3,21 +3,23 @@ class Meteorito extends Monster{
   //IMAGEN HELICE
   
   private int contador = 0;
+  private char direct;
   
-  public Meteorito(Player player,PVector pos){
+  public Meteorito(Player player,PVector pos, PVector tDirection, char direct){
     this.pos = new PVector(pos.x, pos.y);
     this.speed = new PVector();
     this.acc = new PVector();
     this.maxSpeed = 4;
-    init_monster(player, int(pos.x));
-    this.score = 12;
+    init_monster(player, tDirection);
+    this.score = 2;
     this.rad = 80f;
     this.isFollower = false;
+    this.direct = direct;
   }
   
-  public void init_monster(Player player,int posX){
+  public void init_monster(Player player,PVector tDirection){
     setPlayer(player);
-    setTarget(new PVector(posX,HEIGHT));
+    setTarget(tDirection);
     c = color(#3399cc);
   }
   
@@ -59,8 +61,17 @@ class Meteorito extends Monster{
       }
       i++;
     }
-    if(this.pos.y >= HEIGHT){
-      this.isDie = true;
+    switch(this.direct){
+      case 'D':
+        if(this.pos.y > HEIGHT+this.rad){
+          this.isDie = true;
+        }
+      break;
+      case 'L':
+        if(this.pos.x <= -this.rad){
+          this.isDie = true;
+        }
+      break;
     }
   }
 }

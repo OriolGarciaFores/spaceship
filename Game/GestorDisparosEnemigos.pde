@@ -1,7 +1,7 @@
 class GestorDisparosEnemigos{ 
   //BALAS ENEMIGOS
   private ArrayList<Bala> enemyBalas;
-  private Monster_shooter shooter;
+  private PVector pos;
   
   private int timerShootEnemy = 0;
   private final float shootDistEnemy = FRAMES/2;
@@ -11,16 +11,20 @@ class GestorDisparosEnemigos{
   
   private final String[] targetDirect = {"L", "R", "U", "D", "UL", "UR", "DL", "DR"};
   private String direct;
+  private boolean autoShot;
   
-  public GestorDisparosEnemigos(Monster_shooter shooter){
+  public GestorDisparosEnemigos(PVector pos){
     //ENEMIES
     this.enemyBalas = new ArrayList<Bala>();
-    this.shooter = shooter;
+    this.pos = pos;
     this.direct = randomTarget();
+    this.autoShot = true;
   }
   
   void update(){
-    timer();
+    if(autoShot){
+      timer();
+    }
     move();
   }
   
@@ -48,7 +52,7 @@ class GestorDisparosEnemigos{
     if(timerShootEnemy >= shootDistEnemy){
       //addBalaEnemy(this.shooter.pos, randomTarget());//RANDOM LA DIRECCION
       //GENERAR ALGUN ENEMIGO CON CADA DISPARO SEA ALEATORIO?¿?? MODO HARDCORE
-      addBalaEnemy(this.shooter.pos, this.direct);
+      addBalaEnemy(this.pos, this.direct);
       timerShootEnemy = 0;
     }
     
@@ -70,6 +74,14 @@ class GestorDisparosEnemigos{
   
   public void setTarget(String target){
     this.direct = target;
+  }
+  
+  public void setPos(PVector pos){
+    this.pos = pos;
+  }
+  
+  public void setAutoShot(boolean autoShot){
+    this.autoShot = autoShot;
   }
   
 }

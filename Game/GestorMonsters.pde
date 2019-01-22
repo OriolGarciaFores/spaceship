@@ -23,6 +23,7 @@ class GestorMonsters{
   private int bornShipsInBoss = 0;
   
   private MonsterBoss mb;
+  private MonsterBossV2 mb2;
   private Player player;
   private GestorNiveles gn;
   
@@ -30,6 +31,7 @@ class GestorMonsters{
     this.player = player;
     this.monsterEasyBornTimer = 0;
     this.mb = new MonsterBoss(this.player,new PVector(WIDTH+20,0));
+    this.mb2 = new MonsterBossV2(this.player, new PVector(CENTRO_VENTANA_X,0));
     this.gn = gn;
   }
   
@@ -82,23 +84,27 @@ class GestorMonsters{
       }
       mWifi.paint();
     }    
-
+    
     if(this.player.score < this.gn.getMaxScore()){
           timer();
     }
     
     
-    if(mb.isDie){
+    
       switch(this.gn.getLevel()){
         case 1:
-        //PANTALLA DE RESULTADOS Y RESETEAR EL SCORE
-          //this.player.score = 0;
-          this.gn.setLevel(2);
+          if(mb.isDie){
+          //PANTALLA DE RESULTADOS Y RESETEAR EL SCORE
+            //this.player.score = 0;
+            this.gn.setLevel(2);
+          }
         break;
         case 2:
+          if(mb2.isDie){
+            this.gn.setLevel(3);
+          }
         break;
       }
-    }
 
   }
   
@@ -119,6 +125,17 @@ class GestorMonsters{
      break;
      case 2:
        //BOSS 2n
+       if(this.player.score >= this.gn.getMaxScore() && (monsterEasy.isEmpty() && monsterWifi.isEmpty() || mb2.getIsStarted()) && !mb2.isDie){
+        mb2.updateBoss(balas);
+        if(!mb2.getIsStarted()){
+          this.player.setAutoMove(true);
+        }else{
+          this.player.setAutoMove(false);
+          //timerBoss();
+        }
+        mb2.update();
+        mb2.paint();
+       }
      break;
    }  
   }
@@ -166,10 +183,6 @@ class GestorMonsters{
         }
         break;
       case 2:
-      //APARICION DE BICHOS MUY DE VEZ EN CUANDO???
-      // random numero de naves de aparicion instantaneo 1-5
-        //ESCUDO + CAÑONES
-        //POSICIONAR CAÑONES
         if(mb.shield <= 0){
           mb.setFase(3);
         }
@@ -235,7 +248,13 @@ class GestorMonsters{
   private void addMeteo(int i){
     if(meteoritos.size() < this.gn.getMaxMeteoritos()){
       for(int c = 0; c < i; c++){
-        meteoritos.add(new Meteorito(this.player,new PVector(random(20,WIDTH-20),0)));
+        if(this.player.score >= (this.gn.getMaxScore()/2)){
+          float y = random(20,HEIGHT-20);
+          meteoritos.add(new Meteorito(this.player,new PVector(WIDTH+200,y),new PVector(-200,y),'L'));
+        }else{
+          float x = random(20,WIDTH-20);
+          meteoritos.add(new Meteorito(this.player,new PVector(x,-100),new PVector(x,HEIGHT+200),'D'));
+        }
       }
     }
   }

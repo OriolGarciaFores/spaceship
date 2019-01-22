@@ -23,7 +23,7 @@ int CENTRO_VENTANA_Y = HEIGHT / 2;
 boolean endGame = false;
 boolean isSelection = false;
 
-private final String version = "Pre-Alfa 0.05.0";
+private final String version = "Pre-Alfa 0.05.1";
 
 //Objetos
 private GestorEstados ge;
