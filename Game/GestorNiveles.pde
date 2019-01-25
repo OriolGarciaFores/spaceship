@@ -39,7 +39,7 @@ class GestorNiveles{
         setMaxLevel(this.level);
         //MONSTEREASY, SHOOTER, METEORITOS, WIFI.
         init_monsters(5,0,5,8);
-        this.maxScore = 5;//500
+        this.maxScore = 500;//500
       break;
       case 3:
       //NUNCA ENTRA
