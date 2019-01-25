@@ -37,3 +37,17 @@
     if(p>max){p = max;}
     return p;
   }
+  
+    /*
+  *******************************************************
+  *
+  * Muestra x valores en la esquina de la ventana
+  *
+  *******************************************************
+  */
+  
+  public void debugValue(String typeValue, int value, int posX, int posY){
+    fill(255);
+    textSize(18);
+    text(typeValue +" " + value,  posX, posY);
+  }

@@ -31,12 +31,12 @@ class GestorMonsters{
     this.player = player;
     this.monsterEasyBornTimer = 0;
     this.mb = new MonsterBoss(this.player,new PVector(WIDTH+20,0));
-    this.mb2 = new MonsterBossV2(this.player, new PVector(CENTRO_VENTANA_X,0));
+    this.mb2 = new MonsterBossV2(this.player, new PVector(CENTRO_VENTANA_X,-100));
     this.gn = gn;
   }
   
   void update(ArrayList<Bala> balas){
-    //lv 2 -> Mas de 1 pantalla? x puntos cambiar.
+
     for(int i = 0; i < meteoritos.size();i++){
       Meteorito met = meteoritos.get(i);
       met.updateMet(balas);
@@ -86,22 +86,30 @@ class GestorMonsters{
     }    
     
     if(this.player.score < this.gn.getMaxScore()){
-          timer();
+      timer();
     }
     
     
-    
+    //PANTALLA DE RESULTADOS Y RESETEAR EL SCORE
       switch(this.gn.getLevel()){
         case 1:
           if(mb.isDie){
-          //PANTALLA DE RESULTADOS Y RESETEAR EL SCORE
-            //this.player.score = 0;
+            finalLvl = 1;
+            finalScore = this.player.score;
+            this.player.score = 0;
             this.gn.setLevel(2);
+            this.mb = new MonsterBoss(this.player,new PVector(WIDTH+20,0));
+            isLvlComplete = true;
           }
         break;
         case 2:
           if(mb2.isDie){
+            finalLvl = 2;
+            finalScore = this.player.score;
+            this.player.score = 0;
             this.gn.setLevel(3);
+            this.mb2 = new MonsterBossV2(this.player, new PVector(CENTRO_VENTANA_X,-100));
+            isLvlComplete = true;
           }
         break;
       }
@@ -118,23 +126,24 @@ class GestorMonsters{
           mb.update();
         }else{
           this.player.setAutoMove(false);
-          timerBoss();
+          timerBoss(1);
         }
         mb.paint();
-      }
+       }
      break;
      case 2:
        //BOSS 2n
        if(this.player.score >= this.gn.getMaxScore() && (monsterEasy.isEmpty() && monsterWifi.isEmpty() || mb2.getIsStarted()) && !mb2.isDie){
-        mb2.updateBoss(balas);
-        if(!mb2.getIsStarted()){
-          this.player.setAutoMove(true);
-        }else{
-          this.player.setAutoMove(false);
-          //timerBoss();
-        }
-        mb2.update();
-        mb2.paint();
+         mb2.updateBoss(balas);
+         if(!mb2.getIsStarted()){
+           this.player.setTargetAutoX(CENTRO_VENTANA_X-200);
+           this.player.setAutoMove(true);
+           mb2.update();
+         }else{
+           this.player.setAutoMove(false);
+           timerBoss(2);
+         }
+         mb2.paint();
        }
      break;
    }  
@@ -163,46 +172,65 @@ class GestorMonsters{
     }
   }
   
-  private void timerBoss(){
-    
-    switch(mb.getFase()){
+  private void timerBoss(int idBoss){
+    switch(idBoss){
+      //1r BOSS
       case 1:
-         if(bornShipsInBoss < 50){
-            monsterEasyBornTimer++;
-            if(monsterEasyBornTimer >= monsterEasyBornDist){
-              bornShipsInBoss++;
-              addMonsterEasyBoss(5);
-              monsterEasyBornTimer = 0;
+        switch(mb.getFase()){
+          case 1:
+             if(bornShipsInBoss < 50){
+                monsterEasyBornTimer++;
+                if(monsterEasyBornTimer >= monsterEasyBornDist){
+                  bornShipsInBoss++;
+                  addMonsterEasyBoss(5);
+                  monsterEasyBornTimer = 0;
+                }
+              }else if(monsterEasy.isEmpty()){
+                mb.setFase(2);
+              }
+             if(!mb.loadShooters){
+              mb.loadShooters = true;
+              addMonsterShooterBoss();
             }
-          }else if(monsterEasy.isEmpty()){
-            mb.setFase(2);
-          }
-         if(!mb.loadShooters){
-          mb.loadShooters = true;
-          addMonsterShooterBoss();
+            break;
+          case 2:
+            if(mb.shield <= 0){
+              mb.setFase(3);
+            }
+            break;
+          case 3:
+            if(monsterShooter.isEmpty()){
+              mb.setFase(4);
+              mb.setShield(40);
+            }
+            break;
+          case 4:
+            //DAÑO A LA NAVE
+            if(mb.shield <= 0){
+              this.player.setScore(mb.score);
+              finalScore = this.player.getScore();
+              mb.isDie = true;
+            }
+           break;
         }
-        break;
+      break;
+      //2n BOSS
       case 2:
-        if(mb.shield <= 0){
-          mb.setFase(3);
+        switch(mb2.getFase()){
+          case 1:
+            //LIBERAR ESCUDO AL MATAR TODOS LOS VERDES. CADA X VIDA REINVOCAR Y AÑADIR ESCUDO
+            if(mb2.needShips && mb2.getShieldActive()){
+              addMonsterWifi(5);
+              mb2.needShips = false;
+            }else if(monsterWifi.isEmpty()){
+              mb2.setShieldActive(false);
+              mb2.timerShield();
+            }  
+          break;
         }
-        break;
-      case 3:
-        if(monsterShooter.isEmpty()){
-          mb.setFase(4);
-          mb.setShield(40);
-        }
-        break;
-      case 4:
-        //DAÑO A LA NAVE
-        if(mb.shield <= 0){
-          this.player.setScore(mb.score);
-          finalScore = this.player.getScore();
-          mb.isDie = true;
-        }
-       break;
-    
+      break;
     }
+
   }
   
   private void addMonsterEasy(int i){

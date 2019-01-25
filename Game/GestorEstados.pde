@@ -14,12 +14,13 @@ public class GestorEstados{
   }
   
   private void startEstado(){
-    estados = new EstadoJuego[4];
+    estados = new EstadoJuego[5];
     
     estados[0] = new GestorMenu();
     estados[1] = new SelectLvl();
     estados[2] = new GestorJuego();
     estados[3] = new GestorGameOver();
+    estados[4] = new GestorLvlComplete();
     
   }
   

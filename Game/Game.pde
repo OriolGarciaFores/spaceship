@@ -10,8 +10,8 @@ import java.awt.event.KeyEvent;
 
 // VARIABLES
 Boolean isFull = false;
-Boolean isShowFps = true;
-Boolean isShowPositions = true;
+Boolean isShowFps = false;
+Boolean isShowPositions = false;
 Boolean inGame = false;
 Boolean over = false;
 Boolean outGameOver = false;
@@ -22,12 +22,15 @@ int CENTRO_VENTANA_X = WIDTH / 2;
 int CENTRO_VENTANA_Y = HEIGHT / 2;
 boolean endGame = false;
 boolean isSelection = false;
+boolean isLvlComplete = false;
+int finalLvl = 0;
 
-private final String version = "Pre-Alfa 0.05.1";
+private final String version = "Pre-Alfa 0.05.4";
 
 //Objetos
 private GestorEstados ge;
 GestorNiveles gestorNiveles;
+SystemSaveData ssd;
 
 void settings(){
 //VENTANA
@@ -45,6 +48,7 @@ void setup(){
   println("Game Started");
   frameRate(60);
   loadScreen();
+  this.ssd = new SystemSaveData();
   this.gestorNiveles = new GestorNiveles();
   loadStatus();
 }
@@ -82,11 +86,16 @@ private void changeStatus(){
    if(isSelection){
      ge.setEstado(1);
    }else{
-     if(ge.getIndexEstadoActual() != 0 && !inGame){
+     if(isLvlComplete){
+       ge.setEstado(4);
+     }else{
+      if(ge.getIndexEstadoActual() != 0 && !inGame){
        ge.setEstado(0);
-     }else if(ge.getIndexEstadoActual() != 2 && inGame){
-       ge.setEstado(2);
+      }else if(ge.getIndexEstadoActual() != 2 && inGame){
+        ge.setEstado(2);
+      }
      }
+
    }
  }else{
     ge.setEstado(3);

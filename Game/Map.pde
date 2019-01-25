@@ -25,7 +25,7 @@ class Map{
     switch(gn.getLevel()){
       case 1:
         fill(255);
-        nebula.set("time", millis() / 500.0);  
+        nebula.set("time", millis() / 500.0);//NULL ? AL COMPLETAR EL 2N NIVEL  
         shader(nebula);
         rect(0,0,WIDTH,HEIGHT);
         resetShader();

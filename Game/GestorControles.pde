@@ -11,6 +11,7 @@ class GestorControles{
  Boolean shotDown = false;
  Boolean shotLeft = false;
  Boolean shotRight = false;
+ Boolean activeShield = false;
  
  Boolean isRun = false;
  
@@ -47,6 +48,9 @@ class GestorControles{
      case KeyEvent.VK_SPACE:
        space = true;
      break;
+     case KeyEvent.VK_Q:
+       activeShield = true;
+     break;
    }
  }
  
@@ -82,8 +86,9 @@ class GestorControles{
      case KeyEvent.VK_SPACE:
        space = false;
      break;
+     case KeyEvent.VK_Q:
+       activeShield = false;
+     break;
    }
  }
-
-
 }

@@ -12,7 +12,7 @@ class GestorMenu implements EstadoJuego{
  public GestorMenu(){
    this.secciones = new Seccion[3];
    position = 0;
-   this.seccionesControls = new Seccion[8];
+   this.seccionesControls = new Seccion[12];
    
    initSections();
  }
@@ -33,7 +33,7 @@ class GestorMenu implements EstadoJuego{
      showControls();
      textSize(24f);
      textAlign(CENTER);
-     text("ENTER to exit", CENTRO_VENTANA_X, 400);
+     text("ENTER to exit", CENTRO_VENTANA_X, HEIGHT-10);
      
    }
  }
@@ -45,14 +45,18 @@ class GestorMenu implements EstadoJuego{
    
    //MENU DE CONTROLES
    float size = 18f;
-   this.seccionesControls[0] = new Seccion("ARRIBA        W", CENTRO_VENTANA_X, 110, size);
-   this.seccionesControls[1] = new Seccion("IZQUIERDA    A", CENTRO_VENTANA_X, 140, size);
-   this.seccionesControls[2] = new Seccion("ABAJO          S", CENTRO_VENTANA_X, 170, size);
-   this.seccionesControls[3] = new Seccion("DERECHA      D", CENTRO_VENTANA_X, 200, size);//start
-   this.seccionesControls[4] = new Seccion("DISPARAR ARRIBA        ↑", CENTRO_VENTANA_X, 230, size);
-   this.seccionesControls[5] = new Seccion("DISPARAR IZQUIERDA    →", CENTRO_VENTANA_X, 260, size);
-   this.seccionesControls[6] = new Seccion("DISPARAR ABAJO         ↓", CENTRO_VENTANA_X, 290, size);
-   this.seccionesControls[7] = new Seccion("DISPARAR DERECHA      ←", CENTRO_VENTANA_X, 320, size);
+   this.seccionesControls[0] = new Seccion("-------- MOVIMIENTOS --------", CENTRO_VENTANA_X, 80, size);
+   this.seccionesControls[1] = new Seccion("ARRIBA        W", CENTRO_VENTANA_X, 110, size);
+   this.seccionesControls[2] = new Seccion("IZQUIERDA    A", CENTRO_VENTANA_X, 140, size);
+   this.seccionesControls[3] = new Seccion("ABAJO          S", CENTRO_VENTANA_X, 170, size);
+   this.seccionesControls[4] = new Seccion("DERECHA      D", CENTRO_VENTANA_X, 200, size);//start
+   this.seccionesControls[5] = new Seccion("-------- DISPARAR ----------", CENTRO_VENTANA_X, 250, size);
+   this.seccionesControls[6] = new Seccion("ARRIBA        ↑", CENTRO_VENTANA_X, 280, size);
+   this.seccionesControls[7] = new Seccion("IZQUIERDA    →", CENTRO_VENTANA_X, 310, size);
+   this.seccionesControls[8] = new Seccion("ABAJO         ↓", CENTRO_VENTANA_X, 340, size);
+   this.seccionesControls[9] = new Seccion("DERECHA      ←", CENTRO_VENTANA_X, 370, size);
+   this.seccionesControls[10] = new Seccion("----- HABILIDADES --------", CENTRO_VENTANA_X, 420, size);
+   this.seccionesControls[11] = new Seccion("ESCUDO     Q", CENTRO_VENTANA_X, 450, size);
  }
  
  public int getSeccionActual(){

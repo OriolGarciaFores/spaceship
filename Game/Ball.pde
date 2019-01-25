@@ -2,7 +2,7 @@ class Ball{
   PVector pos, direction;
   float rotation, speed;
   private float rad = 20f;
-  private color c = color(255);
+  private color c = color(#F79E0C);
   private boolean isDie = false;
   
   Ball(PVector pos, PVector direction, float speed){

@@ -1,5 +1,5 @@
 class SelectLvl implements EstadoJuego{
-  
+  // LOAD JSON DADAS DE LAS PARTIDAS QUE ESTEN COMPLETADAS PARA MOSTRAR EN LA SELECCION LA INFO
   private Seccion[] secciones;
   private int position;
   private int maxPositions;

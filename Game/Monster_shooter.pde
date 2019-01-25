@@ -96,7 +96,7 @@ class Monster_shooter extends Monster{
     int ind = 0;
     while(!over && ind < balasE.size()){
       //INTERSECCION ENTRE BALA ENEMIGA Y PLAYER
-      if(PVector.dist(this.player.pos,balasE.get(ind).pos)<=balasE.get(ind).rad/2+rad/2){
+      if(PVector.dist(this.player.pos,balasE.get(ind).pos)<=balasE.get(ind).rad/2+this.player.r/2){
        balasE.get(ind).isDie = true;
        finalScore = this.player.getScore();
        over = true;

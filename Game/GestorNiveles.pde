@@ -17,11 +17,7 @@ class GestorNiveles{
   
   public GestorNiveles(){
     println("GESTOR NIVELES INICIALIZADO");
-    this.maxMonsterEasy = 0;
-    this.maxMonsterShooter = 0;
-    this.maxScore = 0;
-    this.maxMeteoritos = 0;
-    this.maxMonsterWifi = 0;
+    init_monsters(0,0,0,0);
     this.level = 1;
     this.config = new Configuration();
     this.maxLevel = Integer.parseInt(this.config.getInfo("maxLevel"));
@@ -35,29 +31,28 @@ class GestorNiveles{
   private void updateLevel(){
     switch(this.level){
       case 1:
-        this.maxMonsterEasy = 20;
-        this.maxMonsterShooter = 5;
+        //MONSTEREASY, SHOOTER, METEORITOS, WIFI.
+        init_monsters(20,5,0,0);
         this.maxScore = 200;
       break;
       case 2:
         setMaxLevel(this.level);
-        //CAMBIOS DE DIFICULTAD
-        this.maxMonsterEasy = 5;
-        this.maxMonsterShooter = 0;
-        this.maxScore = 0;//500
-        this.maxMeteoritos = 5;
-        this.maxMonsterWifi = 8;
+        //MONSTEREASY, SHOOTER, METEORITOS, WIFI.
+        init_monsters(5,0,5,8);
+        this.maxScore = 5;//500
       break;
       case 3:
-        over = true;
-        endGame = true;
+      //NUNCA ENTRA
+      //RESET DE ANTERIORES NIVELES
+        setMaxLevel(this.level);
+        init_monsters(0,0,0,0);
       break;
       default:
         this.level = 1;
         updateLevel();
       break;
     }
-  
+    
   }
   
   public void setLevel(int lv){
@@ -99,4 +94,10 @@ class GestorNiveles{
     return this.maxMonsterWifi;
   }
   
+  private void init_monsters(int me, int ms, int mm, int mw){
+    this.maxMonsterEasy = me;
+    this.maxMonsterShooter = ms;
+    this.maxMeteoritos = mm;
+    this.maxMonsterWifi = mw;
+  }
 }
