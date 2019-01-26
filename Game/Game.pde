@@ -1,9 +1,9 @@
 /* Control principal del Game.
-* Carga de settings
-* Carga de ventana
-* Carga de menu
-* carga de estados de juego
-*/
+ * Carga de settings
+ * Carga de ventana
+ * Carga de menu
+ * carga de estados de juego
+ */
 import java.awt.event.KeyEvent;
 
 // SON GLOBALES TODAS
@@ -25,26 +25,26 @@ boolean isSelection = false;
 boolean isLvlComplete = false;
 int finalLvl = 0;
 
-private final String version = "Pre-Alfa 0.05.4";
+private final String version = "Pre-Alfa 0.06.0";
 
 //Objetos
 private GestorEstados ge;
 GestorNiveles gestorNiveles;
 SystemSaveData ssd;
 
-void settings(){
-//VENTANA
- if(isFull){
-  fullScreen(P2D);
-  changeSizeScreen();
- }else{
-  size(WIDTH,HEIGHT,P2D);
- }
- PJOGL.setIcon("icono_spaceship.png");
- noSmooth(); //no anti-aliasing
+void settings() {
+  //VENTANA
+  if (isFull) {
+    fullScreen(P2D);
+    changeSizeScreen();
+  } else {
+    size(WIDTH, HEIGHT, P2D);
+  }
+  PJOGL.setIcon("icono_spaceship.png");
+  noSmooth(); //no anti-aliasing
 }
 
-void setup(){
+void setup() {
   println("Game Started");
   frameRate(60);
   loadScreen();
@@ -53,68 +53,67 @@ void setup(){
   loadStatus();
 }
 
-void draw(){
+void draw() {
   background(0);
   changeStatus();
   ge.update();
 
-  if(over && outGameOver){
+  if (over && outGameOver) {
     loadStatus();
     over = false;
     outGameOver = false;
   }
-  
-  if(isShowFps){
+
+  if (isShowFps) {
     showFPS();
   }
 }
 
-void keyReleased(){
-    KEYBOARD.keyUp(keyCode); 
+void keyReleased() {
+  KEYBOARD.keyUp(keyCode);
 }
 
-void keyPressed(){
-    KEYBOARD.keyDown(keyCode);
+void keyPressed() {
+  KEYBOARD.keyDown(keyCode);
 }
 
-private void loadStatus(){
+private void loadStatus() {
   ge = new GestorEstados();
 }
 
-private void changeStatus(){
- if(!over){
-   if(isSelection){
-     ge.setEstado(1);
-   }else{
-     if(isLvlComplete){
-       ge.setEstado(4);
-     }else{
-      if(ge.getIndexEstadoActual() != 0 && !inGame){
-       ge.setEstado(0);
-      }else if(ge.getIndexEstadoActual() != 2 && inGame){
-        ge.setEstado(2);
+private void changeStatus() {
+  if (!over) {
+    if (isSelection) {
+      ge.setEstado(1);
+    } else {
+      if (isLvlComplete) {
+        ge.setEstado(4);
+      } else {
+        if (ge.getIndexEstadoActual() != 0 && !inGame) {
+          ge.setEstado(0);
+        } else if (ge.getIndexEstadoActual() != 2 && inGame) {
+          ge.setEstado(2);
+        }
       }
-     }
-
-   }
- }else{
+    }
+  } else {
     ge.setEstado(3);
   }
 }
 
-private void showFPS(){
-   fill(57,255,20);
-   textAlign(BASELINE);
-   textSize(18);
-   text("FPS: " + int(frameRate),20,20);
+private void showFPS() {
+  fill(57, 255, 20);
+  textAlign(BASELINE);
+  textSize(18);
+  text("FPS: " + int(frameRate), 20, 20);
 }
 
-private void loadScreen(){
+private void loadScreen() {
   surface.setTitle("Game v. " + version);
   surface.setResizable(false);
 }
 
-private void changeSizeScreen(){
+private void changeSizeScreen() {
   WIDTH = displayWidth;
   HEIGHT = displayHeight;
   CENTRO_VENTANA_X = WIDTH / 2;

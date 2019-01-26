@@ -16,7 +16,9 @@ class Map{
         nebula.set("resolution", float(WIDTH), float(HEIGHT));
       break;
       case 2:
-        background(0);
+        noStroke();
+        nebula = loadShader("nebula.glsl");
+        nebula.set("resolution", float(WIDTH), float(HEIGHT));
       break;
     }
   }
@@ -31,7 +33,11 @@ class Map{
         resetShader();
       break;
       case 2:
-        background(0);
+        fill(255);
+        nebula.set("time", millis() / 500.0);//NULL ? AL COMPLETAR EL 2N NIVEL  
+        shader(nebula);
+        rect(0,0,WIDTH,HEIGHT);
+        resetShader();
       break;
     }
   }

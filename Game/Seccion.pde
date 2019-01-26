@@ -20,6 +20,7 @@ class Seccion{
  }
  
  void update(){
+   noStroke();
    fill(255);
    textAlign(CENTER);
    textSize(this.sizeText);

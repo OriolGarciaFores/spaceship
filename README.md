@@ -1,2 +1,2 @@
 # spaceship
- PRE-ALFA 0.05.4
+ PRE-ALFA 0.06.0

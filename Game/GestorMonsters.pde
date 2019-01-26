@@ -96,7 +96,8 @@ class GestorMonsters{
           if(mb.isDie){
             finalLvl = 1;
             finalScore = this.player.score;
-            this.player.score = 0;
+            this.player.reset();
+            balas.clear();
             this.gn.setLevel(2);
             this.mb = new MonsterBoss(this.player,new PVector(WIDTH+20,0));
             isLvlComplete = true;
@@ -106,7 +107,8 @@ class GestorMonsters{
           if(mb2.isDie){
             finalLvl = 2;
             finalScore = this.player.score;
-            this.player.score = 0;
+            this.player.reset();
+            balas.clear();
             this.gn.setLevel(3);
             this.mb2 = new MonsterBossV2(this.player, new PVector(CENTRO_VENTANA_X,-100));
             isLvlComplete = true;
