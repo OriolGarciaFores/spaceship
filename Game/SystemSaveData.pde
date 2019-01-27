@@ -1,13 +1,14 @@
 class SystemSaveData {
   private JSONObject json;
   private JSONArray data;
-  private final String route = "data/Save/data.json";
+  private final String route = System.getProperty ("user.home") + "/Documents/Spaceship/Save/data.json";
   private boolean isLoad;
   private boolean isExist;
   
   private ArrayList<DataLvl> datas;
   
   public SystemSaveData(){
+    println(System.getProperty ("user.home"));
     this.isLoad = false;
     this.isExist = false;
     this.data = new JSONArray();

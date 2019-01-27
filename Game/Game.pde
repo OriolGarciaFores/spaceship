@@ -25,7 +25,7 @@ boolean isSelection = false;
 boolean isLvlComplete = false;
 int finalLvl = 0;
 
-private final String version = "Pre-Alfa 0.06.0";
+private final String version = "Pre-Alfa 0.06.1";
 
 //Objetos
 private GestorEstados ge;

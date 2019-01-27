@@ -10,7 +10,7 @@ import java.io.InputStream;
 
 class Configuration extends Properties {
 
-  private final String route = "configuration/config.properties";
+  private final String route = System.getProperty ("user.home") + "/Documents/Spaceship/configuration/config.properties";
 
   public Configuration() {
     createSave();
@@ -18,7 +18,7 @@ class Configuration extends Properties {
 
   //SI YA EXISTE EL FICHERO NO SE SOBRESCRIBE.
   private void createSave() {
-    File directory = new File("configuration");
+    File directory = new File(System.getProperty ("user.home") + "/Documents/Spaceship/configuration");
     directory.mkdir();
     Path path = Paths.get(route);
     try {
