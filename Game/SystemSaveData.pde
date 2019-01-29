@@ -1,9 +1,12 @@
 class SystemSaveData {
   private JSONObject json;
   private JSONArray data;
+  
   private final String route = System.getProperty ("user.home") + "/Documents/Spaceship/Save/data.json";
+  
   private boolean isLoad;
   private boolean isExist;
+  boolean isSaved;
   
   private ArrayList<DataLvl> datas;
   
@@ -11,6 +14,7 @@ class SystemSaveData {
     println(System.getProperty ("user.home"));
     this.isLoad = false;
     this.isExist = false;
+    this.isSaved = false;
     this.data = new JSONArray();
     this.json = new JSONObject();
     this.datas = new ArrayList<DataLvl>();
@@ -20,7 +24,7 @@ class SystemSaveData {
   private void init_json(){
     try{
       loadJSON(); //<>//
-      this.isLoad = true; //<>//
+      this.isLoad = true;
     }catch(Exception ex){
       JSONObject dataLvl = new JSONObject();
       

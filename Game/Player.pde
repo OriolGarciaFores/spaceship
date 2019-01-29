@@ -1,21 +1,25 @@
 class Player {
   private PVector pos, speed, acc;
+
   private float maxSpeed;
-  private int score;
+  final float r = 30f;
+  final float radShield = r+20f;
+
   private boolean isAuto;
+
+  private int score;
   private int targetAutoX;
   private int targetAutoY;
+  private int health;
 
-  //HABILIDADES
+  //HABILIDADES -> Crear clase para habilidades posibles
   private boolean haveShield;
   private boolean activeShield;
+
   private int timerShield = 0;
+
   private final float timerShieldFrame = (4*FRAMES);
   private final float coldownShield = (12*FRAMES);
-
-
-  float r = 30f;
-  float radShield = r+20f;
 
   public Player(int x, int y) {
     pos = new PVector(x, y);
@@ -23,6 +27,7 @@ class Player {
     this.acc = new PVector(0, 0);
     this.maxSpeed = 5;
     this.score = 0;
+    this.health = 1;
     this.isAuto = false;
     this.targetAutoX = CENTRO_VENTANA_X;
     this.targetAutoY = CENTRO_VENTANA_Y;
@@ -49,14 +54,8 @@ class Player {
     body();
     //A PARTIR DE LV2
     shield();
-    //debugArea(r*5); //AREA no respawn enemigos.
-    //debuArea(r);
     popMatrix();
-    if (isShowPositions) {
-      showPositions();
-    }
-    //showHabilities();
-    //showScore();
+    showPositions(this.pos.x, this.pos.y);
   }
 
   private void body() {
@@ -127,13 +126,6 @@ class Player {
     float y = range(this.pos.y, r/2, HEIGHT-r/2);
 
     this.pos = new PVector(x, y);
-  }
-
-  public void showPositions() {
-    fill(155);
-    textSize(18);
-    text("POS X: " + int(this.pos.x), 20, 40);
-    text("POS Y: " + int(this.pos.y), 20, 60);
   }
 
   private void hability() {
@@ -212,5 +204,17 @@ class Player {
     this.targetAutoY = CENTRO_VENTANA_Y;
     this.haveShield = false;
     this.activeShield = false;
+  }
+
+  public void decreaseLife() {
+    if ((this.health - 1) <= 0) {
+      this.health = 0;
+    } else {
+      this.health -= 1;
+    }
+    if (this.health == 0) {
+      finalScore = this.score;
+      over = true;
+    }
   }
 }

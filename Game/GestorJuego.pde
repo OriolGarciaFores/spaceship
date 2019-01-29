@@ -5,10 +5,10 @@ class GestorJuego implements EstadoJuego{
   *
   */
   
-  Map map;
-  Player player;
-  GestorMonsters gm;
-  GestorDisparos gd;
+  private final Map map;
+  private final Player player;
+  private final GestorMonsters gm;
+  private final GestorDisparos gd;
   
   public GestorJuego(){
     println("Gestor Juego inicializado");

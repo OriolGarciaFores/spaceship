@@ -33,7 +33,8 @@ class GestorNiveles{
       case 1:
         //MONSTEREASY, SHOOTER, METEORITOS, WIFI.
         init_monsters(20,5,0,0);
-        this.maxScore = 200;
+        this.maxScore = 200; //<>//
+        if(inGame)systemSound.play(0); //<>//
       break;
       case 2:
         setMaxLevel(this.level);

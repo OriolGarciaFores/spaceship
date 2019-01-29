@@ -28,6 +28,8 @@ class MonsterBossV2 extends Monster {
 
   protected boolean needShips = true;
   protected boolean isRage;
+  
+  boolean animationDead;
 
 
   public MonsterBossV2(Player player, PVector pos) {
@@ -42,6 +44,7 @@ class MonsterBossV2 extends Monster {
     this.balls = new ArrayList<Ball>();
     this.isRage = false;
     this.health = this.maxHealth;
+    this.animationDead = true;
   }
 
   public void init_monster(Player player) {
@@ -175,8 +178,7 @@ class MonsterBossV2 extends Monster {
         //INTERSECCION ENTRE BALA ENEMIGA Y PLAYER
         if (PVector.dist(this.player.pos, balls.get(ind).pos)<=balls.get(ind).rad/2+this.player.r/2) {
           balls.get(ind).isDie = true;
-          finalScore = this.player.getScore();
-          over = true;
+          this.player.decreaseLife();
         }
         ind++;
       }
@@ -184,11 +186,9 @@ class MonsterBossV2 extends Monster {
 
 
     if (!this.shieldActive && PVector.dist(this.pos, this.player.pos)<=this.player.r/2+this.rad/2) {
-      finalScore = this.player.getScore();
-      over = true;
+      this.player.decreaseLife();
     } else if (PVector.dist(this.pos, this.player.pos)<=this.player.r/2+(this.rad+20)/2) {
-      finalScore = this.player.getScore();
-      over = true;
+      this.player.decreaseLife();
     }
 
     int i = 0;

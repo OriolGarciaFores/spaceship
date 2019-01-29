@@ -1,52 +1,49 @@
-public class GestorEstados{
+public class GestorEstados {
   //VARIABLES
-  private EstadoJuego[] estados;
+  private final EstadoJuego[] estados;
   private EstadoJuego estadoActual;
-  
+
   private int estado;
-  
-  
-  public GestorEstados(){
-    estado = -1;
+
+
+  public GestorEstados() {
+    this.estado = -1;
+    this.estados = new EstadoJuego[5];
+
     startEstado();
     startEstadoActual();
-    
   }
-  
-  private void startEstado(){
-    estados = new EstadoJuego[5];
-    
-    estados[0] = new GestorMenu();
-    estados[1] = new SelectLvl();
-    estados[2] = new GestorJuego();
-    estados[3] = new GestorGameOver();
-    estados[4] = new GestorLvlComplete();
-    
+
+  private void startEstado() {
+    this.estados[0] = new GestorMenu();
+    this.estados[1] = new SelectLvl();
+    this.estados[2] = new GestorJuego();
+    this.estados[3] = new GestorGameOver();
+    this.estados[4] = new GestorLvlComplete();
   }
-  
-  private void startEstadoActual(){
+
+  private void startEstadoActual() {
     this.estadoActual = estados[0];
   }
-  
-  public void update(){
+
+  public void update() {
     this.estadoActual.update();
   }
-  
-  public void setEstado(final int estado){
+
+  public void setEstado(final int estado) {
     this.estadoActual = estados[estado];
     this.estado = estado;
   }
-  
-  public EstadoJuego getEstadoActual(){
+
+  public EstadoJuego getEstadoActual() {
     return this.estadoActual;
   }
-  
-  public int getIndexEstadoActual(){
+
+  public int getIndexEstadoActual() {
     return this.estado;
   }
-  
-  public void resetGestorJuego(){
-    estados[1] = new GestorJuego();
-  }
 
+  public void resetGestorJuego() {
+    this.estados[1] = new GestorJuego();
+  }
 }

@@ -13,6 +13,7 @@ class MonsterBoss extends Monster{
   private color shieldColor = color(#9B9B9B);
   private float timer;
   private final float timerFrame = (0.5*FRAMES);
+  boolean animationDead;
   
   public MonsterBoss(Player player,PVector pos){
     this.pos = new PVector(pos.x, pos.y);
@@ -23,6 +24,7 @@ class MonsterBoss extends Monster{
     this.score = 50;
     this.isStarted = false;
     this.rad = 560f;
+    this.animationDead = true;
   }
   
   public void init_monster(Player player){
@@ -90,14 +92,12 @@ class MonsterBoss extends Monster{
     if(this.fase != 3){
         //INTERACCIONA CON EL PLAYER
       if(PVector.dist(hitBox,this.player.pos)<=this.player.r/2+rad/2){
-        finalScore = this.player.getScore();
-        over = true;
+        this.player.decreaseLife();
       }
     }else{
       //INTERACCIONA CON EL PLAYER
       if(PVector.dist(hitBox,this.player.pos)<=this.player.r/2+(rad-80f)/2){
-        finalScore = this.player.getScore();
-        over = true;
+        this.player.decreaseLife();
       }
     }
     

@@ -44,8 +44,9 @@ class Monster_easy extends Monster{
   public void colision(ArrayList<Bala> balas){
     //INTERACCIONA CON EL PLAYER
     if(PVector.dist(this.pos,this.player.pos)<=this.player.r/2+rad/2){
-      finalScore = this.player.getScore();
-      over = true;
+      //finalScore = this.player.getScore();
+      //over = true;
+      this.player.decreaseLife();
     }
     int i = 0;
     while(!this.isDie && i < balas.size()){

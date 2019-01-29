@@ -10,27 +10,27 @@ import java.awt.event.KeyEvent;
 
 // VARIABLES
 Boolean isFull = false;
-Boolean isShowFps = false;
-Boolean isShowPositions = false;
 Boolean inGame = false;
 Boolean over = false;
 Boolean outGameOver = false;
-int finalScore = 0;
-int WIDTH = 720;
-int HEIGHT = 560;
-int CENTRO_VENTANA_X = WIDTH / 2;
-int CENTRO_VENTANA_Y = HEIGHT / 2;
 boolean endGame = false;
 boolean isSelection = false;
 boolean isLvlComplete = false;
+
+int WIDTH = 720;
+int HEIGHT = 560;
+int finalScore = 0;
+int CENTRO_VENTANA_X = WIDTH / 2;
+int CENTRO_VENTANA_Y = HEIGHT / 2;
 int finalLvl = 0;
 
-private final String version = "Pre-Alfa 0.06.1";
+private final String version = "Pre-Alfa 0.06.3";
 
 //Objetos
 private GestorEstados ge;
 GestorNiveles gestorNiveles;
 SystemSaveData ssd;
+SystemSound systemSound;
 
 void settings() {
   //VENTANA
@@ -49,7 +49,8 @@ void setup() {
   frameRate(60);
   loadScreen();
   this.ssd = new SystemSaveData();
-  this.gestorNiveles = new GestorNiveles();
+  this.systemSound = new SystemSound(this);
+  this.gestorNiveles = new GestorNiveles(); //<>//
   loadStatus();
 }
 
@@ -63,10 +64,7 @@ void draw() {
     over = false;
     outGameOver = false;
   }
-
-  if (isShowFps) {
-    showFPS();
-  }
+  showFPS(true);
 }
 
 void keyReleased() {
@@ -99,13 +97,6 @@ private void changeStatus() {
   } else {
     ge.setEstado(3);
   }
-}
-
-private void showFPS() {
-  fill(57, 255, 20);
-  textAlign(BASELINE);
-  textSize(18);
-  text("FPS: " + int(frameRate), 20, 20);
 }
 
 private void loadScreen() {

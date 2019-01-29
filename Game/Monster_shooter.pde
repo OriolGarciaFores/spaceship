@@ -89,8 +89,9 @@ class Monster_shooter extends Monster{
   public void colision(ArrayList<Bala> balas, ArrayList<Bala> balasE){
     //INTERACCIONA CON EL PLAYER
     if(PVector.dist(this.pos,this.player.pos)<=this.player.r/2+rad/2){
-      finalScore = this.player.getScore();
-      over = true;
+      //finalScore = this.player.getScore();
+      //over = true;
+      this.player.decreaseLife();
     }
     
     int ind = 0;
@@ -98,8 +99,9 @@ class Monster_shooter extends Monster{
       //INTERSECCION ENTRE BALA ENEMIGA Y PLAYER
       if(PVector.dist(this.player.pos,balasE.get(ind).pos)<=balasE.get(ind).rad/2+this.player.r/2){
        balasE.get(ind).isDie = true;
-       finalScore = this.player.getScore();
-       over = true;
+       //finalScore = this.player.getScore();
+       //over = true;
+       this.player.decreaseLife();
       }
       ind++;
     }
