@@ -3,18 +3,18 @@ class GestorLvlComplete implements EstadoJuego {
   private String title;
   private String subTitle;
   private String description;
-  
+
   private final float bornTimeFrame = 0.2*FRAMES;
   private final float animationTimeFrame = 0.5*FRAMES;
-  
+
   private int bornTimer;
   private final int sizeTitle;
   private int positionChar;
   private int animationTimer;
   private int contador = 0;
-  
+
   private color cSubtitle;
-  
+
   public GestorLvlComplete() {
     this.title = "";
     this.bornTimer = 0;
@@ -27,6 +27,7 @@ class GestorLvlComplete implements EstadoJuego {
 
   void update() {
     if (!ssd.isSaved) {
+      systemSound.beforeStop();
       //SAVE DATA JSON
       ssd.update(new DataLvl(finalLvl, finalScore));
       ssd.isSaved = true;
@@ -41,8 +42,11 @@ class GestorLvlComplete implements EstadoJuego {
         isLvlComplete = false;
         if (finalLvl >= MAX_LVLS) {
           //RELOAD JSON ?
+          systemSound.play(0);
           isSelection = true;
           delay(300);
+        } else {
+          gestorNiveles.update();
         }
       }
     }

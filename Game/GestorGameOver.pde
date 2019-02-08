@@ -25,10 +25,12 @@ class GestorGameOver implements EstadoJuego {
   }
 
   void update() {
+    systemSound.beforeStop();
     if (this.title.length() != this.sizeTitle) {
       timer();
     } else {
       if (KEYBOARD.space) {
+        gestorNiveles.update();
         outGameOver = true;
       }
     }

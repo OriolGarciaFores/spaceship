@@ -1,6 +1,7 @@
 class SelectLvl implements EstadoJuego {
   // LOAD JSON DADAS DE LAS PARTIDAS QUE ESTEN COMPLETADAS PARA MOSTRAR EN LA SELECCION LA INFO
-  private Seccion[] secciones;
+  //private Seccion[] secciones;
+  private SeccionLvl[] secciones;
 
   private int position;
   private int maxPositions;
@@ -12,16 +13,20 @@ class SelectLvl implements EstadoJuego {
 
   private Configuration config;
 
+  private ArrayList<DataLvl> datas;
+
   public SelectLvl() {
     this.config = new Configuration();
     this.maxPositions = Integer.parseInt(this.config.getInfo("maxLevel"));
-    this.secciones = new Seccion[maxPositions];
+    this.secciones = new SeccionLvl[maxPositions];
+    this.datas = ssd.loadData();
     position = 0;
     initSections();
   }
 
   void update() {
     if (this.maxPositions == 1) {
+      gestorNiveles.update();
       isSelection = false;
       inGame = true;
     } else {
@@ -34,12 +39,22 @@ class SelectLvl implements EstadoJuego {
   }
 
   private void initSections() {
-    int lv = 1;
-    int separation = CENTRO_VENTANA_Y-50;
+    if (this.datas.size() < maxPositions) {
+      for (int i = 0; i < maxPositions; i++) {
+        try {
+          this.datas.get(i);
+        }
+        catch(Exception ex) {
+          this.datas.add(new DataLvl(i+1, 0));
+        }
+      }
+    }
+
+    int dist = 64;
+    int separation = 110;
     for (int i = 0; i < maxPositions; i++) {
-      this.secciones[i] = new Seccion("LV " + lv, CENTRO_VENTANA_X, separation);
-      lv++;
-      separation += 70;
+      this.secciones[i] = new SeccionLvl("LV " + this.datas.get(i).getLvl(), "" + this.datas.get(i).getScore(), separation, CENTRO_VENTANA_Y);
+      separation += (WIDTH/4)+dist;
     }
   }
 
@@ -51,15 +66,17 @@ class SelectLvl implements EstadoJuego {
     for (int i = 0; i < this.secciones.length; i++) {
       secciones[i].update();
       if (i == position) {
-        secciones[i].selected();
+        secciones[i].setSelected(true);
         actionMenu();
+      } else {
+        secciones[i].setSelected(false);
       }
     }
   }
 
   private void timer() {
     keyTimer++;
-    if (keyTimer > timeFrame && (KEYBOARD.up || KEYBOARD.down)) {
+    if (keyTimer > timeFrame && (KEYBOARD.left || KEYBOARD.right)) {
       onChange = true;
       keyTimer = 0;
     } else {
@@ -68,42 +85,22 @@ class SelectLvl implements EstadoJuego {
   }
 
   private void movePosition() {
-    switch(maxPositions) {
-    case 2:
-      if (KEYBOARD.up && position != 0) {
-        position=0;
-      } else
-        if (KEYBOARD.down && position != 1) {
-          position=1;
-        }
-      break;
-    case 3:
-      if (KEYBOARD.up) {
-        switch(position) {
-        case 0:
-          position = 0;
-          break;
-        case 1:
-          position = 0;
-          break;
-        case 2:
-          position = 1;
-          break;
-        }
-      } else if (KEYBOARD.down) {
-        switch(position) {
-        case 0:
-          position = 1;
-          break;
-        case 1:
-          position = 2;
-          break;
-        case 2:
-          position = 2;
-          break;
+    if (KEYBOARD.right && position < (maxPositions-1)) {
+      if (position >= 2) {
+        for (int i = 0; i < this.secciones.length; i++) {
+          println(this.secciones[i].getPosX());
+          this.secciones[i].setPosX(this.secciones[i].getPosX()-(WIDTH/4)-64);
         }
       }
-      break;
+      position++;
+    } else if (KEYBOARD.left && position > 0) {
+      if (position >= 3) {
+        for (int i = 0; i < this.secciones.length; i++) {
+          println(this.secciones[i].getPosX());
+          this.secciones[i].setPosX(this.secciones[i].getPosX()+(WIDTH/4)+64);
+        }
+      }
+      position--;
     }
   }
 
@@ -112,11 +109,13 @@ class SelectLvl implements EstadoJuego {
       switch(this.position) {
       case 0:
         gestorNiveles.setLevel(1);
+        gestorNiveles.update();
         isSelection = false;
         inGame = true;
         break;
       case 1:
         gestorNiveles.setLevel(2);
+        gestorNiveles.update();
         isSelection = false;
         inGame = true;
         break;

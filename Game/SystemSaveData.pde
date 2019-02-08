@@ -2,8 +2,6 @@ class SystemSaveData {
   private JSONObject json;
   private JSONArray data;
   
-  private final String route = System.getProperty ("user.home") + "/Documents/Spaceship/Save/data.json";
-  
   private boolean isLoad;
   private boolean isExist;
   boolean isSaved;
@@ -11,7 +9,6 @@ class SystemSaveData {
   private ArrayList<DataLvl> datas;
   
   public SystemSaveData(){
-    println(System.getProperty ("user.home"));
     this.isLoad = false;
     this.isExist = false;
     this.isSaved = false;
@@ -23,7 +20,7 @@ class SystemSaveData {
   
   private void init_json(){
     try{
-      loadJSON(); //<>//
+      loadJSON();
       this.isLoad = true;
     }catch(Exception ex){
       JSONObject dataLvl = new JSONObject();
@@ -34,7 +31,7 @@ class SystemSaveData {
       this.data.setJSONObject(0, dataLvl);
       this.json.setJSONArray("Scores", this.data);
       
-      saveJSONObject(this.json,route);
+      saveJSONObject(this.json,ROUTE_SAVE);
       this.isLoad = false;
     }
   }
@@ -68,7 +65,7 @@ class SystemSaveData {
           this.data.setJSONObject(i, score);
           this.json = new JSONObject();
           this.json.setJSONArray("Scores", this.data);
-          saveJSONObject(this.json, route);
+          saveJSONObject(this.json, ROUTE_SAVE);
           this.isLoad = false;
           break;
         }
@@ -84,7 +81,7 @@ class SystemSaveData {
       
       this.data.setJSONObject(size, score);
       this.json.setJSONArray("Scores", this.data);
-      saveJSONObject(this.json, route);
+      saveJSONObject(this.json, ROUTE_SAVE);
       this.isLoad = false;
     }else{
       this.isExist = false;
@@ -94,7 +91,7 @@ class SystemSaveData {
   
   private void loadJSON(){
     if(!this.isLoad){
-      this.json = loadJSONObject(route);
+      this.json = loadJSONObject(ROUTE_SAVE);
       this.data = this.json.getJSONArray("Scores");    
     }
   }

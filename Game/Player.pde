@@ -1,9 +1,9 @@
-class Player {
+class Player { //<>// //<>//
   private PVector pos, speed, acc;
 
   private float maxSpeed;
   final float r = 30f;
-  final float radShield = r+20f;
+  //final float radShield = r+20f;
 
   private boolean isAuto;
 
@@ -11,15 +11,10 @@ class Player {
   private int targetAutoX;
   private int targetAutoY;
   private int health;
+  private final int MAX_HABILITIES = 1;
+  private int lvl;
 
-  //HABILIDADES -> Crear clase para habilidades posibles
-  private boolean haveShield;
-  private boolean activeShield;
-
-  private int timerShield = 0;
-
-  private final float timerShieldFrame = (4*FRAMES);
-  private final float coldownShield = (12*FRAMES);
+  private Habilities[] habilities;
 
   public Player(int x, int y) {
     pos = new PVector(x, y);
@@ -31,8 +26,9 @@ class Player {
     this.isAuto = false;
     this.targetAutoX = CENTRO_VENTANA_X;
     this.targetAutoY = CENTRO_VENTANA_Y;
-    this.haveShield = false;
-    this.activeShield = false;
+    this.lvl = gestorNiveles.getLevel();
+    this.habilities = new Habilities[MAX_HABILITIES];
+    addHabilities();
   }
 
   void update() {
@@ -42,8 +38,8 @@ class Player {
     } else {
       autoMove();
     }
-    timer();
-    hability();
+    validateHabilities();
+    updateHabilities();
     paint();
   }
 
@@ -52,26 +48,14 @@ class Player {
     translate(pos.x, pos.y);
     rotate(PI/4);
     body();
-    //A PARTIR DE LV2
-    shield();
     popMatrix();
-    showPositions(this.pos.x, this.pos.y);
+    //showPositions(this.pos.x, this.pos.y);
   }
 
   private void body() {
     noStroke();
-    fill(230, 100, 50);
+    fill(COLOR_ORANGE);
     rect(-10, -10, 20, 20);
-  }
-
-  //ESCUDO ANTI-BALAS
-  private void shield() {
-    if (this.activeShield) {
-      noFill();
-      stroke(COLOR_INMORTAL);
-      strokeWeight(2);
-      ellipse(0, 0, this.radShield, this.radShield);
-    }
   }
 
   private void move() {
@@ -128,33 +112,6 @@ class Player {
     this.pos = new PVector(x, y);
   }
 
-  private void hability() {
-    if (this.haveShield) {
-      if (KEYBOARD.activeShield) {
-        this.activeShield = true;
-        this.haveShield = false;
-      }
-    }
-  }
-
-  private void timer() {
-    if (gestorNiveles.getLevel() >= 2) {
-      if (this.activeShield) {
-        this.timerShield++;
-        if (this.timerShield >= this.timerShieldFrame) {
-          this.activeShield = false;
-          this.timerShield = 0;
-        }
-      } else if (!this.haveShield) {
-        this.timerShield++;
-        if (this.timerShield >= this.coldownShield) {
-          this.haveShield = true;
-          this.timerShield = 0;
-        }
-      }
-    }
-  }
-
   public void setScore(int score) {
     this.score += score;
   }
@@ -168,14 +125,30 @@ class Player {
     textSize(18f);
     text("SCORE: " + this.score, CENTRO_VENTANA_X-10, 20);
   }
+  //OPTIMIZABLE
+  public void updateHabilities() {
+      if (gestorNiveles.getLevel() >= 2) {
+        for (int i = 0; i < habilities.length; i++) {
+          habilities[i].update();
+        }
+      }
+  }
 
-  public void showHabilities() {
-    if (this.haveShield) {
-      noFill();
-      stroke(255);
-      strokeWeight(2);
-      ellipse(CENTRO_VENTANA_X, 40, 20, 20);
+  void addHabilities() {
+    if (gestorNiveles.getLevel() >= 2) {
+      habilities[0] = new Shield(this);
     }
+  }
+  
+  void validateHabilities(){
+    if(gestorNiveles.getLevel() != this.lvl){
+      this.lvl = gestorNiveles.getLevel();
+      addHabilities();
+    }
+  }
+
+  public Habilities getHability(int id) {
+    return habilities[id];
   }
 
   public void setAutoMove(boolean isAuto) {
@@ -202,8 +175,8 @@ class Player {
     this.isAuto = false;
     this.targetAutoX = CENTRO_VENTANA_X;
     this.targetAutoY = CENTRO_VENTANA_Y;
-    this.haveShield = false;
-    this.activeShield = false;
+    this.habilities = new Habilities[MAX_HABILITIES];
+    addHabilities();
   }
 
   public void decreaseLife() {

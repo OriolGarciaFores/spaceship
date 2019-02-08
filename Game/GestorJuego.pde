@@ -14,19 +14,17 @@ class GestorJuego implements EstadoJuego{
     println("Gestor Juego inicializado");
     this.map = new Map(gestorNiveles);
     this.player = new Player(CENTRO_VENTANA_X,CENTRO_VENTANA_Y);
-    this.gm = new GestorMonsters(this.player, gestorNiveles);
+    this.gm = new GestorMonsters(this.player);
     this.gd = new GestorDisparos(this.player);
   }
 
  void update(){
    if(!over && !isLvlComplete){
-     gestorNiveles.update();
      this.map.update();
      this.player.update();
      this.gd.update();
      this.gm.update(gd.getBalas());
      this.player.showScore();
-     this.player.showHabilities();
    }
  }
 }

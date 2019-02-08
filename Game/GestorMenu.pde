@@ -4,44 +4,33 @@ class GestorMenu implements EstadoJuego {
   private final Seccion[] seccionesControls;
 
   private int position;
+  private final int maxPositions = 4;
 
   private float keyTimer = 0;
   private final float timeFrame = 0.2*FRAMES;
 
   private boolean onChange = false;
   private boolean isMenuControls = false;
+  private boolean isMenuAudio = false;
 
   public GestorMenu() {
-    this.secciones = new Seccion[3];
+    println("GESTOR MENU INIT");
+    this.secciones = new Seccion[maxPositions];
     this.position = 0;
     this.seccionesControls = new Seccion[12];
-
+    if(!inGame)systemSound.play(0);
     initSections();
   }
 
   public void update() {
-    if (!isMenuControls) {
-      allSections();
-      timer();
-      if (onChange) {
-        movePosition();
-      }
-    } else {
-      if (KEYBOARD.enter) {
-        isMenuControls = false;
-        delay(300);
-      }
-      showControls();
-      textSize(24f);
-      textAlign(CENTER);
-      text("ENTER to exit", CENTRO_VENTANA_X, HEIGHT-10);
-    }
+    showMenus();
   }
 
   private void initSections() {
     this.secciones[0] = new Seccion("PLAY", CENTRO_VENTANA_X, CENTRO_VENTANA_Y-50);
-    this.secciones[1] = new Seccion("CONTROLS", CENTRO_VENTANA_X, CENTRO_VENTANA_Y+20);
-    this.secciones[2] = new Seccion("EXIT", CENTRO_VENTANA_X, CENTRO_VENTANA_Y+90);
+    this.secciones[1] = new Seccion("AUDIO", CENTRO_VENTANA_X, CENTRO_VENTANA_Y+20);
+    this.secciones[2] = new Seccion("CONTROLS", CENTRO_VENTANA_X, CENTRO_VENTANA_Y+90);
+    this.secciones[3] = new Seccion("EXIT", CENTRO_VENTANA_X, CENTRO_VENTANA_Y+160);
 
     //MENU DE CONTROLES
     float size = 18f;
@@ -84,18 +73,11 @@ class GestorMenu implements EstadoJuego {
   }
 
   private void movePosition() {
-    if (KEYBOARD.up && position != 0 && position==1) {
-      position=0;
-    } else
-      if (KEYBOARD.down && position != 1 && position==0) {
-        position=1;
-      } else
-        if (KEYBOARD.down && position == 1 && position != 2) {
-          position=2;
-        } else
-          if (KEYBOARD.up && position == 2 && position != 1) {
-            position=1;
-          }
+    if (KEYBOARD.down && position < (maxPositions-1)) {
+      position++;
+    } else if (KEYBOARD.up && position > 0) {
+      position--;
+    }
   }
 
   private void actionMenu() {   
@@ -106,12 +88,44 @@ class GestorMenu implements EstadoJuego {
         delay(300);
         break;
       case 1:
-        isMenuControls = true;
+        this.isMenuAudio = true;
         delay(300);
         break;
       case 2:
+        isMenuControls = true;
+        delay(300);
+        break;
+      case 3:
         exit();
         break;
+      }
+    }
+  }
+
+  private void showMenus() {
+    if (this.isMenuControls) {
+      if (KEYBOARD.enter) {
+        isMenuControls = false;
+        delay(300);
+      }
+      showControls();
+      textSize(24f);
+      textAlign(CENTER);
+      text("ENTER to exit", CENTRO_VENTANA_X, HEIGHT-10);
+    } else if (this.isMenuAudio) {
+      systemSound.update();
+      if (KEYBOARD.enter) {
+        this.isMenuAudio = false;
+        delay(300);
+      }
+      textSize(24f);
+      textAlign(CENTER);
+      text("ENTER to exit", CENTRO_VENTANA_X, HEIGHT-10);
+    } else {
+      allSections();
+      timer();
+      if (onChange) {
+        movePosition();
       }
     }
   }

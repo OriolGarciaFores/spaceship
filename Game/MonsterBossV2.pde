@@ -163,11 +163,11 @@ class MonsterBossV2 extends Monster {
   }
 
   public void colision(ArrayList<Bala> balas) {
-    if (this.player.activeShield) {
+    if (this.player.getHability(0).isActive) {//OPTIMIZAR -> PELIGRO DE ERROR
       int ind = 0;
       while (!over && ind < balls.size()) {
         //INTERSECCION ENTRE BALA ENEMIGA Y PLAYER CON ESCUDO
-        if (PVector.dist(this.player.pos, balls.get(ind).pos)<=balls.get(ind).rad/2+this.player.radShield/2) {
+        if (PVector.dist(this.player.pos, balls.get(ind).pos)<=balls.get(ind).rad/2+this.player.getHability(0).getRad()/2) {
           balls.get(ind).isDie = true;
         }
         ind++;

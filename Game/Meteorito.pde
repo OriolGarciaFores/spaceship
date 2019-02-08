@@ -1,40 +1,41 @@
-class Meteorito extends Monster{
-  
-  //IMAGEN HELICE
-  
+class Meteorito extends Monster {
+
   private int contador = 0;
   private char direct;
-  
-  public Meteorito(Player player,PVector pos, PVector tDirection, char direct){
+
+  public Meteorito(Player player, PVector pos, PVector tDirection, char direct) {
     this.pos = new PVector(pos.x, pos.y);
     this.speed = new PVector();
     this.acc = new PVector();
     this.maxSpeed = 4;
     init_monster(player, tDirection);
     this.score = 2;
-    this.rad = 80f;
+    this.rad = METEORITO_RAD;
     this.isFollower = false;
     this.direct = direct;
+    this.id = 3;
   }
-  
-  public void init_monster(Player player,PVector tDirection){
+
+  public void init_monster(Player player, PVector tDirection) {
     setPlayer(player);
     setTarget(tDirection);
     c = color(#3399cc);
   }
-  
-  public void updateMet(ArrayList<Bala> balas){
-   pos = new PVector(pos.x, pos.y);
-   colision(balas);
+
+  @Override
+    public void updatePaint(ArrayList<Bala> balas) {
+    pos = new PVector(pos.x, pos.y);
+    colision(balas);
+    paint();
   }
-  
-  public void paint(){
+
+  public void paint() {
     noFill();
     strokeWeight(4);
     stroke(c);
-    
+
     pushMatrix();
-    translate(pos.x,pos.y);
+    translate(pos.x, pos.y);
     contador++;
     rotate(contador);
 
@@ -45,30 +46,30 @@ class Meteorito extends Monster{
     //debugArea(rad);
     popMatrix();
   }
-  
-  public void colision(ArrayList<Bala> balas){
+
+  public void colision(ArrayList<Bala> balas) {
     //INTERACCIONA CON EL PLAYER
-    if(PVector.dist(this.pos,this.player.pos)<=this.player.r/2+rad/2){
+    if (PVector.dist(this.pos, this.player.pos)<=this.player.r/2+rad/2) {
       this.player.decreaseLife();
     }
     int i = 0;
-    while(!this.isDie && i < balas.size()){
+    while (!this.isDie && i < balas.size()) {
       //INTERSECCION ENTRE BALA Y BICHO
-      if(PVector.dist(this.pos,balas.get(i).pos)<=balas.get(i).rad/2+rad/2){
+      if (PVector.dist(this.pos, balas.get(i).pos)<=balas.get(i).rad/2+rad/2) {
         balas.get(i).isDie = true;
       }
       i++;
     }
-    switch(this.direct){
-      case 'D':
-        if(this.pos.y > HEIGHT+this.rad){
-          this.isDie = true;
-        }
+    switch(this.direct) {
+    case 'D':
+      if (this.pos.y > HEIGHT+this.rad) {
+        this.isDie = true;
+      }
       break;
-      case 'L':
-        if(this.pos.x <= -this.rad){
-          this.isDie = true;
-        }
+    case 'L':
+      if (this.pos.x <= -this.rad) {
+        this.isDie = true;
+      }
       break;
     }
   }

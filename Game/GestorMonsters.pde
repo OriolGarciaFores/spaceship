@@ -1,51 +1,43 @@
 class GestorMonsters {
+  //ARRAY INT[] -> IDENTIFICADOR DEL BICHO ES EL INDICE -> VALOR ACUMULADOR DE BICHOS VIVOS DE EL TIPO EN CONCRETO
+  private final int[] monstersAlive = new int[4];
 
-  ArrayList <Monster_easy> monsterEasy = new ArrayList<Monster_easy>();
   int monsterEasyBornTimer;
-  int monsterEasyBornDist = int(0.5*FRAMES);//Ratio de aparicion por frame
-  float monsterEasyRad = 20f;//CODIGO REPETIDO
-
-  ArrayList <Monster_shooter> monsterShooter = new ArrayList<Monster_shooter>();
+  final int monsterEasyBornDist = int(0.5*FRAMES);//Ratio de aparicion por frame
   int monsterShotBornTimer;
-  int monsterShotBornDist = int(3*FRAMES);
-  float monsterShotRad = 20f;//CODIGO REPETIDO
-
-  ArrayList<Meteorito> meteoritos = new ArrayList<Meteorito>();
+  final int monsterShotBornDist = int(3*FRAMES);
   int meteoBornTimer;
-  final int meteoBornDist = 45;
-  float meteoRad = 30f;//CODIGO REPETIDO
-
-  ArrayList <MonsterWifi> monsterWifi = new ArrayList<MonsterWifi>();
+  int meteoBornDist = (3*FRAMES);//45
   int monsterWifiBornTimer;
   final int monsterWifiBornDist = int(0.5*FRAMES);
-  float monsterWifiRad = 40f;//CODIGO REPETIDO
+
+  ArrayList<Monster> monsters = new ArrayList<Monster>();
 
   private int bornShipsInBoss = 0;
 
   private MonsterBoss mb;
   private MonsterBossV2 mb2;
   private Player player;
-  private GestorNiveles gn;
   private ArrayList<ParticleSystem> particlesSystems;
 
-  public GestorMonsters(Player player, GestorNiveles gn) {
+  public GestorMonsters(Player player) {
+    this.monstersAlive[0] = 0;
+    this.monstersAlive[1] = 0;
+    this.monstersAlive[2] = 0;
+    this.monstersAlive[3] = 0;
+
     this.player = player;
     this.monsterEasyBornTimer = 0;
     this.mb = new MonsterBoss(this.player, new PVector(WIDTH+20, 0));
     this.mb2 = new MonsterBossV2(this.player, new PVector(CENTRO_VENTANA_X, -100));
-    this.gn = gn;
     this.particlesSystems = new ArrayList<ParticleSystem>();
   }
 
   void update(ArrayList<Bala> balas) {
-
-    updateMeteoritos(balas);
-    updateMonsterEasy(balas);
     mechanicalBoss(balas);
-    updateMonsterShooter(balas);
-    updateMonsterWifi(balas);
+    updateMonsters(balas);
 
-    if (this.player.score < this.gn.getMaxScore()) {
+    if (this.player.score < gestorNiveles.getMaxScore()) {
       timer();
     }
 
@@ -55,9 +47,9 @@ class GestorMonsters {
   }
 
   private void mechanicalBoss(ArrayList<Bala> balas) {
-    switch(this.gn.getLevel()) {
+    switch(gestorNiveles.getLevel()) {
     case 1:
-      if (this.player.score >= this.gn.getMaxScore() && (monsterEasy.isEmpty() && monsterShooter.isEmpty() || mb.getIsStarted()) && !mb.isDie) {
+      if (this.player.score >= gestorNiveles.getMaxScore() && (this.monstersAlive[0] == 0 && this.monstersAlive[1] == 0 || mb.getIsStarted()) && !mb.isDie) {
         mb.updateBoss(balas);
         if (!mb.getIsStarted()) {
           this.player.setAutoMove(true);
@@ -71,7 +63,7 @@ class GestorMonsters {
       break;
     case 2:
       //BOSS 2n
-      if (this.player.score >= this.gn.getMaxScore() && (monsterEasy.isEmpty() && monsterWifi.isEmpty() || mb2.getIsStarted()) && !mb2.isDie) {
+      if (this.player.score >= gestorNiveles.getMaxScore() && (this.monstersAlive[0] == 0 && this.monstersAlive[2] == 0 || mb2.getIsStarted()) && !mb2.isDie) {
         mb2.updateBoss(balas);
         if (!mb2.getIsStarted()) {
           this.player.setTargetAutoX(CENTRO_VENTANA_X-200);
@@ -88,25 +80,33 @@ class GestorMonsters {
   }
 
   private void timer() {
-    monsterEasyBornTimer++;
-    if (monsterEasyBornTimer >= monsterEasyBornDist) {
-      addMonsterEasy(1);
-      monsterEasyBornTimer = 0;
+    if (gestorNiveles.getMaxMonsterEasy() != 0) {
+      monsterEasyBornTimer++;
+      if (monsterEasyBornTimer >= monsterEasyBornDist) {
+        addMonsterEasy(1);
+        monsterEasyBornTimer = 0;
+      }
     }
-    monsterShotBornTimer++;
-    if (monsterShotBornTimer >= monsterShotBornDist) {
-      addMonsterShooter(1);
-      monsterShotBornTimer = 0;
+    if (gestorNiveles.getMaxMonsterShooter() != 0) {
+      monsterShotBornTimer++;
+      if (monsterShotBornTimer >= monsterShotBornDist) {
+        addMonsterShooter(1);
+        monsterShotBornTimer = 0;
+      }
     }
-    meteoBornTimer++;
-    if (meteoBornTimer >= meteoBornDist) {
-      addMeteo(1);
-      meteoBornTimer = 0;
+    if (gestorNiveles.getMaxMeteoritos() != 0) {
+      meteoBornTimer++;
+      if (meteoBornTimer >= meteoBornDist) {
+        addMeteo(1);
+        meteoBornTimer = 0;
+      }
     }
-    monsterWifiBornTimer++;
-    if (monsterWifiBornTimer >= monsterWifiBornDist) {
-      addMonsterWifi(1);
-      monsterWifiBornTimer = 0;
+    if (gestorNiveles.getMaxMonsterWifi() != 0) {
+      monsterWifiBornTimer++;
+      if (monsterWifiBornTimer >= monsterWifiBornDist) {
+        addMonsterWifi(1);
+        monsterWifiBornTimer = 0;
+      }
     }
   }
 
@@ -124,7 +124,7 @@ class GestorMonsters {
             addMonsterEasyBoss(5);
             monsterEasyBornTimer = 0;
           }
-        } else if (monsterEasy.isEmpty()) {
+        } else if (this.monstersAlive[0] == 0) {
           mb.setFase(2);
         }
         if (!mb.loadShooters) {
@@ -138,7 +138,7 @@ class GestorMonsters {
         }
         break;
       case 3:
-        if (monsterShooter.isEmpty()) {
+        if (this.monstersAlive[1] == 0) {
           mb.setFase(4);
           mb.setShield(40);
         }
@@ -157,7 +157,7 @@ class GestorMonsters {
       if (mb2.needShips && mb2.getShieldActive()) {
         addMonsterWifi(5);
         mb2.needShips = false;
-      } else if (monsterWifi.isEmpty()) {
+      } else if (this.monstersAlive[2] == 0) {
         mb2.setShieldActive(false);
         mb2.timerShield();
       }  
@@ -166,54 +166,64 @@ class GestorMonsters {
   }
 
   private void addMonsterEasy(int i) {
-    if (monsterEasy.size() < this.gn.getMaxMonsterEasy()) {
+    if (this.monstersAlive[0] < gestorNiveles.getMaxMonsterEasy()) {
       for (int c = 0; c < i; c++) {
-        monsterEasy.add(new Monster_easy(this.player, respawn(monsterEasyRad, false)));
+        this.monstersAlive[0]++;
+        monsters.add(new Monster_easy(this.player, respawn(MONSTER_EASY_RAD, false)));
       }
     }
   }
 
   private void addMonsterEasyBoss(int i) {
-    if (monsterEasy.size() < 100) {
+    if (this.monstersAlive[0] < 100) {
       for (int c = 0; c < i; c++) {
-        monsterEasy.add(new Monster_easy(this.player, respawnInBoss(monsterEasyRad)));
+        this.monstersAlive[0]++;
+        monsters.add(new Monster_easy(this.player, respawnInBoss(MONSTER_EASY_RAD)));
       }
     }
   }
 
   private void addMonsterShooter(int i) {
-    if (monsterShooter.size() < this.gn.getMaxMonsterShooter()) {
+    if (this.monstersAlive[1] < gestorNiveles.getMaxMonsterShooter()) {
       for (int c = 0; c < i; c++) {
-        monsterShooter.add(new Monster_shooter(this.player, respawn(monsterShotRad, true)));
+        this.monstersAlive[1]++;
+        monsters.add(new Monster_shooter(this.player, respawn(MONSTER_SHOT_RAD, true)));
       }
     }
   }
 
   private void addMonsterWifi(int i) {
-    if (monsterWifi.size() < this.gn.getMaxMonsterWifi()) {
+    if (this.monstersAlive[2] < gestorNiveles.getMaxMonsterWifi()) {
       for (int c = 0; c < i; c++) {
-        monsterWifi.add(new MonsterWifi(this.player, respawn(monsterWifiRad, false)));
+        this.monstersAlive[2]++;
+        monsters.add(new MonsterWifi(this.player, respawn(MONSTER_WIFI_RAD, false)));
       }
     }
   }  
 
   private void addMonsterShooterBoss() {
-    monsterShooter.add(new Monster_shooter(this.player, new PVector(WIDTH-50, 50), 20));
-    monsterShooter.add(new Monster_shooter(this.player, new PVector(WIDTH-50, HEIGHT/2), 20));
-    monsterShooter.add(new Monster_shooter(this.player, new PVector(WIDTH-50, HEIGHT/3), 20));
-    monsterShooter.add(new Monster_shooter(this.player, new PVector(WIDTH-50, (HEIGHT/2)+100), 20));
-    monsterShooter.add(new Monster_shooter(this.player, new PVector(WIDTH-50, HEIGHT-50), 20));
+    this.monstersAlive[1] = 5;
+    monsters.add(new Monster_shooter(this.player, new PVector(WIDTH-50, 50), 20));
+    monsters.add(new Monster_shooter(this.player, new PVector(WIDTH-50, HEIGHT/2), 20));
+    monsters.add(new Monster_shooter(this.player, new PVector(WIDTH-50, HEIGHT/3), 20));
+    monsters.add(new Monster_shooter(this.player, new PVector(WIDTH-50, (HEIGHT/2)+100), 20));
+    monsters.add(new Monster_shooter(this.player, new PVector(WIDTH-50, HEIGHT-50), 20));
   }
 
   private void addMeteo(int i) {
-    if (meteoritos.size() < this.gn.getMaxMeteoritos()) {
+    if (this.monstersAlive[3] < gestorNiveles.getMaxMeteoritos()) {
+      if (meteoBornDist > 50) {
+        meteoBornDist -= 15;
+      }
       for (int c = 0; c < i; c++) {
-        if (this.player.score >= (this.gn.getMaxScore()/2)) {
+        this.monstersAlive[3]++;
+        if (this.player.score >= (gestorNiveles.getMaxScore()/2)) {
+          meteoBornDist = 35;
           float y = random(20, HEIGHT-20);
-          meteoritos.add(new Meteorito(this.player, new PVector(WIDTH+200, y), new PVector(-200, y), 'L'));
+          monsters.add(new Meteorito(this.player, new PVector(WIDTH+200, y), new PVector(-200, y), 'L'));
         } else {
           float x = random(20, WIDTH-20);
-          meteoritos.add(new Meteorito(this.player, new PVector(x, -100), new PVector(x, HEIGHT+200), 'D'));
+          monsters.add(new Meteorito(this.player, new PVector(x, -100), new PVector(x, HEIGHT+200), 'D'));
         }
       }
     }
@@ -264,69 +274,23 @@ class GestorMonsters {
     }
   }
 
-  private void updateMeteoritos(ArrayList<Bala> balas) {
-    for (int i = 0; i < meteoritos.size(); i++) {
-      Meteorito met = meteoritos.get(i);
-      met.updateMet(balas);
-      met.update();
-      if (met.isDie) {
-        this.player.setScore(met.score);
-        meteoritos.remove(i);
-      }
-      met.paint();
-    }
-  }
-
-  private void updateMonsterEasy(ArrayList<Bala> balas) {
-    for (int i = 0; i < monsterEasy.size(); i++) {
-      Monster_easy mEasy = monsterEasy.get(i);
-      mEasy.updateEasy(balas);
-      mEasy.update();
-      if (mEasy.isDie) {
-        ParticleSystem ps = new ParticleSystem(mEasy.pos);
-        ps.addParticle(20, mEasy.c);
+  private void updateMonsters(ArrayList<Bala> balas) {
+    for (int i = 0; i< monsters.size(); i++) {
+      monsters.get(i).update();
+      monsters.get(i).updatePaint(balas);
+      if (monsters.get(i).isDie) {
+        ParticleSystem ps = new ParticleSystem(monsters.get(i).pos);
+        ps.addParticle(20, monsters.get(i).c);
         this.particlesSystems.add(ps);
-        this.player.setScore(mEasy.score);
-        monsterEasy.remove(i);
+        this.player.setScore(monsters.get(i).score);
+        this.monstersAlive[monsters.get(i).id]--;
+        monsters.remove(i);
       }
-      mEasy.paint();
-    }
-  }
-
-  private void updateMonsterShooter(ArrayList<Bala> balas) {
-    for (int i = 0; i < monsterShooter.size(); i++) {
-      Monster_shooter mShot = monsterShooter.get(i);
-      mShot.updateShot(balas);
-      mShot.update();
-      if (mShot.isDie) {
-        ParticleSystem ps = new ParticleSystem(mShot.pos);
-        ps.addParticle(20, mShot.c);
-        this.particlesSystems.add(ps);
-        this.player.setScore(mShot.score);
-        monsterShooter.remove(i);
-      }
-      mShot.paint();
-    }
-  }
-
-  private void updateMonsterWifi(ArrayList<Bala> balas) {
-    for (int i = 0; i < monsterWifi.size(); i++) {
-      MonsterWifi mWifi = monsterWifi.get(i);
-      mWifi.updateEasy(balas);
-      mWifi.update();
-      if (mWifi.isDie) {
-        ParticleSystem ps = new ParticleSystem(mWifi.pos);
-        ps.addParticle(20, mWifi.c);
-        this.particlesSystems.add(ps);
-        this.player.setScore(mWifi.score);
-        monsterWifi.remove(i);
-      }
-      mWifi.paint();
     }
   }
 
   private void updateResults(ArrayList<Bala> balas) {
-    switch(this.gn.getLevel()) {
+    switch(gestorNiveles.getLevel()) {
     case 1:
       if (mb.isDie) {
         if (mb.animationDead) {
@@ -374,7 +338,7 @@ class GestorMonsters {
     finalScore = score;
     this.player.reset();
     balas.clear();
-    this.gn.setLevel(nextLvl);
+    gestorNiveles.setLevel(nextLvl);
     resetBoss(idBoss);
     isLvlComplete = true;
   }

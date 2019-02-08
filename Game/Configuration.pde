@@ -10,17 +10,15 @@ import java.io.InputStream;
 
 class Configuration extends Properties {
 
-  private final String route = System.getProperty ("user.home") + "/Documents/Spaceship/configuration/config.properties";
-
   public Configuration() {
     createSave();
   }
 
   //SI YA EXISTE EL FICHERO NO SE SOBRESCRIBE.
   private void createSave() {
-    File directory = new File(System.getProperty ("user.home") + "/Documents/Spaceship/configuration");
+    File directory = new File(ROUTE_DIRECTORY_CONFIG);
     directory.mkdir();
-    Path path = Paths.get(route);
+    Path path = Paths.get(ROUTE_CONFIG);
     try {
       Files.createFile(path);
       update("maxLevel", "1");
@@ -32,7 +30,7 @@ class Configuration extends Properties {
 
   public void update(String keyProperty, String valueProperty) {
     try {
-      OutputStream output = new FileOutputStream(route);
+      OutputStream output = new FileOutputStream(ROUTE_CONFIG);
 
       setProperty(keyProperty, valueProperty);
       store(output, null);
@@ -47,7 +45,7 @@ class Configuration extends Properties {
     String value = "";
 
     try {
-      input = new FileInputStream(route);
+      input = new FileInputStream(ROUTE_CONFIG);
 
       this.load(input);
 

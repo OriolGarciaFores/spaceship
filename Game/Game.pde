@@ -24,7 +24,7 @@ int CENTRO_VENTANA_X = WIDTH / 2;
 int CENTRO_VENTANA_Y = HEIGHT / 2;
 int finalLvl = 0;
 
-private final String version = "Pre-Alfa 0.06.3";
+private final String version = "Pre-Alfa 0.1.12";
 
 //Objetos
 private GestorEstados ge;
@@ -50,7 +50,7 @@ void setup() {
   loadScreen();
   this.ssd = new SystemSaveData();
   this.systemSound = new SystemSound(this);
-  this.gestorNiveles = new GestorNiveles(); //<>//
+  this.gestorNiveles = new GestorNiveles();
   loadStatus();
 }
 
@@ -64,7 +64,7 @@ void draw() {
     over = false;
     outGameOver = false;
   }
-  showFPS(true);
+  //showFPS(true);
 }
 
 void keyReleased() {

@@ -10,6 +10,8 @@ class Monster_easy extends Monster{
     this.maxSpeed = 1;
     init_monster(player);
     this.score = 3;
+    this.id = 0;
+    this.rad = MONSTER_EASY_RAD;
   }
   
   public void init_monster(Player player){
@@ -17,11 +19,13 @@ class Monster_easy extends Monster{
     c = color(#3399cc);
   }
   
-  public void updateEasy(ArrayList<Bala> balas){
+  @Override
+  public void updatePaint(ArrayList<Bala> balas){
    pos = new PVector(pos.x, pos.y);
    if(!this.inmortal){
      colision(balas);
    }
+   paint();
   }
   
   public void paint(){
@@ -44,8 +48,6 @@ class Monster_easy extends Monster{
   public void colision(ArrayList<Bala> balas){
     //INTERACCIONA CON EL PLAYER
     if(PVector.dist(this.pos,this.player.pos)<=this.player.r/2+rad/2){
-      //finalScore = this.player.getScore();
-      //over = true;
       this.player.decreaseLife();
     }
     int i = 0;
