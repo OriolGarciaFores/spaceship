@@ -1,6 +1,6 @@
 class GestorMonsters {
   //ARRAY INT[] -> IDENTIFICADOR DEL BICHO ES EL INDICE -> VALOR ACUMULADOR DE BICHOS VIVOS DE EL TIPO EN CONCRETO
-  private final int[] monstersAlive = new int[4];
+  private final int[] monstersAlive = new int[6];
 
   int monsterEasyBornTimer;
   final int monsterEasyBornDist = int(0.5*FRAMES);//Ratio de aparicion por frame
@@ -10,6 +10,10 @@ class GestorMonsters {
   int meteoBornDist = (3*FRAMES);//45
   int monsterWifiBornTimer;
   final int monsterWifiBornDist = int(0.5*FRAMES);
+  final int bombBornDist = (3*FRAMES);
+  int bombBornTimer;
+  final int shooterV2BornDist = (5*FRAMES);//5*FRAMES
+  int shooterV2Timer;
 
   ArrayList<Monster> monsters = new ArrayList<Monster>();
 
@@ -25,6 +29,8 @@ class GestorMonsters {
     this.monstersAlive[1] = 0;
     this.monstersAlive[2] = 0;
     this.monstersAlive[3] = 0;
+    this.monstersAlive[4] = 0;
+    this.monstersAlive[5] = 0;
 
     this.player = player;
     this.monsterEasyBornTimer = 0;
@@ -46,6 +52,7 @@ class GestorMonsters {
     updateResults(balas);
   }
 
+  //OPTIMIZAR VALIDACION DE MONSTER ALIVE -> La idea es que no haya monstruos al empezar el boss.
   private void mechanicalBoss(ArrayList<Bala> balas) {
     switch(gestorNiveles.getLevel()) {
     case 1:
@@ -106,6 +113,20 @@ class GestorMonsters {
       if (monsterWifiBornTimer >= monsterWifiBornDist) {
         addMonsterWifi(1);
         monsterWifiBornTimer = 0;
+      }
+    }
+    if (gestorNiveles.getMaxMonsterBomb() != 0) {
+      bombBornTimer++;
+      if (bombBornTimer >= bombBornDist) {
+        addBomb(1);
+        bombBornTimer = 0;
+      }
+    }
+    if (gestorNiveles.getMaxShooterV2() != 0) {
+      shooterV2Timer++;
+      if (shooterV2Timer >= shooterV2BornDist) {
+        addShooterV2(1);
+        shooterV2Timer = 0;
       }
     }
   }
@@ -199,7 +220,16 @@ class GestorMonsters {
         monsters.add(new MonsterWifi(this.player, respawn(MONSTER_WIFI_RAD, false)));
       }
     }
-  }  
+  }
+
+  private void addBomb(int i) {
+    if (this.monstersAlive[4] < gestorNiveles.getMaxMonsterBomb()) {
+      for (int c = 0; c < i; c++) {
+        this.monstersAlive[4]++;
+        monsters.add(new Bomb(this.player, respawn(MONSTER_BOMB_RAD, false)));
+      }
+    }
+  }
 
   private void addMonsterShooterBoss() {
     this.monstersAlive[1] = 5;
@@ -225,6 +255,15 @@ class GestorMonsters {
           float x = random(20, WIDTH-20);
           monsters.add(new Meteorito(this.player, new PVector(x, -100), new PVector(x, HEIGHT+200), 'D'));
         }
+      }
+    }
+  }
+
+  private void addShooterV2(int i) {
+    if (this.monstersAlive[5] < gestorNiveles.getMaxShooterV2()) {
+      for (int c = 0; c < i; c++) {
+        this.monstersAlive[5]++;
+        monsters.add(new ShooterV2(this.player, respawn(SHOOTER_V2_RAD, false)));
       }
     }
   }
@@ -279,9 +318,11 @@ class GestorMonsters {
       monsters.get(i).update();
       monsters.get(i).updatePaint(balas);
       if (monsters.get(i).isDie) {
-        ParticleSystem ps = new ParticleSystem(monsters.get(i).pos);
-        ps.addParticle(20, monsters.get(i).c);
-        this.particlesSystems.add(ps);
+        if (monsters.get(i).animationDestroy) {
+          ParticleSystem ps = new ParticleSystem(monsters.get(i).pos);
+          ps.addParticle(20, monsters.get(i).c);
+          this.particlesSystems.add(ps);
+        }
         this.player.setScore(monsters.get(i).score);
         this.monstersAlive[monsters.get(i).id]--;
         monsters.remove(i);

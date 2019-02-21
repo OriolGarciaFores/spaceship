@@ -21,11 +21,18 @@ class GestorDisparosEnemigos{
     this.autoShot = true;
   }
   
+  
   void update(){
     if(autoShot){
       timer();
+    }else{
+      shoot();
     }
     move();
+  }
+  
+  private void shoot(){
+    
   }
   
   private void move(){

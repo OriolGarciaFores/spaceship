@@ -6,6 +6,7 @@ class Monster {
   protected PVector target;
   protected int health;
   protected boolean inmortal = true;
+  protected boolean animationDestroy = true;
 
   protected Player player;
   protected int score;

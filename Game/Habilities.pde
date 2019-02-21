@@ -4,6 +4,7 @@ abstract class Habilities {
   protected boolean isActive;
   protected boolean isReady;
   protected boolean isEquiped; //PARA EL FUTURO SISTEMA DE INVENTARIO
+  protected int lvlRequired;
   protected int timer;
   protected float timerFrame;
   protected float coldown;
@@ -13,4 +14,6 @@ abstract class Habilities {
  abstract void timer();
  abstract void paint();
  abstract float getRad();
+ abstract void setIsEquiped(boolean isEquiped);
+ abstract ArrayList<Object> getObjects();
 }

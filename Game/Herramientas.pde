@@ -79,3 +79,21 @@ void showPositions(float posX, float posY) {
   text("POS X: " + int(posX), 20, 40);
   text("POS Y: " + int(posY), 20, 60);
 }
+
+/*
+  *******************************************************
+ *
+ * CASTEO DE OBJETOS
+ *
+ *******************************************************
+ */
+
+ArrayList<Ball> ObjectsToBalls(Player player) {
+  ArrayList<Ball> balls = new ArrayList<Ball>();
+
+  for (int i = 0; i < player.getHability(1).getObjects().size(); i++) {
+    balls.add((Ball)player.getHability(1).getObjects().get(i));
+  }
+
+  return balls;
+}

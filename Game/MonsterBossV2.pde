@@ -2,9 +2,9 @@ import java.util.Random;
 
 class MonsterBossV2 extends Monster {
   /*
-  * BOSS MOVIL. Cada x tiempo -> Se ira al centro y dispara en circulo
-   * Boss mantendra parte superior, e ira disparando hacia el jugador. (La direccion se determina 1 vez por bala).
-   */
+  * BOSS centro disparando.
+  *
+  */
 
   boolean isStarted;
   private final int maxHealth = 80;

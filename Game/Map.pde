@@ -33,6 +33,9 @@ class Map {
       rect(0, 0, WIDTH, HEIGHT);
       resetShader();
       break;
+    default:
+    background(0);
+    break;
     }
   }
 }

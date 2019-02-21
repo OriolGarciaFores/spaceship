@@ -38,4 +38,12 @@ class Ball {
       this.isDie = true;
     }
   }
+  
+  public void setColor(color c){
+    this.c = c;
+  }
+  
+  public void setRad(float rad){
+    this.rad = rad;
+  }
 }

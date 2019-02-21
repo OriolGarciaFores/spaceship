@@ -1,4 +1,4 @@
-/* //<>// //<>//
+/* //<>//
 * CONTROL DE NIVELES DE PANTALLA/DIFICULTAD DEL JUEGO
  * DESDE AQUI, CARGAR/LEER FICHERO NIVEL MAX DISPONIBLE EL JUGADOR DEFAULT 1.
  */
@@ -11,13 +11,15 @@ class GestorNiveles {
   private int maxScore;
   private int maxMeteoritos;
   private int maxMonsterWifi;
+  private int maxMonsterBomb;
   private int maxLevel;
+  private int maxShooterV2;
 
   private Configuration config;
 
   public GestorNiveles() {
     println("GESTOR NIVELES INICIALIZADO");
-    init_monsters(0, 0, 0, 0);
+    init_monsters(0, 0, 0, 0, 0, 0);
     this.level = 1;
     this.config = new Configuration();
     this.maxLevel = Integer.parseInt(this.config.getInfo("maxLevel"));
@@ -30,25 +32,25 @@ class GestorNiveles {
   private void updateLevel() {
     switch(this.level) {
     case 1:
-      //MONSTEREASY, SHOOTER, METEORITOS, WIFI.
-      init_monsters(20, 5, 0, 0);
+      //MONSTEREASY, SHOOTER, METEORITOS, WIFI, BOMB, shooter v2.
+      init_monsters(20, 5, 0, 0, 0, 0);
       this.maxScore = 200;
       systemSound.beforeStop();
       systemSound.play(1);
       break;
     case 2:
       setMaxLevel(this.level);
-      //MONSTEREASY, SHOOTER, METEORITOS, WIFI.
-      init_monsters(5, 0, 5, 8);
+      init_monsters(5, 0, 5, 8, 0, 0);
       this.maxScore = 500;
       systemSound.beforeStop();
       systemSound.play(2);
       break;
     case 3:
-      //NUNCA ENTRA
-      //RESET DE ANTERIORES NIVELES
       setMaxLevel(this.level);
-      init_monsters(0, 0, 0, 0);
+      init_monsters(10, 0, 0, 5, 3, 2);
+      this.maxScore = 800;
+      systemSound.beforeStop();
+      //systemSound.play(3);
       break;
     default:
       this.level = 1;
@@ -85,6 +87,14 @@ class GestorNiveles {
     return this.maxLevel;
   }
 
+  public int getMaxMonsterBomb() {
+    return this.maxMonsterBomb;
+  }
+
+  public int getMaxShooterV2() {
+    return this.maxShooterV2;
+  }
+
   public void setMaxLevel(int maxLvl) {
     if (this.maxLevel < maxLvl) {
       this.maxLevel = maxLvl;
@@ -96,10 +106,12 @@ class GestorNiveles {
     return this.maxMonsterWifi;
   }
 
-  private void init_monsters(int me, int ms, int mm, int mw) {
+  private void init_monsters(int me, int ms, int mm, int mw, int mb, int msv2) {
     this.maxMonsterEasy = me;
     this.maxMonsterShooter = ms;
     this.maxMeteoritos = mm;
     this.maxMonsterWifi = mw;
+    this.maxMonsterBomb = mb;
+    this.maxShooterV2 = msv2;
   }
 }

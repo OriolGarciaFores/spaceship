@@ -17,8 +17,10 @@ final float MONSTER_EASY_RAD = 20f;
 final float MONSTER_SHOT_RAD = 20f;
 final float METEORITO_RAD = 80f;
 final float MONSTER_WIFI_RAD = 40f;
+final float MONSTER_BOMB_RAD = 80f;
+final float SHOOTER_V2_RAD = 30f;
 
 //FILES
-final String ROUTE_SAVE = USER + "/Documents/Spaceship/Save/data.json";
+final String ROUTE_SAVE = USER + "/Documents/Spaceship/Save/data_dev.json";
 final String ROUTE_DIRECTORY_CONFIG = USER + "/Documents/Spaceship/configuration";
-final String ROUTE_CONFIG = USER + "/Documents/Spaceship/configuration/config.properties";
+final String ROUTE_CONFIG = USER + "/Documents/Spaceship/configuration/config_dev.properties";

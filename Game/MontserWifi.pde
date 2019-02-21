@@ -82,6 +82,18 @@ class MonsterWifi extends Monster {
       }
       i++;
     }
+    if (this.player.getHability(1).isEquiped) {
+      ArrayList<Ball> balls = ObjectsToBalls(this.player);
+      int ind = 0;
+      while (!this.isDie && ind < balls.size()) {
+        //INTERSECCION ENTRE BALA Y BICHO
+        if (PVector.dist(this.pos, balls.get(ind).pos)<=balls.get(ind).rad/2+rad/2) {
+          balls.get(ind).isDie = true;
+          this.isDie = true;
+        }
+        ind++;
+      }
+    }
   }
 
   private void timerColor() {

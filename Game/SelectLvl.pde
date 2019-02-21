@@ -119,6 +119,12 @@ class SelectLvl implements EstadoJuego {
         isSelection = false;
         inGame = true;
         break;
+      case 2:
+        gestorNiveles.setLevel(3);
+        gestorNiveles.update();
+        isSelection = false;
+        inGame = true;        
+      break;
       }
     }
   }

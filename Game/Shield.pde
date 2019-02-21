@@ -13,6 +13,8 @@ class Shield extends Habilities {
     this.c = COLOR_INMORTAL;
     this.radShield = player.r+20f;
     this.player = player;
+    this.isEquiped = false;
+    this.lvlRequired = 2;
   }
 
   void update() {
@@ -74,5 +76,13 @@ class Shield extends Habilities {
 
   float getRad() {
     return this.radShield;
+  }
+  
+  void setIsEquiped(boolean isEquiped){
+    this.isEquiped = isEquiped;
+  }
+  
+  ArrayList<Object> getObjects(){
+    return null;
   }
 }

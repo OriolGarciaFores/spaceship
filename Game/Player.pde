@@ -1,4 +1,4 @@
-class Player { //<>// //<>//
+class Player { //<>// //<>// //<>//
   private PVector pos, speed, acc;
 
   private float maxSpeed;
@@ -11,7 +11,7 @@ class Player { //<>// //<>//
   private int targetAutoX;
   private int targetAutoY;
   private int health;
-  private final int MAX_HABILITIES = 1;
+  private final int MAX_HABILITIES = 2;
   private int lvl;
 
   private Habilities[] habilities;
@@ -127,21 +127,27 @@ class Player { //<>// //<>//
   }
   //OPTIMIZABLE
   public void updateHabilities() {
-      if (gestorNiveles.getLevel() >= 2) {
-        for (int i = 0; i < habilities.length; i++) {
-          habilities[i].update();
+    if (gestorNiveles.getLevel() >= 2) {
+      for (int i = 0; i < habilities.length; i++) {
+        if (!habilities[i].isEquiped) {
+          if (habilities[i].lvlRequired <= gestorNiveles.getLevel()) {
+            habilities[i].setIsEquiped(true);
+          } else {
+            continue;
+          }
         }
+        habilities[i].update();
       }
+    }
   }
 
   void addHabilities() {
-    if (gestorNiveles.getLevel() >= 2) {
       habilities[0] = new Shield(this);
-    }
+      habilities[1] = new MultiShot(this);
   }
-  
-  void validateHabilities(){
-    if(gestorNiveles.getLevel() != this.lvl){
+
+  void validateHabilities() {
+    if (gestorNiveles.getLevel() != this.lvl) {
       this.lvl = gestorNiveles.getLevel();
       addHabilities();
     }

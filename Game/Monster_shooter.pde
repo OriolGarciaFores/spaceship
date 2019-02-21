@@ -93,8 +93,6 @@ class Monster_shooter extends Monster {
   public void colision(ArrayList<Bala> balas, ArrayList<Bala> balasE) {
     //INTERACCIONA CON EL PLAYER
     if (PVector.dist(this.pos, this.player.pos)<=this.player.r/2+rad/2) {
-      //finalScore = this.player.getScore();
-      //over = true;
       this.player.decreaseLife();
     }
 
@@ -103,8 +101,6 @@ class Monster_shooter extends Monster {
       //INTERSECCION ENTRE BALA ENEMIGA Y PLAYER
       if (PVector.dist(this.player.pos, balasE.get(ind).pos)<=balasE.get(ind).rad/2+this.player.r/2) {
         balasE.get(ind).isDie = true;
-        //finalScore = this.player.getScore();
-        //over = true;
         this.player.decreaseLife();
       }
       ind++;
@@ -123,6 +119,20 @@ class Monster_shooter extends Monster {
       }
       i++;
     }
+    
+    if (this.player.getHability(1).isEquiped) {
+      ArrayList<Ball> balls = ObjectsToBalls(this.player);
+      int index = 0;
+      while (!this.isDie && index < balls.size()) {
+        //INTERSECCION ENTRE BALA Y BICHO
+        if (PVector.dist(this.pos, balls.get(index).pos)<=balls.get(index).rad/2+rad/2) {
+          balls.get(index).isDie = true;
+          this.isDie = true;
+        }
+        ind++;
+      }
+    }
+    
   }
 
   public void setTarget(String target) {

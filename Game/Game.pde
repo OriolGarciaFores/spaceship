@@ -24,7 +24,7 @@ int CENTRO_VENTANA_X = WIDTH / 2;
 int CENTRO_VENTANA_Y = HEIGHT / 2;
 int finalLvl = 0;
 
-private final String version = "Pre-Alfa 0.1.12";
+private final String version = "Pre-Alfa 0.1.25";
 
 //Objetos
 private GestorEstados ge;
@@ -64,7 +64,7 @@ void draw() {
     over = false;
     outGameOver = false;
   }
-  //showFPS(true);
+  showFPS(true);
 }
 
 void keyReleased() {
