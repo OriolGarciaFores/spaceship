@@ -88,7 +88,6 @@ class SelectLvl implements EstadoJuego {
     if (KEYBOARD.right && position < (maxPositions-1)) {
       if (position >= 2) {
         for (int i = 0; i < this.secciones.length; i++) {
-          println(this.secciones[i].getPosX());
           this.secciones[i].setPosX(this.secciones[i].getPosX()-(WIDTH/4)-64);
         }
       }
@@ -96,7 +95,6 @@ class SelectLvl implements EstadoJuego {
     } else if (KEYBOARD.left && position > 0) {
       if (position >= 3) {
         for (int i = 0; i < this.secciones.length; i++) {
-          println(this.secciones[i].getPosX());
           this.secciones[i].setPosX(this.secciones[i].getPosX()+(WIDTH/4)+64);
         }
       }
@@ -124,7 +122,13 @@ class SelectLvl implements EstadoJuego {
         gestorNiveles.update();
         isSelection = false;
         inGame = true;        
-      break;
+        break;
+      case 3:
+        gestorNiveles.setLevel(4);
+        gestorNiveles.update();
+        isSelection = false;
+        inGame = true;        
+        break;
       }
     }
   }

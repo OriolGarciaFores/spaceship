@@ -69,6 +69,18 @@ class GestorNiveles {
       this.isFinalProgress = false;
       updateProgress();//NOW
       break;
+    case 4:
+    //NIVEL DE BOSS UNICO
+      setMaxLevel(this.level);
+      init_monsters(0, 0, 0, 0, 0, 0);
+      this.maxScore = 0;
+      systemSound.beforeStop();
+      systemSound.play(3);
+      this.fase = 0;
+      this.timer = 0;
+      this.isFinalProgress = false;
+      //updateProgress();//NOW
+      break;
     default:
       this.level = 1;
       updateLevel();

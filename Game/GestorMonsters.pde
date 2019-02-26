@@ -21,6 +21,7 @@ class GestorMonsters {
 
   private MonsterBoss mb;
   private MonsterBossV2 mb2;
+  private MonsterBossV3 mb3;
   private Player player;
   private ArrayList<ParticleSystem> particlesSystems;
 
@@ -36,6 +37,7 @@ class GestorMonsters {
     this.monsterEasyBornTimer = 0;
     this.mb = new MonsterBoss(this.player, new PVector(WIDTH+20, 0));
     this.mb2 = new MonsterBossV2(this.player, new PVector(CENTRO_VENTANA_X, -100));
+    this.mb3 = new MonsterBossV3(this.player, new PVector(WIDTH+20, 0));
     this.particlesSystems = new ArrayList<ParticleSystem>();
   }
 
@@ -86,6 +88,19 @@ class GestorMonsters {
           timerBoss(2);
         }
         mb2.paint();
+      }
+      break;
+    case 4:
+      if (this.player.score >= gestorNiveles.getMaxScore() && !mb3.isDie) {
+        mb3.updateBoss(balas);
+        if (!mb3.getIsStarted()) {
+          this.player.setAutoMove(true);
+          mb3.update();
+        } else {
+          this.player.setAutoMove(false);
+          timerBoss(3);
+        }
+        mb3.paint();
       }
       break;
     }
@@ -187,6 +202,8 @@ class GestorMonsters {
         mb2.setShieldActive(false);
         mb2.timerShield();
       }  
+      break;
+    case 3:
       break;
     }
   }
@@ -362,6 +379,9 @@ class GestorMonsters {
       break;
     case 3:
       procesingResults(3, this.player.score, balas, 4, 0);
+      break;
+    case 4:
+      //RESULTS LVL 4.
       break;
     }
   }

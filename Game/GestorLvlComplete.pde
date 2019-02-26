@@ -92,6 +92,9 @@ class GestorLvlComplete implements EstadoJuego {
       description = "Nueva habilidad desbloqueada!\n Ahora al pulsar E podrás disparar una onda expansiva de balas.";
       text(this.description, CENTRO_VENTANA_X, CENTRO_VENTANA_Y-100);
       break;
+      case 4:
+      //NUEVA HABILIDAD LASER????
+      break;
     }
   }
 
