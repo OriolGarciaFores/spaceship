@@ -33,9 +33,16 @@ class Map {
       rect(0, 0, WIDTH, HEIGHT);
       resetShader();
       break;
+    case 3:
+      fill(255);
+      galaxy.set("time", millis() / 5000.0);//NULL ? AL COMPLETAR EL 2N NIVEL  
+      shader(galaxy);
+      rect(0, 0, WIDTH, HEIGHT);
+      resetShader();
+      break;
     default:
-    background(0);
-    break;
+      background(0);
+      break;
     }
   }
 }

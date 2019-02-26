@@ -23,8 +23,17 @@ int finalScore = 0;
 int CENTRO_VENTANA_X = WIDTH / 2;
 int CENTRO_VENTANA_Y = HEIGHT / 2;
 int finalLvl = 0;
-
-private final String version = "Pre-Alfa 0.1.25";
+/*
+**************************************************
+*
+*  VERSION X.X.XX
+*  X. ->     VERSION FINAL.
+*  0.X ->    VERSION POR NIVEL COMPLETADO.
+*  0.0.XX -> VERSION POR MEJORAS O BUGS.
+*
+**************************************************
+*/
+private final String version = "Pre-Alfa 0.1.29";
 
 //Objetos
 private GestorEstados ge;

@@ -2,7 +2,7 @@ import processing.sound.*;
 
 class SystemSound {
 
-  private final SoundFile[] sounds = new SoundFile[3];
+  private final SoundFile[] sounds = new SoundFile[4];
   private final float timeFrame = 30;
   private int keyTimer = 0;
   private boolean onChange = false;
@@ -14,6 +14,7 @@ class SystemSound {
     this.sounds[0] = new SoundFile(applet, "data/Sounds/TitleScreen.wav");
     this.sounds[1] = new SoundFile(applet, "data/Sounds/Level1.wav");
     this.sounds[2] = new SoundFile(applet, "data/Sounds/Level2.wav");
+    this.sounds[3] = new SoundFile(applet, "data/Sounds/Level3.wav");
   }
 
   void play(int id) {

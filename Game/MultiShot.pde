@@ -5,7 +5,7 @@ class MultiShot extends Habilities {
   MultiShot(Player player) {
     this.pos = new PVector(0, 0);
     this.isReady = true;
-    this.coldown = (15*FRAMES);//AMPLIAR CD MUCHO
+    this.coldown = (8*FRAMES);//AMPLIAR CD MUCHO
     this.lvlRequired = 3;
     this.player = player;
     this.balls = new ArrayList<Ball>();
@@ -64,7 +64,7 @@ class MultiShot extends Habilities {
     for (float angle = 0; angle < 360; angle = angle+pointAngle) {
       float x = cos(radians(angle)) * CENTRO_VENTANA_X;
       float y = sin(radians(angle)) * CENTRO_VENTANA_Y;
-      Ball ball = new Ball(this.pos, new PVector(x+this.pos.x, y+this.pos.y), 4);
+      Ball ball = new Ball(this.pos, new PVector(x+this.pos.x, y+this.pos.y), 6);
       ball.setColor(color(255));
       this.balls.add(ball);
     }

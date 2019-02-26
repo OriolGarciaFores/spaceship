@@ -3,6 +3,8 @@ class Shield extends Habilities {
   final float radShield;
   private Player player;
 
+  private int timerColor;
+
   Shield(Player player) {
     this.pos = new PVector(0, 0);
     this.timer = 0;
@@ -45,6 +47,9 @@ class Shield extends Habilities {
       pushMatrix();
       translate(pos.x, pos.y);
       noFill();
+      if (this.timer >= (this.timerFrame/2)) {
+        animation();
+      }
       stroke(this.c);
       strokeWeight(2);
       ellipse(0, 0, this.radShield, this.radShield);
@@ -52,6 +57,17 @@ class Shield extends Habilities {
     }
     if (this.isReady) {
       showHability();
+    }
+  }
+
+  private void animation() {
+    timerColor++;
+    if (this.c == COLOR_INMORTAL && timerColor >= 10) {
+      this.c = color(0);
+      timerColor = 0;
+    } else if (timerColor >= 10) {
+      this.c = COLOR_INMORTAL;
+      timerColor = 0;
     }
   }
 
@@ -77,12 +93,12 @@ class Shield extends Habilities {
   float getRad() {
     return this.radShield;
   }
-  
-  void setIsEquiped(boolean isEquiped){
+
+  void setIsEquiped(boolean isEquiped) {
     this.isEquiped = isEquiped;
   }
-  
-  ArrayList<Object> getObjects(){
+
+  ArrayList<Object> getObjects() {
     return null;
   }
 }

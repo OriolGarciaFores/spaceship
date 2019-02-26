@@ -6,6 +6,9 @@ class Bomb extends Monster {
   private int timerColor = 0;
   private int timerFases = 0;
   private int fase = 1;
+  private int killScore = 8;
+  private int destroyScore = 3;
+  
   private final float timerColorFrame = (0.2*FRAMES);
   private final color COLOR_BOMB = color(#00FFD2);
 
@@ -19,7 +22,7 @@ class Bomb extends Monster {
     this.acc = new PVector();
     this.maxSpeed = 0;
     init_monster(player);
-    this.score = 5;
+    this.score = 0;// TIENE 2 SCORES ESTE ENEMIGO.
     this.health = 5;
     this.isMovil = false;
     this.id = 4;
@@ -127,7 +130,7 @@ class Bomb extends Monster {
           this.health--;
           if (this.health <= 0) {
             //NO MUERE DEL TODO.
-            //this.isDie = true;
+            this.score = this.killScore;
             this.isDestroy = true;
             addBalls();
           }
@@ -146,10 +149,11 @@ class Bomb extends Monster {
             this.health--;
             if (this.health <= 0) {
               //NO MUERE DEL TODO.
-              //this.isDie = true;
+              this.score = this.killScore;
               this.isDestroy = true;
               addBalls();
             }
+            this.c = COLOR_DMG;
           }
           ind++;
         }
@@ -212,8 +216,6 @@ class Bomb extends Monster {
 
   private void changeFase(color c,int fase) {
     if (timerFases >= FRAMES) {
-      println("ENTRO");
-      println(fase);
       this.c = c;
       this.fase = fase;
       timerFases = 0;
@@ -222,6 +224,7 @@ class Bomb extends Monster {
   
   private void explosion(){
     if (timerFases >= FRAMES) {
+      this.score = this.destroyScore;
       timerFases = 0;
       this.isDestroy = true;
       addBalls();

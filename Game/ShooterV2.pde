@@ -155,7 +155,7 @@ class ShooterV2 extends Monster {
   }
 
   private void addBalls() {
-    Ball ball = new Ball(this.pos, this.player.pos, 10);
+    Ball ball = new Ball(this.pos, this.player.pos, 8);
     ball.setColor(COLOR_ORANGE);
     ball.setRad(20f);
     this.balls.add(ball);

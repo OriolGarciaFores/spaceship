@@ -22,5 +22,7 @@ final float SHOOTER_V2_RAD = 30f;
 
 //FILES
 final String ROUTE_SAVE = USER + "/Documents/Spaceship/Save/data_dev.json";
+//final String ROUTE_SAVE = USER + "/Documents/Spaceship/Save/data.json";
 final String ROUTE_DIRECTORY_CONFIG = USER + "/Documents/Spaceship/configuration";
 final String ROUTE_CONFIG = USER + "/Documents/Spaceship/configuration/config_dev.properties";
+//final String ROUTE_CONFIG = USER + "/Documents/Spaceship/configuration/config.properties";

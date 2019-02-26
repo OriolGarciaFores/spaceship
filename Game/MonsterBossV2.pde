@@ -68,7 +68,7 @@ class MonsterBossV2 extends Monster {
         this.timerBurstFrame = (2*FRAMES);
       }
     }
-    if (this.maxHealth-(this.maxHealth/4) >= this.health && !this.isRage && timerProbRage >= timerProbRageFrames) {
+    if (this.maxHealth-(this.maxHealth/4) >= this.health && !this.isRage && timerProbRage >= timerProbRageFrames && !this.shieldActive) {
       boolean enter = new Random().nextInt(this.probabilityRage)==0;
       if (enter) {
         this.isRage = true;

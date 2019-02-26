@@ -40,6 +40,11 @@ class GestorMonsters {
   }
 
   void update(ArrayList<Bala> balas) {
+
+    if (gestorNiveles.getLevel() >= 3) {
+      gestorNiveles.updateProgress();
+    }
+
     mechanicalBoss(balas);
     updateMonsters(balas);
 
@@ -49,7 +54,7 @@ class GestorMonsters {
 
     updateParticles();
     //PANTALLA DE RESULTADOS Y RESETEAR EL SCORE
-    updateResults(balas);
+    if (this.player.score >= gestorNiveles.getMaxScore() && this.monsters.isEmpty()) updateResults(balas);
   }
 
   //OPTIMIZAR VALIDACION DE MONSTER ALIVE -> La idea es que no haya monstruos al empezar el boss.
@@ -354,6 +359,9 @@ class GestorMonsters {
         this.player.setScore(mb2.score);// ?¿?¿?¿?¿??¿
         procesingResults(2, this.player.score, balas, 3, 2);
       }
+      break;
+    case 3:
+      procesingResults(3, this.player.score, balas, 4, 0);
       break;
     }
   }
