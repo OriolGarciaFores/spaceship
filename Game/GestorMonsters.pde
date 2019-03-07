@@ -93,13 +93,13 @@ class GestorMonsters {
     case 4:
       if (this.player.score >= gestorNiveles.getMaxScore() && !mb3.isDie) {
         mb3.updateBoss(balas);
-        if (!mb3.getIsStarted()) {
-          this.player.setAutoMove(true);
-          mb3.update();
-        } else {
-          this.player.setAutoMove(false);
+        //if (!mb3.getIsStarted()) {
+          //this.player.setAutoMove(true);
+          //mb3.update();
+        //} else {
+        //  this.player.setAutoMove(false);
           timerBoss(3);
-        }
+        //}
         mb3.paint();
       }
       break;

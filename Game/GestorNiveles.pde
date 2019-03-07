@@ -75,7 +75,7 @@ class GestorNiveles {
       init_monsters(0, 0, 0, 0, 0, 0);
       this.maxScore = 0;
       systemSound.beforeStop();
-      systemSound.play(3);
+      //systemSound.play(3);
       this.fase = 0;
       this.timer = 0;
       this.isFinalProgress = false;

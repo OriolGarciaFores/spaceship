@@ -34,7 +34,7 @@ class MonsterBossV3 extends Monster {
   }
 
   public void updateBoss(ArrayList<Bala> balas) {
-    if (pos.x >= WIDTH-(WIDTH/4) && !this.isStarted) {
+   /* if (pos.x >= WIDTH-(WIDTH/4) && !this.isStarted) {
       pos = new PVector(pos.x, 0);
     } else {
       this.isStarted = true;
@@ -42,7 +42,8 @@ class MonsterBossV3 extends Monster {
 
       //MECANICAS BOSS
       colision(balas);
-    }
+    }*/
+    pos = new PVector(WIDTH-(WIDTH/4), 0);
   }
 
   public void paint() {
@@ -62,7 +63,7 @@ class MonsterBossV3 extends Monster {
     triangle( WIDTH/4, 0, WIDTH/4, HEIGHT/4, 0, HEIGHT/4);
     rect((WIDTH/4)-w, HEIGHT/4, w, h);
     triangle(0, HEIGHT-(HEIGHT/4), WIDTH/4, HEIGHT-(HEIGHT/4), WIDTH/4, HEIGHT);
-    noFill();
+    fill(shieldColor, 50);
     stroke(c);
     strokeWeight(4);
     if (shield > 0 && this.fase <= 3) {
@@ -70,8 +71,7 @@ class MonsterBossV3 extends Monster {
       ellipse(WIDTH/4, HEIGHT/2, this.rad, this.rad);
     }
 
-    //debugAreaPoint(this.rad-80f,WIDTH/4,HEIGHT/2);
-    //debugAreaPoint(this.rad,WIDTH/4,HEIGHT/2);
+
     popMatrix();
   }
 

@@ -28,12 +28,12 @@ int finalLvl = 0;
 *
 *  VERSION X.X.XX
 *  X. ->     VERSION FINAL.
-*  0.X.X0 -> VERSION POR NIVEL COMPLETADO.
-*  0.0.0X -> VERSION POR MEJORAS O BUGS.
+*  0.X.X0 -> VERSION POR NIVEL COMPLETADO DEPENDIENDO DE LA CANTIDAD DE CAMBIOS.
+*  0.0.XX -> VERSION POR MEJORAS O BUGS.
 *
 **************************************************
 */
-private final String version = "Pre-Alfa 0.1.31";
+private final String version = "Pre-Alfa 0.1.32";
 
 //Objetos
 private GestorEstados ge;

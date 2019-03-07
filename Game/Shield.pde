@@ -46,7 +46,7 @@ class Shield extends Habilities {
     if (this.isActive) {
       pushMatrix();
       translate(pos.x, pos.y);
-      noFill();
+      fill(this.c, 50);
       if (this.timer >= (this.timerFrame/2)) {
         animation();
       }

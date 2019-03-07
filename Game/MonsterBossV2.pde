@@ -115,7 +115,7 @@ class MonsterBossV2 extends Monster {
     ellipse(-20, 0, 16, 32);
     ellipse(10, 0, 16, 32);
     if (this.shieldActive) {
-      noFill();
+      fill(COLOR_INMORTAL, 50);
       stroke(COLOR_INMORTAL);
       strokeWeight(4);
       ellipse(0, 0, this.rad+20f, this.rad+20f);
