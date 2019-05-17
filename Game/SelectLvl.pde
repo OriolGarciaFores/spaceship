@@ -72,6 +72,21 @@ class SelectLvl implements EstadoJuego {
         secciones[i].setSelected(false);
       }
     }
+
+
+    if (this.maxPositions >= 4 && position < 3 && this.maxPositions != position) {
+      pushMatrix();
+      translate(WIDTH-85, CENTRO_VENTANA_Y-100);
+      triangle(70, 18.75, 43, 0, 43, 37.5);
+      popMatrix();
+    }
+
+    if (position > 2) {
+      pushMatrix();
+      translate(0, CENTRO_VENTANA_Y-100);
+      triangle(15, 18.75, 43, 0, 43, 37.5);
+      popMatrix();
+    }
   }
 
   private void timer() {

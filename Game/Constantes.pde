@@ -19,6 +19,7 @@ final float METEORITO_RAD = 80f;
 final float MONSTER_WIFI_RAD = 40f;
 final float MONSTER_BOMB_RAD = 80f;
 final float SHOOTER_V2_RAD = 30f;
+final float BOSS_V3_RAD = 50F;
 
 //FILES
 final String ROUTE_SAVE = USER + "/Documents/Spaceship/Save/data_dev.json";
