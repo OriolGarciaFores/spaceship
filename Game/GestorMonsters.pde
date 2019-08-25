@@ -94,13 +94,7 @@ class GestorMonsters {
       if (!mb3.isDie) {
         mb3.updateBoss(balas);
         mb3.update();
-        //if (!mb3.getIsStarted()) {
-        //this.player.setAutoMove(true);
-        //mb3.update();
-        //} else {
-        //  this.player.setAutoMove(false);
         timerBoss(3);
-        //}
         mb3.paint();
       }
       break;
@@ -205,6 +199,9 @@ class GestorMonsters {
       }  
       break;
     case 3:
+        //INICIAR 2 NAVES FOLLOWER
+        // TIMER REINVOCANDOLOS
+        // TIMER INVOCANDO METEORITOS
       break;
     }
   }
@@ -262,7 +259,7 @@ class GestorMonsters {
     monsters.add(new Monster_shooter(this.player, new PVector(WIDTH-50, (HEIGHT/2)+100), 20));
     monsters.add(new Monster_shooter(this.player, new PVector(WIDTH-50, HEIGHT-50), 20));
   }
-
+//REVISAR -> SOLO PARA NIVEL 2???¿?¿
   private void addMeteo(int i) {
     if (this.monstersAlive[3] < gestorNiveles.getMaxMeteoritos()) {
       if (meteoBornDist > 50) {
@@ -271,7 +268,7 @@ class GestorMonsters {
       for (int c = 0; c < i; c++) {
         this.monstersAlive[3]++;
         if (this.player.score >= (gestorNiveles.getMaxScore()/2)) {
-          meteoBornDist = 35;
+          //meteoBornDist = 35;
           float y = random(20, HEIGHT-20);
           monsters.add(new Meteorito(this.player, new PVector(WIDTH+200, y), new PVector(-200, y), 'L'));
         } else {

@@ -7,10 +7,10 @@ class SystemSound {
   private int keyTimer = 0;
   private boolean onChange = false;
   private float volume;
-  private int volumeTotal = 50;
+  private int volumeTotal = 25;
 
   SystemSound(PApplet applet) {
-    this.volume = 0.5f;
+    this.volume = 0.25f;
     this.sounds[0] = new SoundFile(applet, "data/Sounds/TitleScreen.wav");
     this.sounds[1] = new SoundFile(applet, "data/Sounds/Level1.wav");
     this.sounds[2] = new SoundFile(applet, "data/Sounds/Level2.wav");
@@ -44,9 +44,9 @@ class SystemSound {
 
   void changeVolume() {
     if (KEYBOARD.left && this.volumeTotal > 0) {
-      this.volumeTotal -= 10;
+      this.volumeTotal -= 5;
     } else if (KEYBOARD.right && this.volumeTotal < 100) {
-      this.volumeTotal += 10;
+      this.volumeTotal += 5;
     }
     this.volume = (float)this.volumeTotal/100;
     this.sounds[0].amp(this.volume);

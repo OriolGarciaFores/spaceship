@@ -50,7 +50,7 @@ class MonsterBossV2 extends Monster {
   public void init_monster(Player player) {
     setPlayer(player);
     setTarget(new PVector(CENTRO_VENTANA_X, CENTRO_VENTANA_Y));
-    c = color(255);
+    c = color(169,169,169);
   }
 
   public void updateBoss(ArrayList<Bala> balas) {
@@ -107,13 +107,43 @@ class MonsterBossV2 extends Monster {
     timerColor();
 
     stroke(0);
-    strokeWeight(1);
+    strokeWeight(2);
     fill(c);
     pushMatrix();
     translate(pos.x, pos.y);//POSICIONAMIENTO
     ellipse(0, 0, this.rad, this.rad);
-    ellipse(-20, 0, 16, 32);
-    ellipse(10, 0, 16, 32);
+    
+    fill(128,128,128);
+    ellipse(0, 0, 43, 43);
+    fill(169,169,169);
+    for (int i = 0; i<4; i++) {
+      rotate(HALF_PI*i);
+      triangle(0, 0, 1*15f, 1*15f, 0, 1.41*15f);
+    }
+
+    strokeWeight(0);
+    fill(128,128,128);
+    square(-33, 18, 10);
+    square(-40, 3, 10);
+    square(-3, 24, 8);
+    square(-3, -33, 8);
+    square(-3, -46, 8);
+    square(-15, -46, 8);
+    square(10, -46, 8);
+    square(-3, 37, 8);
+    square(-15, 37, 8);
+    square(10, 37, 8);
+    square(25, 18, 10);
+    square(30, 3, 10);
+    square(23, -23, 18);
+    square(-42, -23, 18);
+    strokeWeight(2);
+    fill(c);
+    
+    line(-35, 35, 35, 35);
+    line(-50, 0, 50, 0);
+    line(-50, -35, 50, -35);
+    
     if (this.shieldActive) {
       fill(COLOR_INMORTAL, 50);
       stroke(COLOR_INMORTAL);
@@ -155,7 +185,7 @@ class MonsterBossV2 extends Monster {
         if (this.isRage) {
           this.c = color(COLOR_RAGE);
         } else {
-          this.c = color(255);
+          this.c = color(169,169,169);
         }
         timerColor = 0;
       }

@@ -23,6 +23,7 @@ int finalScore = 0;
 int CENTRO_VENTANA_X = WIDTH / 2;
 int CENTRO_VENTANA_Y = HEIGHT / 2;
 int finalLvl = 0;
+
 /*
 **************************************************
 *
@@ -33,7 +34,7 @@ int finalLvl = 0;
 *
 **************************************************
 */
-private final String version = "Pre-Alfa 0.1.32";
+private final String version = "Pre-Alfa 0.1.45";
 
 //Objetos
 private GestorEstados ge;
@@ -55,6 +56,7 @@ void settings() {
 
 void setup() {
   println("Game Started");
+  
   frameRate(60);
   loadScreen();
   this.ssd = new SystemSaveData();

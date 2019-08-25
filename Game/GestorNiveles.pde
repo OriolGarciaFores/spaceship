@@ -51,8 +51,8 @@ class GestorNiveles {
       break;
     case 2:
       setMaxLevel(this.level);
-      init_monsters(5, 0, 5, 8, 0, 0);
-      this.maxScore = 500;
+      init_monsters(5, 0, 4, 8, 0, 0);
+      this.maxScore = 400;
       systemSound.beforeStop();
       systemSound.play(2);
       this.fase = 0;
@@ -95,6 +95,7 @@ class GestorNiveles {
   }
 
   //DAR PROGRESION DE DIFICULTAD EN LOS NIVELES 3 Y SUPERIORES
+  //La progresion solo por timer puedes no atacar e ir a la ultima fase. Limitar por score ?
   private void progresLvl() {
     switch(this.level) {
     case 3:
