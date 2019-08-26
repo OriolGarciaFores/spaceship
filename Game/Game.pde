@@ -34,7 +34,7 @@ int finalLvl = 0;
 *
 **************************************************
 */
-private final String version = "Pre-Alfa 0.1.45";
+private final String version = "Pre-Alfa 0.1.46";
 
 //Objetos
 private GestorEstados ge;

@@ -4,7 +4,7 @@ class GestorMenu implements EstadoJuego {
   private final Seccion[] seccionesControls;
 
   private int position;
-  private final int maxPositions = 4;
+  private final int maxPositions = 5;
 
   private float keyTimer = 0;
   private final float timeFrame = 0.2*FRAMES;
@@ -27,10 +27,13 @@ class GestorMenu implements EstadoJuego {
   }
 
   private void initSections() {
-    this.secciones[0] = new Seccion("PLAY", CENTRO_VENTANA_X, CENTRO_VENTANA_Y-50);
-    this.secciones[1] = new Seccion("AUDIO", CENTRO_VENTANA_X, CENTRO_VENTANA_Y+20);
-    this.secciones[2] = new Seccion("CONTROLS", CENTRO_VENTANA_X, CENTRO_VENTANA_Y+90);
-    this.secciones[3] = new Seccion("EXIT", CENTRO_VENTANA_X, CENTRO_VENTANA_Y+160);
+    this.secciones[0] = new Seccion("PLAY", CENTRO_VENTANA_X, CENTRO_VENTANA_Y-120);
+    Seccion survival = new Seccion("SURVIVAL", CENTRO_VENTANA_X, CENTRO_VENTANA_Y-50);
+    survival.setColor(100);
+    this.secciones[1] = survival;
+    this.secciones[2] = new Seccion("AUDIO", CENTRO_VENTANA_X, CENTRO_VENTANA_Y+20);
+    this.secciones[3] = new Seccion("CONTROLS", CENTRO_VENTANA_X, CENTRO_VENTANA_Y+90);
+    this.secciones[4] = new Seccion("EXIT", CENTRO_VENTANA_X, CENTRO_VENTANA_Y+160);
 
     //MENU DE CONTROLES
     float size = 18f;
@@ -87,15 +90,15 @@ class GestorMenu implements EstadoJuego {
         isSelection = true;
         delay(300);
         break;
-      case 1:
+      case 2:
         this.isMenuAudio = true;
         delay(300);
         break;
-      case 2:
+      case 3:
         isMenuControls = true;
         delay(300);
         break;
-      case 3:
+      case 4:
         exit();
         break;
       }

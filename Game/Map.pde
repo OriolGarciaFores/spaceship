@@ -18,6 +18,7 @@ class Map {
   }
 
   public void update() {
+    noStroke();
     switch(gn.getLevel()) {
     case 1:
       fill(255);
