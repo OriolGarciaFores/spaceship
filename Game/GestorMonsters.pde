@@ -105,42 +105,42 @@ class GestorMonsters {
     if (gestorNiveles.getMaxMonsterEasy() != 0) {
       monsterEasyBornTimer++;
       if (monsterEasyBornTimer >= monsterEasyBornDist) {
-        addMonsterEasy(1);
+        addMonsterEasy(1, false);
         monsterEasyBornTimer = 0;
       }
     }
     if (gestorNiveles.getMaxMonsterShooter() != 0) {
       monsterShotBornTimer++;
       if (monsterShotBornTimer >= monsterShotBornDist) {
-        addMonsterShooter(1);
+        addMonsterShooter(1, false);
         monsterShotBornTimer = 0;
       }
     }
     if (gestorNiveles.getMaxMeteoritos() != 0) {
       meteoBornTimer++;
       if (meteoBornTimer >= meteoBornDist) {
-        addMeteo(1);
+        addMeteo(1, false);
         meteoBornTimer = 0;
       }
     }
     if (gestorNiveles.getMaxMonsterWifi() != 0) {
       monsterWifiBornTimer++;
       if (monsterWifiBornTimer >= monsterWifiBornDist) {
-        addMonsterWifi(1);
+        addMonsterWifi(1, false);
         monsterWifiBornTimer = 0;
       }
     }
     if (gestorNiveles.getMaxMonsterBomb() != 0) {
       bombBornTimer++;
       if (bombBornTimer >= bombBornDist) {
-        addBomb(1);
+        addBomb(1, false);
         bombBornTimer = 0;
       }
     }
     if (gestorNiveles.getMaxShooterV2() != 0) {
       shooterV2Timer++;
       if (shooterV2Timer >= shooterV2BornDist) {
-        addShooterV2(1);
+        addShooterV2(1, false);
         shooterV2Timer = 0;
       }
     }
@@ -191,7 +191,7 @@ class GestorMonsters {
       //2n BOSS
     case 2:
       if (mb2.needShips && mb2.getShieldActive()) {
-        addMonsterWifi(5);
+        addMonsterWifi(5, true);
         mb2.needShips = false;
       } else if (this.monstersAlive[2] == 0) {
         mb2.setShieldActive(false);
@@ -199,6 +199,20 @@ class GestorMonsters {
       }  
       break;
     case 3:
+    
+    switch(mb3.getFase()) {
+      case 1:
+      addShooterV2(2, true);
+      mb3.setFase(2);
+      break;
+    }
+    
+    if (this.monstersAlive[3] == 0)
+      meteoBornTimer++;
+      if (meteoBornTimer >= meteoBornDist) {
+        addMeteo(2, true);
+        meteoBornTimer = 0;
+      }
         //INICIAR 2 NAVES FOLLOWER
         // TIMER REINVOCANDOLOS
         // TIMER INVOCANDO METEORITOS
@@ -206,8 +220,8 @@ class GestorMonsters {
     }
   }
 
-  private void addMonsterEasy(int i) {
-    if (this.monstersAlive[0] < gestorNiveles.getMaxMonsterEasy()) {
+  private void addMonsterEasy(int i, boolean inBoss) {
+    if (this.monstersAlive[0] < gestorNiveles.getMaxMonsterEasy() || inBoss) {
       for (int c = 0; c < i; c++) {
         this.monstersAlive[0]++;
         monsters.add(new Monster_easy(this.player, respawn(MONSTER_EASY_RAD, false)));
@@ -224,8 +238,8 @@ class GestorMonsters {
     }
   }
 
-  private void addMonsterShooter(int i) {
-    if (this.monstersAlive[1] < gestorNiveles.getMaxMonsterShooter()) {
+  private void addMonsterShooter(int i, boolean inBoss) {
+    if (this.monstersAlive[1] < gestorNiveles.getMaxMonsterShooter() || inBoss) {
       for (int c = 0; c < i; c++) {
         this.monstersAlive[1]++;
         monsters.add(new Monster_shooter(this.player, respawn(MONSTER_SHOT_RAD, true)));
@@ -233,8 +247,8 @@ class GestorMonsters {
     }
   }
 
-  private void addMonsterWifi(int i) {
-    if (this.monstersAlive[2] < gestorNiveles.getMaxMonsterWifi()) {
+  private void addMonsterWifi(int i, boolean inBoss) {
+    if (this.monstersAlive[2] < gestorNiveles.getMaxMonsterWifi() || inBoss) {
       for (int c = 0; c < i; c++) {
         this.monstersAlive[2]++;
         monsters.add(new MonsterWifi(this.player, respawn(MONSTER_WIFI_RAD, false)));
@@ -242,8 +256,8 @@ class GestorMonsters {
     }
   }
 
-  private void addBomb(int i) {
-    if (this.monstersAlive[4] < gestorNiveles.getMaxMonsterBomb()) {
+  private void addBomb(int i, boolean inBoss) {
+    if (this.monstersAlive[4] < gestorNiveles.getMaxMonsterBomb() || inBoss) {
       for (int c = 0; c < i; c++) {
         this.monstersAlive[4]++;
         monsters.add(new Bomb(this.player, respawn(MONSTER_BOMB_RAD, false)));
@@ -260,8 +274,8 @@ class GestorMonsters {
     monsters.add(new Monster_shooter(this.player, new PVector(WIDTH-50, HEIGHT-50), 20));
   }
 //REVISAR -> SOLO PARA NIVEL 2???¿?¿
-  private void addMeteo(int i) {
-    if (this.monstersAlive[3] < gestorNiveles.getMaxMeteoritos()) {
+  private void addMeteo(int i, boolean inBoss) {
+    if (this.monstersAlive[3] < gestorNiveles.getMaxMeteoritos() || inBoss) {
       if (meteoBornDist > 50) {
         meteoBornDist -= 15;
       }
@@ -279,8 +293,8 @@ class GestorMonsters {
     }
   }
 
-  private void addShooterV2(int i) {
-    if (this.monstersAlive[5] < gestorNiveles.getMaxShooterV2()) {
+  private void addShooterV2(int i, boolean inBoss) {
+    if (this.monstersAlive[5] < gestorNiveles.getMaxShooterV2() || inBoss) {
       for (int c = 0; c < i; c++) {
         this.monstersAlive[5]++;
         monsters.add(new ShooterV2(this.player, respawn(SHOOTER_V2_RAD, false)));

@@ -10,12 +10,15 @@ class MonsterBossV3 extends Monster {
   private int fase = 1;
   boolean loadShooters = false;
   private float timer;
-  private final float timerFrame = (0.5*FRAMES);
+  private final float timerFrameShield = (8*FRAMES);
+  private final float timerFrameShieldActive = (2*FRAMES);
   boolean animationDead;
   private float timerShot;
   private final float timerShotFrames = (FRAMES/2);
   private ArrayList<Ball> balls;
   private boolean shieldActive;
+  private float radDetected;
+  private boolean shieldReady = true;
 
   public MonsterBossV3(Player player, PVector pos) {
     this.pos = new PVector(pos.x, pos.y);
@@ -31,6 +34,7 @@ class MonsterBossV3 extends Monster {
     this.balls = new ArrayList<Ball>();
     this.isMovil = true;
     this.shieldActive = false;
+    this.radDetected = 120f;
   }
 
   public void init_monster(Player player) {
@@ -42,9 +46,30 @@ class MonsterBossV3 extends Monster {
     pos = new PVector(pos.x, pos.y);
 
     //MECANICAS BOSS
+    timerShield();
     timerShot();
     updateBalls();
     colision(balas);
+    println(this.health);
+  }
+
+  private void timerShield(){
+    if(!this.shieldReady && !this.shieldActive){
+      this.timer++;
+      if(this.timerFrameShield <= this.timer){
+        this.shieldReady = true;
+        this.timer = 0;
+      }
+    }
+    
+    if(this.shieldActive){
+      this.timer++;
+      if(this.timer >= this.timerFrameShieldActive){
+        this.shieldActive = false;
+        this.timer = 0;
+      }
+    }
+    
   }
 
   public void paint() {
@@ -56,6 +81,7 @@ class MonsterBossV3 extends Monster {
     if (this.shieldActive) {
       shield();
     }
+   // radioVisual();
     popMatrix();
   }
 
@@ -72,7 +98,12 @@ class MonsterBossV3 extends Monster {
     fill(COLOR_INMORTAL, 50);
     stroke(COLOR_INMORTAL);
     strokeWeight(4);
-    ellipse(0, 0, this.rad+20f, this.rad+20f);
+    ellipse(0, 0, this.rad+25f, this.rad+25f);
+  }
+  
+  private void radioVisual(){
+    fill(255, 50);
+    ellipse(0, 0, this.rad+120f, this.rad+this.radDetected);
   }
 
   private void timerShot() {
@@ -102,8 +133,6 @@ class MonsterBossV3 extends Monster {
   }
 
   public void colision(ArrayList<Bala> balas) {
-    //ESCUDO DETECTOR DE BALAS CON CD
-
 
     //INTERACCIONA CON EL PLAYER
     if (PVector.dist(this.pos, this.player.pos)<=this.player.r/2+rad/2) {
@@ -112,15 +141,28 @@ class MonsterBossV3 extends Monster {
 
     int i = 0;
     while (!this.isDie && i < balas.size()) {
-      //INTERSECCION ENTRE BALA Y BICHO
-      if (PVector.dist(this.pos, balas.get(i).pos)<=balas.get(i).rad/2+rad/2) {
-        balas.get(i).isDie = true;
-        this.health--;
-        if (this.health <= 0) {
-          this.isDie = true;
+      //ESCUDO DETECTOR DE BALAS CON CD
+        if(!this.shieldActive && this.shieldReady){
+          if (PVector.dist(this.pos, balas.get(i).pos)<=balas.get(i).rad/2+(this.rad+this.radDetected)/2){
+            this.shieldActive = true;
+            this.shieldReady = false;
+          }
         }
-        // this.c = COLOR_DMG;
+      //INTERSECCION ENTRE BALA Y BICHO
+      if(this.shieldActive){
+         if (PVector.dist(this.pos, balas.get(i).pos)<=balas.get(i).rad/2+(this.rad+25f)/2) {
+          balas.get(i).isDie = true;
+        }
+      }else{
+        if (PVector.dist(this.pos, balas.get(i).pos)<=balas.get(i).rad/2+rad/2) {
+            balas.get(i).isDie = true;
+            this.health--;
+            if (this.health <= 0) {
+              this.isDie = true;
+            }
+        }
       }
+    
       i++;
     }
 
@@ -129,16 +171,29 @@ class MonsterBossV3 extends Monster {
 
       int index = 0;
       while (!this.isDie && index < ballsP.size()) {
+        //ESCUDO DETECTOR DE BALAS CON CD
+        if(!this.shieldActive && this.shieldReady){
+          if (PVector.dist(this.pos, ballsP.get(index).pos)<=ballsP.get(index).rad/2+(this.rad+this.radDetected)/2){
+            this.shieldActive = true;
+            this.shieldReady = false;
+          }
+        }
         //INTERSECCION ENTRE BALA Y BICHO
+       if(this.shieldActive){
+         if (PVector.dist(this.pos, ballsP.get(index).pos)<=ballsP.get(index).rad/2+(this.rad+25f)/2) {
+          ballsP.get(index).isDie = true;
+        }
+       }else{
         if (PVector.dist(this.pos, ballsP.get(index).pos)<=ballsP.get(index).rad/2+rad/2) {
           ballsP.get(index).isDie = true;
           if (this.health <= 0) {
             this.isDie = true;
           }
-          //  this.c = COLOR_DMG;
         }
-        index++;
+        
       }
+      index++;
+     }
     }
 
     //VALIDAR BALLS DEL ENEMIGO AUN ESTANDO MUERTO.

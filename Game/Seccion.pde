@@ -19,6 +19,7 @@ class Seccion {
     this.posX = posX;
     this.posY = posY;
     this.sizeText = sizeText;
+    this.c = color(255);
   }
 
   void update() {
