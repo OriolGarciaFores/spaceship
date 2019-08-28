@@ -19,12 +19,16 @@ class MonsterBossV3 extends Monster {
   private boolean shieldActive;
   private float radDetected;
   private boolean shieldReady = true;
+  
+  private ArrayList<DisparoBomba> disparosBomba;
+  private float timerShotBomb;
+  private float timerShotBombFrames = (2*FRAMES);
 
   public MonsterBossV3(Player player, PVector pos) {
     this.pos = new PVector(pos.x, pos.y);
     this.speed = new PVector();
     this.acc = new PVector();
-    this.maxSpeed = 2;
+    this.maxSpeed = 3;
     init_monster(player);
     this.score = 50;
     //this.isStarted = false;
@@ -35,6 +39,7 @@ class MonsterBossV3 extends Monster {
     this.isMovil = true;
     this.shieldActive = false;
     this.radDetected = 120f;
+    this.disparosBomba = new ArrayList<DisparoBomba>();
   }
 
   public void init_monster(Player player) {
@@ -49,6 +54,7 @@ class MonsterBossV3 extends Monster {
     timerShield();
     timerShot();
     updateBalls();
+    updateDisparos();
     colision(balas);
     println(this.health);
   }
@@ -112,6 +118,13 @@ class MonsterBossV3 extends Monster {
       addBalls();
       timerShot = 0;
     }
+    
+    timerShotBomb++;
+    if(timerShotBomb >= timerShotBombFrames){
+      addDisparoBomba();
+      timerShotBomb = 0;
+    }
+    
   }
 
   private void updateBalls() {
@@ -123,12 +136,22 @@ class MonsterBossV3 extends Monster {
       }
     }
   }
+  
+  private void updateDisparos(){
+    for (int i = 0; i < disparosBomba.size(); i++) {
+      DisparoBomba disparoBomba = disparosBomba.get(i);
+      disparoBomba.update();
+      if (disparoBomba.isDie) {
+        disparosBomba.remove(i);
+      }
+    }
+  }
 
   public void timerColor() {
-    timer++;
+    //timer++;
     //if (this.puntoDebil == color(#D66D0B) && timer >= timerFrame) {
     //this.puntoDebil = color(#F50A0A);
-    timer = 0;
+   // timer = 0;
     //}
   }
 
@@ -237,5 +260,11 @@ class MonsterBossV3 extends Monster {
     ball.setColor(COLOR_ORANGE);
     ball.setRad(20f);
     this.balls.add(ball);
+  }
+  
+  private void addDisparoBomba(){
+    //Direccion hacia el jugador, calcular una predict de hacia donde ira y colocar una posicion random en un rango.(FUTURO)
+    DisparoBomba disparoBomba = new DisparoBomba(this.pos, this.player.pos, 2);
+    this.disparosBomba.add(disparoBomba);
   }
 }
