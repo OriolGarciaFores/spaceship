@@ -199,11 +199,29 @@ class GestorMonsters {
       }  
       break;
     case 3:
-    
+    //3r BOSS
     switch(mb3.getFase()) {
       case 1:
-      addShooterV2(2, true);
-      mb3.setFase(2);
+        addShooterV2(2, true);
+        mb3.setFase(2);
+      break;
+      case 2:
+        if(mb3.getHealth() <= (mb3.getMaxHealth() - (mb3.getMaxHealth()/3))){
+          mb3.setFase(3);
+        }
+      break;
+      case 3:
+        addShooterV2(4, true);
+        mb3.setFase(4);
+      break;
+      case 4:
+        if(mb3.getHealth() <= (mb3.getMaxHealth()/2)){
+          mb3.setFase(5);
+        }
+      break;
+      case 5:
+        addShooterV2(6, true);
+        mb3.setFase(6);
       break;
     }
     
@@ -213,9 +231,9 @@ class GestorMonsters {
         addMeteo(2, true);
         meteoBornTimer = 0;
       }
-        //INICIAR 2 NAVES FOLLOWER
-        // TIMER REINVOCANDOLOS
-        // TIMER INVOCANDO METEORITOS
+        //FASE 1 : Invocar 2 bichos. Boss Disparo normal. Meteoritos activados.
+        //FASE 2 : Invocar 4 bichos. Boss activar bombas. Cada X tiempo rage. (Muchos disparos bombas).
+        //FASE 3 : Invocar 6 bichos. Boss activar disparos en area.
       break;
     }
   }

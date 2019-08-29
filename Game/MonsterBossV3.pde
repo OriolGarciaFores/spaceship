@@ -7,15 +7,19 @@ class MonsterBossV3 extends Monster {
    */
   boolean isStarted;
   private int health;
+  private int maxHealth;
   private int fase = 1;
   boolean loadShooters = false;
   private float timer;
+  private float timerArea;
   private final float timerFrameShield = (8*FRAMES);
   private final float timerFrameShieldActive = (2*FRAMES);
+  private final float timerFrameArea = (3*FRAMES);
   boolean animationDead;
   private float timerShot;
   private final float timerShotFrames = (FRAMES/2);
   private ArrayList<Ball> balls;
+  private ArrayList<Ball> ballsArea;
   private boolean shieldActive;
   private float radDetected;
   private boolean shieldReady = true;
@@ -34,8 +38,10 @@ class MonsterBossV3 extends Monster {
     //this.isStarted = false;
     this.rad = BOSS_V3_RAD;
     this.animationDead = true;
-    this.health = 250;
+    this.maxHealth = 150;
+    this.health = this.maxHealth;
     this.balls = new ArrayList<Ball>();
+    this.ballsArea = new ArrayList<Ball>();
     this.isMovil = true;
     this.shieldActive = false;
     this.radDetected = 120f;
@@ -54,6 +60,7 @@ class MonsterBossV3 extends Monster {
     timerShield();
     timerShot();
     updateBalls();
+    updateBallsArea();
     updateDisparos();
     colision(balas);
     println(this.health);
@@ -118,11 +125,17 @@ class MonsterBossV3 extends Monster {
       addBalls();
       timerShot = 0;
     }
-    
+    if(this.fase >= 4)
     timerShotBomb++;
     if(timerShotBomb >= timerShotBombFrames){
       addDisparoBomba();
       timerShotBomb = 0;
+    }
+    
+    if(this.fase == 6) timerArea++;
+    if(timerArea >= timerFrameArea){
+      addBallsArea();
+      timerArea = 0;
     }
     
   }
@@ -254,6 +267,14 @@ class MonsterBossV3 extends Monster {
   public void setFase(int fase) {
     this.fase = fase;
   }
+  
+  public int getHealth(){
+    return this.health;
+  }
+  
+  public int getMaxHealth(){
+    return this.maxHealth;
+  }
 
   private void addBalls() {
     Ball ball = new Ball(this.pos, this.player.pos, 8);
@@ -266,5 +287,28 @@ class MonsterBossV3 extends Monster {
     //Direccion hacia el jugador, calcular una predict de hacia donde ira y colocar una posicion random en un rango.(FUTURO)
     DisparoBomba disparoBomba = new DisparoBomba(this.pos, this.player.pos, 2);
     this.disparosBomba.add(disparoBomba);
+  }
+  
+    private void addBallsArea(){
+    float points = 8;
+    float pointAngle = 360/points;
+
+    for (float angle = 0; angle < 360; angle = angle+pointAngle) {
+      float x = cos(radians(angle)) * CENTRO_VENTANA_X;
+      float y = sin(radians(angle)) * CENTRO_VENTANA_Y;
+      Ball ball = new Ball(this.pos, new PVector(x+this.pos.x, y+this.pos.y), 2);
+      ball.setColor(color(COLOR_ORANGE));
+      this.ballsArea.add(ball);
+    }
+  }
+  
+ private void updateBallsArea() {
+    for (int i = 0; i < ballsArea.size(); i++) {
+      Ball ball = ballsArea.get(i);
+      ball.update();
+      if (ball.isDie) {
+        ballsArea.remove(i);
+      }
+    }
   }
 }
