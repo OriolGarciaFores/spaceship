@@ -193,7 +193,7 @@ class Player { //<>//
     }
     if (this.health == 0) {
       finalScore = this.score;
-      //over = true;
+      over = true;
     }
   }
 }

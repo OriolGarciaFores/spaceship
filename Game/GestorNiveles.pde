@@ -75,7 +75,7 @@ class GestorNiveles {
       init_monsters(0, 0, 0, 0, 0, 0);
       this.maxScore = 0;
       systemSound.beforeStop();
-      //systemSound.play(3);
+      systemSound.play(3);
       this.fase = 0;
       this.timer = 0;
       this.isFinalProgress = false;
@@ -91,7 +91,6 @@ class GestorNiveles {
   //A PARTIR DE LV3
   void updateProgress() {
     if (!this.isFinalProgress) progresLvl();
-    debugValue("FASE: ", this.fase, 50, 50);
   }
 
   //DAR PROGRESION DE DIFICULTAD EN LOS NIVELES 3 Y SUPERIORES

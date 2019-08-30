@@ -35,6 +35,7 @@ class Map {
       resetShader();
       break;
     case 3:
+    case 4:
       fill(255);
       galaxy.set("time", millis() / 5000.0);//NULL ? AL COMPLETAR EL 2N NIVEL  
       shader(galaxy);

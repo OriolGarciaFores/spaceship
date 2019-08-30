@@ -3,16 +3,16 @@ class GestorMonsters {
   private final int[] monstersAlive = new int[6];
 
   int monsterEasyBornTimer;
-  final int monsterEasyBornDist = int(0.5*FRAMES);//Ratio de aparicion por frame
+  final int monsterEasyBornDist = int(0.5*FRAMES);
   int monsterShotBornTimer;
   final int monsterShotBornDist = int(3*FRAMES);
   int meteoBornTimer;
-  int meteoBornDist = (3*FRAMES);//45
+  int meteoBornDist = (3*FRAMES);
   int monsterWifiBornTimer;
   final int monsterWifiBornDist = int(0.5*FRAMES);
   final int bombBornDist = (3*FRAMES);
   int bombBornTimer;
-  final int shooterV2BornDist = (5*FRAMES);//5*FRAMES
+  final int shooterV2BornDist = (5*FRAMES);
   int shooterV2Timer;
 
   ArrayList<Monster> monsters = new ArrayList<Monster>();
@@ -206,8 +206,14 @@ class GestorMonsters {
         mb3.setFase(2);
       break;
       case 2:
-        if(mb3.getHealth() <= (mb3.getMaxHealth() - (mb3.getMaxHealth()/3))){
+        if(mb3.getHealth() <= (mb3.getMaxHealth() - (mb3.getMaxHealth()/4))){
           mb3.setFase(3);
+        }
+        if (this.monstersAlive[3] == 0)
+        meteoBornTimer++;
+        if (meteoBornTimer >= meteoBornDist) {
+          addMeteo(2, true);
+          meteoBornTimer = 0;
         }
       break;
       case 3:
@@ -224,13 +230,6 @@ class GestorMonsters {
         mb3.setFase(6);
       break;
     }
-    
-    if (this.monstersAlive[3] == 0)
-      meteoBornTimer++;
-      if (meteoBornTimer >= meteoBornDist) {
-        addMeteo(2, true);
-        meteoBornTimer = 0;
-      }
         //FASE 1 : Invocar 2 bichos. Boss Disparo normal. Meteoritos activados.
         //FASE 2 : Invocar 4 bichos. Boss activar bombas. Cada X tiempo rage. (Muchos disparos bombas).
         //FASE 3 : Invocar 6 bichos. Boss activar disparos en area.

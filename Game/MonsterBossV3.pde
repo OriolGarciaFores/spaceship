@@ -12,12 +12,17 @@ class MonsterBossV3 extends Monster {
   boolean loadShooters = false;
   private float timer;
   private float timerArea;
+  private float timerRage;
+  private float timerDuringRage;
   private final float timerFrameShield = (8*FRAMES);
   private final float timerFrameShieldActive = (2*FRAMES);
   private final float timerFrameArea = (3*FRAMES);
-  boolean animationDead;
-  private float timerShot;
+  private final float timerFrameRage = (8*FRAMES);
+  private final float timerFrameDuringRage = (5*FRAMES);
   private final float timerShotFrames = (FRAMES/2);
+  boolean animationDead;
+  private boolean isRage;
+  private float timerShot;
   private ArrayList<Ball> balls;
   private ArrayList<Ball> ballsArea;
   private boolean shieldActive;
@@ -38,7 +43,7 @@ class MonsterBossV3 extends Monster {
     //this.isStarted = false;
     this.rad = BOSS_V3_RAD;
     this.animationDead = true;
-    this.maxHealth = 150;
+    this.maxHealth = 125;
     this.health = this.maxHealth;
     this.balls = new ArrayList<Ball>();
     this.ballsArea = new ArrayList<Ball>();
@@ -46,6 +51,7 @@ class MonsterBossV3 extends Monster {
     this.shieldActive = false;
     this.radDetected = 120f;
     this.disparosBomba = new ArrayList<DisparoBomba>();
+    this.isRage = false;
   }
 
   public void init_monster(Player player) {
@@ -59,11 +65,32 @@ class MonsterBossV3 extends Monster {
     //MECANICAS BOSS
     timerShield();
     timerShot();
+    if(this.fase >= 4) timerRage();
     updateBalls();
     updateBallsArea();
     updateDisparos();
     colision(balas);
-    println(this.health);
+    debugValue("Fase: " , this.fase, 20, 40);
+    debugValue("VIDA BOSS",this.health, 20, 60);
+  }
+  
+  private void timerRage(){
+    if(!this.isRage){
+      this.timerRage++;
+      if(this.timerRage >= this.timerFrameRage){
+        this.isRage = true;
+        this.timerRage = 0;
+        this.timerShotBombFrames = (FRAMES/2);
+      }
+    }else{
+      this.timerDuringRage++;
+      if(this.timerDuringRage >= this.timerFrameDuringRage){
+        this.isRage = false;
+        this.timerDuringRage = 0;
+        this.timerShotBombFrames = (2*FRAMES);
+      }
+    }
+    
   }
 
   private void timerShield(){
@@ -232,6 +259,7 @@ class MonsterBossV3 extends Monster {
      }
     }
 
+    //Codigo duplicado -> OPTIMIZAR
     //VALIDAR BALLS DEL ENEMIGO AUN ESTANDO MUERTO.
     if (this.player.getHability(0).isActive) {//OPTIMIZAR -> PELIGRO DE ERROR
       int ind = 0;
@@ -242,7 +270,42 @@ class MonsterBossV3 extends Monster {
         }
         ind++;
       }
+      
+      int iArea = 0;
+       while (!over && iArea < ballsArea.size()) {
+        //INTERSECCION ENTRE BALA ENEMIGA Y PLAYER CON ESCUDO
+        if (PVector.dist(this.player.pos, ballsArea.get(iArea).pos)<=ballsArea.get(iArea).rad/2+this.player.getHability(0).getRad()/2) {
+          ballsArea.get(iArea).isDie = true;
+        }
+        iArea++;
+      }
+      
+       int iBomb = 0;
+       while (!over && iBomb < disparosBomba.size()) {
+        //INTERSECCION ENTRE BALA ENEMIGA Y PLAYER CON ESCUDO
+        if (!disparosBomba.get(iBomb).isDestroy && PVector.dist(this.player.pos, disparosBomba.get(iBomb).pos)<=disparosBomba.get(iBomb).rad/2+this.player.getHability(0).getRad()/2) {
+          disparosBomba.get(iBomb).isDie = true;
+        }
+        iBomb++;
+      }
+      
+      
+      for(int h = 0; h < disparosBomba.size(); h++){
+      int iBallsBomb = 0;
+      if(!disparosBomba.get(h).isDestroy) continue;
+       while (!over && iBallsBomb < disparosBomba.get(h).getBallsBomb().size()) {
+          //INTERSECCION ENTRE BALA ENEMIGA Y PLAYER CON ESCUDO
+          if (PVector.dist(this.player.pos, disparosBomba.get(h).getBallsBomb().get(iBallsBomb).pos)<=disparosBomba.get(h).getBallsBomb().get(iBallsBomb).rad/2+this.player.getHability(0).getRad()/2) {
+            disparosBomba.get(h).getBallsBomb().get(iBallsBomb).isDie = true;
+          }
+          iBallsBomb++;
+       } 
+      }
+
+      
+      
     } else {
+      
       int ind = 0;
       while (!over && ind < this.balls.size()) {
         //INTERSECCION ENTRE BALA ENEMIGA Y PLAYER
@@ -252,6 +315,42 @@ class MonsterBossV3 extends Monster {
         }
         ind++;
       }
+      
+       int iArea = 0;
+       while (!over && iArea < ballsArea.size()) {
+        //INTERSECCION ENTRE BALA ENEMIGA Y PLAYER CON ESCUDO
+        if (PVector.dist(this.player.pos, ballsArea.get(iArea).pos)<=ballsArea.get(iArea).rad/2+this.player.r/2) {
+          ballsArea.get(iArea).isDie = true;
+          this.player.decreaseLife();
+        }
+        iArea++;
+      }
+      
+       int iBomb = 0;
+       while (!over && iBomb < disparosBomba.size()) {
+        //INTERSECCION ENTRE BALA ENEMIGA Y PLAYER CON ESCUDO
+        
+        if (!disparosBomba.get(iBomb).isDestroy && PVector.dist(this.player.pos, disparosBomba.get(iBomb).pos)<=disparosBomba.get(iBomb).rad/2+this.player.r/2) {
+          disparosBomba.get(iBomb).isDie = true;
+          this.player.decreaseLife();
+        }
+        iBomb++;
+      }
+      
+      
+      for(int h = 0; h < disparosBomba.size(); h++){
+        int iBallsBomb = 0;
+        if(!disparosBomba.get(h).isDestroy) continue;
+         while (!over && iBallsBomb < disparosBomba.get(h).getBallsBomb().size()) {
+            //INTERSECCION ENTRE BALA ENEMIGA Y PLAYER CON ESCUDO
+            if (PVector.dist(this.player.pos, disparosBomba.get(h).getBallsBomb().get(iBallsBomb).pos)<=disparosBomba.get(h).getBallsBomb().get(iBallsBomb).rad/2+this.player.r/2) {
+              disparosBomba.get(h).getBallsBomb().get(iBallsBomb).isDie = true;
+              this.player.decreaseLife();
+            }
+            iBallsBomb++;
+         } 
+      }
+      
     }
   }
 

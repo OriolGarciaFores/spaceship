@@ -2,22 +2,16 @@ class DisparoBomba{
 
   private float timer;
   private final float timerFrame = (1*FRAMES);
-
-  private int timerColor = 0;
-  private int timerFases = 0;
-  private int fase = 1;
-  
-  private final float timerColorFrame = (0.2*FRAMES);
   private final color COLOR_BOMB = color(#00FFD2);
 
-  private boolean isDestroy;
+  public boolean isDestroy;
 
   private ArrayList<Ball> balls;
   
   private PVector pos, direction;
   private float rotation, speed;
   private float rad = 25f;
-  private boolean isDie = false;
+  public boolean isDie = false;
   
   public DisparoBomba(PVector pos, PVector direction, float speed){
     this.pos = new PVector(pos.x, pos.y);
@@ -86,5 +80,9 @@ class DisparoBomba{
       }
     }
   }
+  
+ public ArrayList<Ball> getBallsBomb(){
+   return this.balls;
+ }
   
 }
