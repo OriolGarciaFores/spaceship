@@ -7,16 +7,16 @@ class MonsterBossV2 extends Monster {
   */
 
   boolean isStarted;
-  private final int maxHealth = 80;
+  private final int maxHealth = 100;
   private int health;
   private int fase = 1;
   private float timer;
-  private final float timerFrame = FRAMES/4;
+  private final float timerFrame = FRAMES/6;
   private ArrayList<Ball> balls;
   private int timerBurst = 0;
   private int timerBurstFrame = (5*FRAMES);
   private boolean shieldActive = true;
-  private int[] numBalls = {8, 16, 20, 24};
+  private int[] numBalls = {8, 8, 12, 12, 12, 12, 16, 16, 20, 20};
   private int timerRage = 0;
   private final float timerRageFrames = (5*FRAMES);
   private int timerColor = 0;
@@ -71,6 +71,7 @@ class MonsterBossV2 extends Monster {
     if (this.maxHealth-(this.maxHealth/4) >= this.health && !this.isRage && timerProbRage >= timerProbRageFrames && !this.shieldActive) {
       boolean enter = new Random().nextInt(this.probabilityRage)==0;
       if (enter) {
+        this.shieldActive = true;
         this.isRage = true;
         this.c = COLOR_RAGE;
         this.timerBurstFrame = FRAMES/2;
@@ -81,14 +82,14 @@ class MonsterBossV2 extends Monster {
     if (this.isRage) {
       timerRage++;
       if (timerRage >= timerRageFrames) {
+        this.shieldActive = false;
         this.isRage = false;
-        this.c = color(255);
+        this.c = color(169,169,169);
         this.timerRage = 0;
         this.timerBurstFrame = (5*FRAMES);
       }
     }
 
-    //debugValue("IS RAGE",int(this.isRage),20,110);
     updateBalls();
     colision(balas);
   }
@@ -142,7 +143,7 @@ class MonsterBossV2 extends Monster {
     
     line(-35, 35, 35, 35);
     line(-50, 0, 50, 0);
-    line(-50, -35, 50, -35);
+    line(-35, -35, 35, -35);
     
     if (this.shieldActive) {
       fill(COLOR_INMORTAL, 50);

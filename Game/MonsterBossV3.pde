@@ -43,7 +43,7 @@ class MonsterBossV3 extends Monster {
     //this.isStarted = false;
     this.rad = BOSS_V3_RAD;
     this.animationDead = true;
-    this.maxHealth = 125;
+    this.maxHealth = 180;
     this.health = this.maxHealth;
     this.balls = new ArrayList<Ball>();
     this.ballsArea = new ArrayList<Ball>();
@@ -79,6 +79,7 @@ class MonsterBossV3 extends Monster {
       this.timerRage++;
       if(this.timerRage >= this.timerFrameRage){
         this.isRage = true;
+        this.maxSpeed = 1;
         this.timerRage = 0;
         this.timerShotBombFrames = (FRAMES/2);
       }
@@ -86,6 +87,7 @@ class MonsterBossV3 extends Monster {
       this.timerDuringRage++;
       if(this.timerDuringRage >= this.timerFrameDuringRage){
         this.isRage = false;
+        this.maxSpeed = 3;
         this.timerDuringRage = 0;
         this.timerShotBombFrames = (2*FRAMES);
       }

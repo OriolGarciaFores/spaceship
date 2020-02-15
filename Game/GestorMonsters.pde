@@ -193,7 +193,7 @@ class GestorMonsters {
       if (mb2.needShips && mb2.getShieldActive()) {
         addMonsterWifi(5, true);
         mb2.needShips = false;
-      } else if (this.monstersAlive[2] == 0) {
+      } else if (this.monstersAlive[2] == 0 && !mb2.isRage) {
         mb2.setShieldActive(false);
         mb2.timerShield();
       }  
