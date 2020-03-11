@@ -14,10 +14,9 @@ class GestorNiveles {
   private int maxMonsterBomb;
   private int maxLevel;
   private int maxShooterV2;
-  private int timer;
   private int fase = 0;
-
-  private final float timerFrames = (15*FRAMES);
+  private final int MAX_FASES = 7;
+  private float scoreMaxNextFase = 0;
 
   private Configuration config;
 
@@ -31,7 +30,6 @@ class GestorNiveles {
     this.maxLevel = Integer.parseInt(this.config.getInfo("maxLevel"));
     this.fase = 0;
     this.isFinalProgress = false;
-    this.timer = 0;
   }
 
   void update() {
@@ -47,7 +45,6 @@ class GestorNiveles {
       systemSound.beforeStop();
       systemSound.play(1);
       this.fase = 0;
-      this.timer = 0;
       break;
     case 2:
       setMaxLevel(this.level);
@@ -56,7 +53,6 @@ class GestorNiveles {
       systemSound.beforeStop();
       systemSound.play(2);
       this.fase = 0;
-      this.timer = 0;
       break;
     case 3:
       setMaxLevel(this.level);
@@ -65,9 +61,8 @@ class GestorNiveles {
       systemSound.beforeStop();
       systemSound.play(3);
       this.fase = 0;
-      this.timer = 0;
       this.isFinalProgress = false;
-      updateProgress();//NOW
+      this.scoreMaxNextFase = this.maxScore / this.MAX_FASES;
       break;
     case 4:
     //NIVEL DE BOSS UNICO
@@ -77,9 +72,7 @@ class GestorNiveles {
       systemSound.beforeStop();
       systemSound.play(3);
       this.fase = 0;
-      this.timer = 0;
       this.isFinalProgress = false;
-      //updateProgress();//NOW
       break;
     default:
       this.level = 1;
@@ -90,18 +83,26 @@ class GestorNiveles {
 
   //A PARTIR DE LV3
   void updateProgress() {
-    if (!this.isFinalProgress) progresLvl();
+    if (!this.isFinalProgress){
+      avanzarFase();
+      calcularScoreMaxNestFase();
+      progresLvl();
+    } 
+  }
+  
+  public float getScoreMaxNextFase(){
+    return this.scoreMaxNextFase;
+  }
+  
+  private void calcularScoreMaxNestFase(){
+    this.scoreMaxNextFase = (this.maxScore / this.MAX_FASES) * (this.fase+1);
   }
 
   //DAR PROGRESION DE DIFICULTAD EN LOS NIVELES 3 Y SUPERIORES
-  //La progresion solo por timer puedes no atacar e ir a la ultima fase. Limitar por score ?
+  //Switch case puede ser un metodo ilimitado. Rehacer el metodo de forma dinamica.
   private void progresLvl() {
     switch(this.level) {
     case 3:
-      timer++;
-      if (timer >= timerFrames) {
-        this.fase++;
-        timer = 0;
         switch(this.fase) {
         case 1:
           //MONSTEREASY, SHOOTER, METEORITOS, WIFI, BOMB, shooter v2.
@@ -124,14 +125,17 @@ class GestorNiveles {
           this.isFinalProgress = true;
           break;
         }
-      }
+     // }
       break;
     case 4:
       //FUTUROS LVLS
       break;
     }
   }
-
+  
+  private void avanzarFase(){
+    this.fase++;
+  }
 
   public void setLevel(int lv) {
     this.level = lv;

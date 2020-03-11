@@ -43,7 +43,7 @@ class GestorMonsters {
 
   void update(ArrayList<Bala> balas) {
 
-    if (gestorNiveles.getLevel() >= 3) {
+    if (gestorNiveles.getLevel() >= 3 && this.player.score >= gestorNiveles.getScoreMaxNextFase()) {
       gestorNiveles.updateProgress();
     }
 
