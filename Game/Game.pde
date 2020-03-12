@@ -34,7 +34,7 @@ int finalLvl = 0;
 *
 **************************************************
 */
-private final String version = "Pre-Alfa 0.2.0-SNAPSHOT";
+private final String version = "Pre-Alfa 0.2.0";
 
 //Objetos
 private GestorEstados ge;
@@ -75,7 +75,7 @@ void draw() {
     over = false;
     outGameOver = false;
   }
-  showFPS(true);
+  //showFPS(true);
 }
 
 void keyReleased() {

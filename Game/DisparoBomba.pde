@@ -66,7 +66,7 @@ class DisparoBomba{
       float x = cos(radians(angle)) * CENTRO_VENTANA_X;
       float y = sin(radians(angle)) * CENTRO_VENTANA_Y;
       Ball ball = new Ball(this.pos, new PVector(x+this.pos.x, y+this.pos.y), 2);
-      ball.setColor(color(COLOR_ORANGE));
+      //ball.setColor(color(COLOR_ORANGE));
       this.balls.add(ball);
     }
   }

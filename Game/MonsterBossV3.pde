@@ -189,14 +189,6 @@ class MonsterBossV3 extends Monster {
     }
   }
 
-  public void timerColor() {
-    //timer++;
-    //if (this.puntoDebil == color(#D66D0B) && timer >= timerFrame) {
-    //this.puntoDebil = color(#F50A0A);
-   // timer = 0;
-    //}
-  }
-
   public void colision(ArrayList<Bala> balas) {
 
     //INTERACCIONA CON EL PLAYER
@@ -379,7 +371,7 @@ class MonsterBossV3 extends Monster {
 
   private void addBalls() {
     Ball ball = new Ball(this.pos, this.player.pos, 8);
-    ball.setColor(COLOR_ORANGE);
+    //ball.setColor(COLOR_ORANGE);
     ball.setRad(20f);
     this.balls.add(ball);
   }
