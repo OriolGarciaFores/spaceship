@@ -1,5 +1,5 @@
 final int FRAMES = 60;
-final int MAX_LVLS = 3;
+final int MAX_LVLS = 4;
 
 final GestorControles KEYBOARD = new GestorControles();
 final String USER = System.getProperty ("user.home");

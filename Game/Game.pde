@@ -36,7 +36,7 @@ int finalLvl = 0;
 */
 private final String version = "Pre-Alfa 0.3.0-SNAPSHOT";
 
-//Objetos
+
 private GestorEstados ge;
 GestorNiveles gestorNiveles;
 SystemSaveData ssd;
@@ -75,7 +75,7 @@ void draw() {
     over = false;
     outGameOver = false;
   }
-  //showFPS(true);
+  showFPS(false);
 }
 
 void keyReleased() {

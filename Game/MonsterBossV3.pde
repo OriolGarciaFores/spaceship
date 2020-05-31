@@ -17,7 +17,7 @@ class MonsterBossV3 extends Monster {
   private final float timerFrameShield = (8*FRAMES);
   private final float timerFrameShieldActive = (2*FRAMES);
   private final float timerFrameArea = (3*FRAMES);
-  private final float timerFrameRage = (8*FRAMES);
+  private final float timerFrameRage = (11*FRAMES);
   private final float timerFrameDuringRage = (5*FRAMES);
   private final float timerShotFrames = (FRAMES/2);
   boolean animationDead;
@@ -40,7 +40,6 @@ class MonsterBossV3 extends Monster {
     this.maxSpeed = 3;
     init_monster(player);
     this.score = 50;
-    //this.isStarted = false;
     this.rad = BOSS_V3_RAD;
     this.animationDead = true;
     this.maxHealth = 180;
@@ -64,14 +63,14 @@ class MonsterBossV3 extends Monster {
 
     //MECANICAS BOSS
     timerShield();
-    timerShot();
+    if(!this.isRage)timerShot();
+    timerShotBomb();
+    timerArea();
     if(this.fase >= 4) timerRage();
     updateBalls();
     updateBallsArea();
     updateDisparos();
     colision(balas);
-    debugValue("Fase: " , this.fase, 20, 40);
-    debugValue("VIDA BOSS",this.health, 20, 60);
   }
   
   private void timerRage(){
@@ -115,7 +114,6 @@ class MonsterBossV3 extends Monster {
   }
 
   public void paint() {
-    //timerColor();
     pushMatrix();
     translate(pos.x, pos.y);
     rotate(PI/4);
@@ -123,7 +121,6 @@ class MonsterBossV3 extends Monster {
     if (this.shieldActive) {
       shield();
     }
-   // radioVisual();
     popMatrix();
   }
 
@@ -142,31 +139,29 @@ class MonsterBossV3 extends Monster {
     strokeWeight(4);
     ellipse(0, 0, this.rad+25f, this.rad+25f);
   }
-  
-  private void radioVisual(){
-    fill(255, 50);
-    ellipse(0, 0, this.rad+120f, this.rad+this.radDetected);
-  }
 
   private void timerShot() {
     timerShot++;
     if (timerShot >= timerShotFrames) {
       addBalls();
       timerShot = 0;
-    }
-    if(this.fase >= 4)
-    timerShotBomb++;
+    } 
+  }
+  
+  private void timerShotBomb(){
+    if(this.fase >= 4) timerShotBomb++;
     if(timerShotBomb >= timerShotBombFrames){
       addDisparoBomba();
       timerShotBomb = 0;
     }
-    
+  }
+  
+  private void timerArea(){
     if(this.fase == 6) timerArea++;
     if(timerArea >= timerFrameArea){
       addBallsArea();
       timerArea = 0;
     }
-    
   }
 
   private void updateBalls() {
@@ -371,7 +366,6 @@ class MonsterBossV3 extends Monster {
 
   private void addBalls() {
     Ball ball = new Ball(this.pos, this.player.pos, 8);
-    //ball.setColor(COLOR_ORANGE);
     ball.setRad(20f);
     this.balls.add(ball);
   }

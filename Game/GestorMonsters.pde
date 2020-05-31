@@ -411,6 +411,7 @@ class GestorMonsters {
       break;
     case 4:
       //RESULTS LVL 4.
+      procesingResults(4, this.player.score, balas, 5, 3);
       break;
     }
   }
@@ -448,6 +449,9 @@ class GestorMonsters {
       break;
     case 2:
       this.mb2 = new MonsterBossV2(this.player, new PVector(CENTRO_VENTANA_X, -100));
+      break;
+    case 3:
+      this.mb3 = new MonsterBossV3(this.player, new PVector(WIDTH-BOSS_V3_RAD, CENTRO_VENTANA_Y));
       break;
     }
   }
