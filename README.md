@@ -1,2 +1,2 @@
 # spaceship
- PRE-ALFA 0.06.0
+ PRE-ALFA 0.3.0-SNAPSHOT

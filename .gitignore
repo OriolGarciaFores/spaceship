@@ -1,0 +1,6 @@
+.idea/*
+out
+executable/bin
+executable/obj
+executable/java
+executable/spaceship.jar
