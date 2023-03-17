@@ -1,0 +1,3 @@
+dotnet build -> Genera el .dll para ejecutarlo con el run.
+dotnet run Program.dll -> Ejecuta el .dll.
+dotnet publish -c Release -r win-x64 /p:PublishSingleFile=true /p:PublishTrimmed=true --self-contained true -> Genera el .exe para ejecutar el codigo C#.
