@@ -28,4 +28,8 @@ public abstract class Habilidades {
     public abstract void setIsEquiped(boolean isEquiped);
 
     public abstract ArrayList<Object> getObjects();
+
+    public boolean isActive() {
+        return isActive;
+    }
 }

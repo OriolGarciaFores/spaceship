@@ -27,9 +27,9 @@ public class Constants {
     public static final float ENEMY_SHIP = 20f;
     public static final float ENEMY_SHOOTER_RAD = 20f;
     public static final float METEORITO_RAD = 80f;
-    public static final float MONSTER_WIFI_RAD = 40f;
-    public static final float MONSTER_BOMB_RAD = 80f;
-    public static final float SHOOTER_V2_RAD = 30f;
+    public static final float ENEMY_SHIP_WIFI_RAD = 40f;
+    public static final float BOMBA_RAD = 80f;
+    public static final float SHIP_V2_RAD = 30f;
     public static final float BOSS_V3_RAD = 50F;
 
     //FILES

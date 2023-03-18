@@ -29,6 +29,8 @@ public abstract class Enemy {
     public boolean isDie = false;
     protected boolean isMovil = true;
     protected boolean isFollower = true;
+    protected boolean isDestructible = true;
+    protected boolean tieneExplosion = false;
 
     public void setPlayer(Player player) {
         this.player = player;
@@ -79,8 +81,25 @@ public abstract class Enemy {
 
     public abstract void paint(PGraphics graphics);
 
-    public void updateColisions() {
-        println("NADA");
+    public void afterDie() {
+        if(this.isDie){
+            mecanicaAfterDie();
+        }
+    }
+
+    protected void mecanicaAfterDie(){
+
+    }
+
+    public void decreaseLife() {
+        if ((this.health - 1) <= 0) {
+            this.health = 0;
+        } else {
+            this.health -= 1;
+        }
+        if (this.health == 0) {
+            this.isDie = true;
+        }
     }
 
     private void timerInmortal() {
@@ -101,5 +120,9 @@ public abstract class Enemy {
 
     public boolean isInmortal() {
         return inmortal;
+    }
+
+    public boolean isDestructible() {
+        return isDestructible;
     }
 }

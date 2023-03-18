@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class GestorColisiones {
 
-    public void validarColisionesEnemies(Player player, ArrayList<Bala> balasPlayer, ArrayList<Enemy> enemies, ArrayList<Bala> balasEnemies) {
+    public void validarColisionesEnemies(Player player, ArrayList<Bala> balasPlayer, ArrayList<Enemy> enemies) {
 
         for (Enemy enemy : enemies) {
             if (enemy.isInmortal()) continue;
@@ -22,22 +22,12 @@ public class GestorColisiones {
             }
 
             int i = 0;
-            while (!Global.over && i < balasEnemies.size()) {
-                //INTERSECCION ENTRE BALA ENEMIGA Y PLAYER
-                if (PVector.dist(player.pos, balasEnemies.get(i).getPos()) <= balasEnemies.get(i).getRad() / 2 + player.r / 2) {
-                    balasEnemies.get(i).setDie(true);
-                    player.decreaseLife();
-                }
-                i++;
-            }
-
-            i = 0;
 
             while (!enemy.isDie && i < balasPlayer.size()) {
                 //INTERSECCION ENTRE BALA Y BICHO
                 if (PVector.dist(enemy.getPos(), balasPlayer.get(i).getPos()) <= balasPlayer.get(i).getRad() / 2 + enemy.rad / 2) {
                     balasPlayer.get(i).setDie(true);
-                    enemy.isDie = true;
+                    if (enemy.isDestructible()) enemy.decreaseLife();
                 }
                 i++;
             }
@@ -51,11 +41,37 @@ public class GestorColisiones {
                     //INTERSECCION ENTRE BALA Y BICHO
                     if (PVector.dist(enemy.getPos(), balls.get(i).getPos()) <= balls.get(i).getRad() / 2 + enemy.rad / 2) {
                         balls.get(i).setDie(true);
-                        enemy.isDie = true;
+                        if (enemy.isDestructible()) enemy.decreaseLife();
                     }
                     i++;
                 }
             }
+        }
+    }
+
+    public void validarColisionesBalasEnemies(Player player, ArrayList<Bala> balasEnemies){
+        int i = 0;
+
+        while (!Global.over && i < balasEnemies.size()) {
+            //INTERSECCION ENTRE BALA ENEMIGA Y PLAYER
+            if (PVector.dist(player.pos, balasEnemies.get(i).getPos()) <= balasEnemies.get(i).getRad() / 2 + player.r / 2) {
+                balasEnemies.get(i).setDie(true);
+                player.decreaseLife();
+            }
+            i++;
+        }
+    }
+
+    public void validarColisionesBallsEnemies(Player player, ArrayList<Ball> ballsEnemies){
+        int i = 0;
+
+        while (!Global.over && i < ballsEnemies.size()) {
+            //INTERSECCION ENTRE BALA Y BICHO
+            if (PVector.dist(player.pos, ballsEnemies.get(i).getPos()) <= ballsEnemies.get(i).getRad() / 2 + player.r / 2) {
+                ballsEnemies.get(i).setDie(true);
+                player.decreaseLife();
+            }
+            i++;
         }
     }
 }

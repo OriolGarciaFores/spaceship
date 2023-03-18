@@ -1,6 +1,7 @@
 package core.gestores;
 
 import core.beans.entidades.Bala;
+import core.beans.entidades.Ball;
 import core.beans.entidades.Player;
 import core.utils.*;
 import processing.core.PGraphics;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 public class GestorDisparos {
     private final ArrayList<Bala> balasPlayer;
     private final ArrayList<Bala> balasEnemy;
+    private final ArrayList<Ball> ballsEnemies;
 
     private final Player player;
 
@@ -22,6 +24,7 @@ public class GestorDisparos {
     public GestorDisparos(Player player) {
         this.balasPlayer = new ArrayList<>();
         this.balasEnemy = new ArrayList<>();
+        this.ballsEnemies = new ArrayList<>();
         this.player = player;
     }
 
@@ -60,6 +63,17 @@ public class GestorDisparos {
                 }
             }
         }
+
+        if(!ballsEnemies.isEmpty()){
+            for (int i = ballsEnemies.size() - 1; i >= 0; i--) {
+                Ball ball = ballsEnemies.get(i);
+                ball.update();
+
+                if (ball.isDie()) {
+                    ballsEnemies.remove(i);
+                }
+            }
+        }
     }
 
     public void paint(PGraphics graphics) {
@@ -72,6 +86,12 @@ public class GestorDisparos {
         if (!balasEnemy.isEmpty()) {
             for (Bala b : balasEnemy) {
                 b.paint(graphics);
+            }
+        }
+
+        if(!ballsEnemies.isEmpty()) {
+            for (Ball ball : ballsEnemies){
+                ball.paint(graphics);
             }
         }
     }
@@ -108,11 +128,19 @@ public class GestorDisparos {
         balasEnemy.add(new Bala(new PVector(pos.x, pos.y), direct, Color.decode("#FAD91C")));
     }
 
+    public void addBallEnemy(Ball ball){
+        ballsEnemies.add(ball);
+    }
+
     public ArrayList<Bala> getBalasPlayer() {
         return balasPlayer;
     }
 
     public ArrayList<Bala> getBalasEnemy() {
         return balasEnemy;
+    }
+
+    public ArrayList<Ball> getBallsEnemies() {
+        return ballsEnemies;
     }
 }

@@ -207,6 +207,8 @@ public class Player {
     }
 
     public void decreaseLife() {
+        if(getHability(0).isActive()) return;
+
         if ((this.health - 1) <= 0) {
             this.health = 0;
         } else {

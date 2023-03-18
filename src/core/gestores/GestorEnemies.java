@@ -14,13 +14,13 @@ public class GestorEnemies {
 
     private final int SHIP_BASIC_BORN_DIST = (int) (0.5 * Constants.FRAMES);
     private final int SHIP_SHOT_BORN_DIST = 3 * Constants.FRAMES;
-    private final int meteoBornDist = (3 * Constants.FRAMES);
+    private int meteoBornDist = (3 * Constants.FRAMES);
     private final int monsterWifiBornDist = (int) (0.5 * Constants.FRAMES);
     private final int bombBornDist = (3 * Constants.FRAMES);
     private final int shooterV2BornDist = (5 * Constants.FRAMES);
 
     //ARRAY INT[] -> IDENTIFICADOR DEL BICHO ES EL INDICE -> VALOR ACUMULADOR DE BICHOS VIVOS DE EL TIPO EN CONCRETO
-    private final int[] monstersAlive = new int[2];
+    private final int[] monstersAlive = new int[6];
 
     //TODO CADA ENEMY DEBERIA INDICARLO SU CLASE.
     private int shipBasicBornTimer;
@@ -46,10 +46,10 @@ public class GestorEnemies {
     public GestorEnemies(Player player, PApplet pApplet, GestorDisparos gestorDisparos) {
         this.monstersAlive[0] = 0;
         this.monstersAlive[1] = 0;
-        //this.monstersAlive[2] = 0;
-        //this.monstersAlive[3] = 0;
-        //this.monstersAlive[4] = 0;
-        //this.monstersAlive[5] = 0;
+        this.monstersAlive[2] = 0;
+        this.monstersAlive[3] = 0;
+        this.monstersAlive[4] = 0;
+        this.monstersAlive[5] = 0;
 
         this.player = player;
         this.gestorDisparos = gestorDisparos;
@@ -142,6 +142,7 @@ public class GestorEnemies {
                 shipBasicBornTimer = 0;
             }
         }
+
         if (Global.gestorNiveles.getMaxMonsterShooter() != 0) {
             monsterShotBornTimer++;
             if (monsterShotBornTimer >= SHIP_SHOT_BORN_DIST) {
@@ -149,31 +150,35 @@ public class GestorEnemies {
                 monsterShotBornTimer = 0;
             }
         }
+
         if (Global.gestorNiveles.getMaxMeteoritos() != 0) {
             meteoBornTimer++;
             if (meteoBornTimer >= meteoBornDist) {
-                //addMeteo(1, false);
+                addMeteorito(1, false);
                 meteoBornTimer = 0;
             }
         }
+
         if (Global.gestorNiveles.getMaxMonsterWifi() != 0) {
             monsterWifiBornTimer++;
             if (monsterWifiBornTimer >= monsterWifiBornDist) {
-                //addMonsterWifi(1, false);
+                addShipWifi(1, false);
                 monsterWifiBornTimer = 0;
             }
         }
+
         if (Global.gestorNiveles.getMaxMonsterBomb() != 0) {
             bombBornTimer++;
             if (bombBornTimer >= bombBornDist) {
-                //addBomb(1, false);
+                addBomba(1, false);
                 bombBornTimer = 0;
             }
         }
+
         if (Global.gestorNiveles.getMaxShooterV2() != 0) {
             shooterV2Timer++;
             if (shooterV2Timer >= shooterV2BornDist) {
-                //addShooterV2(1, false);
+                addShipV2(1, false);
                 shooterV2Timer = 0;
             }
         }
@@ -297,25 +302,25 @@ public class GestorEnemies {
             }
         }
     }
-/*
-    private void addMonsterWifi(int i, boolean inBoss) {
-        if (this.monstersAlive[2] < gestorNiveles.getMaxMonsterWifi() || inBoss) {
+
+    private void addShipWifi(int i, boolean inBoss) {
+        if (this.monstersAlive[2] < Global.gestorNiveles.getMaxMonsterWifi() || inBoss) {
             for (int c = 0; c < i; c++) {
                 this.monstersAlive[2]++;
-                monsters.add(new MonsterWifi(this.player, respawn(MONSTER_WIFI_RAD, false)));
+                enemies.add(new ShipWifi(this.player, respawn(Constants.ENEMY_SHIP_WIFI_RAD, false)));
             }
         }
     }
 
-    private void addBomb(int i, boolean inBoss) {
-        if (this.monstersAlive[4] < gestorNiveles.getMaxMonsterBomb() || inBoss) {
+    private void addBomba(int i, boolean inBoss) {
+        if (this.monstersAlive[4] < Global.gestorNiveles.getMaxMonsterBomb() || inBoss) {
             for (int c = 0; c < i; c++) {
                 this.monstersAlive[4]++;
-                monsters.add(new Bomb(this.player, respawn(MONSTER_BOMB_RAD, false)));
+                enemies.add(new Bomba(this.player, respawn(Constants.BOMBA_RAD, false), this.gestorDisparos));
             }
         }
     }
-
+/*
     private void addMonsterShooterBoss() {
         this.monstersAlive[1] = 5;
         monsters.add(new Monster_shooter(this.player, new PVector(WIDTH - 50, 50), 20));
@@ -324,35 +329,34 @@ public class GestorEnemies {
         monsters.add(new Monster_shooter(this.player, new PVector(WIDTH - 50, (HEIGHT / 2) + 100), 20));
         monsters.add(new Monster_shooter(this.player, new PVector(WIDTH - 50, HEIGHT - 50), 20));
     }
+*/
 
-    //REVISAR -> SOLO PARA NIVEL 2???¿?¿
-    private void addMeteo(int i, boolean inBoss) {
-        if (this.monstersAlive[3] < gestorNiveles.getMaxMeteoritos() || inBoss) {
+    private void addMeteorito(int i, boolean inBoss) {
+        if (this.monstersAlive[3] < Global.gestorNiveles.getMaxMeteoritos() || inBoss) {
             if (meteoBornDist > 50) {
                 meteoBornDist -= 15;
             }
             for (int c = 0; c < i; c++) {
                 this.monstersAlive[3]++;
-                if (this.player.score >= (gestorNiveles.getMaxScore() / 2)) {
-                    //meteoBornDist = 35;
-                    float y = random(20, HEIGHT - 20);
-                    monsters.add(new Meteorito(this.player, new PVector(WIDTH + 200, y), new PVector(-200, y), 'L'));
+                if (this.player.getScore() >= (Global.gestorNiveles.getMaxScore() / 2)) {
+                    float y = this.parent.random(20, Constants.HEIGHT - 20);
+                    enemies.add(new Meteorito(this.player, new PVector(Constants.WIDTH + 200, y), new PVector(-200, y), 'L'));
                 } else {
-                    float x = random(20, WIDTH - 20);
-                    monsters.add(new Meteorito(this.player, new PVector(x, -100), new PVector(x, HEIGHT + 200), 'D'));
+                    float x = this.parent.random(20, Constants.WIDTH - 20);
+                    enemies.add(new Meteorito(this.player, new PVector(x, -100), new PVector(x, Constants.HEIGHT + 200), 'D'));
                 }
             }
         }
     }
 
-    private void addShooterV2(int i, boolean inBoss) {
-        if (this.monstersAlive[5] < gestorNiveles.getMaxShooterV2() || inBoss) {
+    private void addShipV2(int i, boolean inBoss) {
+        if (this.monstersAlive[5] < Global.gestorNiveles.getMaxShooterV2() || inBoss) {
             for (int c = 0; c < i; c++) {
                 this.monstersAlive[5]++;
-                monsters.add(new ShooterV2(this.player, respawn(SHOOTER_V2_RAD, false)));
+                enemies.add(new ShipV2(this.player, respawn(Constants.SHIP_V2_RAD, false), this.gestorDisparos));
             }
         }
-    }*/
+    }
 
     //SPAWN EN LOS MARGENES
     private PVector respawn(float rad, boolean isMargin) {
@@ -404,13 +408,15 @@ public class GestorEnemies {
             for (int i = enemies.size() - 1; i >= 0; i--) {
                 enemies.get(i).update();
                 enemies.get(i).timerShot();
-                //enemies.get(i).updateColisions(balas);
+
                 if (enemies.get(i).isDie) {
                     if (enemies.get(i).animationDestroy) {
                         GestorParticulas ps = new GestorParticulas(enemies.get(i).getPos());
                         ps.addParticle(20, enemies.get(i).getC(), this.parent);
                         this.gestorParticulas.add(ps);
                     }
+
+                    enemies.get(i).afterDie();
                     this.player.setScore(enemies.get(i).score);
                     this.monstersAlive[enemies.get(i).id]--;
                     enemies.remove(i);
