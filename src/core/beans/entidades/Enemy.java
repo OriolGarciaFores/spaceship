@@ -5,17 +5,17 @@ import processing.core.PVector;
 import core.utils.*;
 
 import java.awt.*;
-import java.util.ArrayList;
-
-import static processing.core.PApplet.println;
 
 public abstract class Enemy {
     public int id;
     protected PVector pos, speed, acc;
     protected float maxSpeed;
     protected Color c;
+    protected Color shieldColor = Color.decode("#9B9B9B");
+    protected Color puntoDebilColor = Constants.COLOR_PUNTO_DEBIL;
     protected PVector target;
     protected int health;
+    protected int shield;
     protected boolean inmortal = true;
     public boolean animationDestroy = true;
 
@@ -23,14 +23,16 @@ public abstract class Enemy {
     public int score;
     private int inmortalTimer;
     private float inmortalTimerFrame = Constants.FRAMES;
-
-    public float rad = 20f;
+    protected float rad = 20f;
+    protected float radPuntoDebil;
 
     public boolean isDie = false;
     protected boolean isMovil = true;
     protected boolean isFollower = true;
     protected boolean isDestructible = true;
-    protected boolean tieneExplosion = false;
+    protected boolean shieldActive = false;
+    protected boolean soloPuntoDebil = false;
+    protected boolean isProyectilColisionable = true;
 
     public void setPlayer(Player player) {
         this.player = player;
@@ -92,13 +94,27 @@ public abstract class Enemy {
     }
 
     public void decreaseLife() {
-        if ((this.health - 1) <= 0) {
-            this.health = 0;
+        if(this.inmortal) return;
+
+        if(this.shieldActive) {
+            if ((this.shield - 1) <= 0) {
+                this.shield = 0;
+                this.shieldActive = false;
+            } else {
+                this.shield -= 1;
+                this.shieldColor = Constants.COLOR_DMG;
+            }
         } else {
-            this.health -= 1;
-        }
-        if (this.health == 0) {
-            this.isDie = true;
+            if ((this.health - 1) <= 0) {
+                this.health = 0;
+            } else {
+                this.health -= 1;
+                this.c = Constants.COLOR_DMG;
+                this.puntoDebilColor = Constants.COLOR_DMG;
+            }
+            if (this.health == 0) {
+                this.isDie = true;
+            }
         }
     }
 
@@ -124,5 +140,25 @@ public abstract class Enemy {
 
     public boolean isDestructible() {
         return isDestructible;
+    }
+
+    public boolean isShieldActive() {
+        return shieldActive;
+    }
+
+    public float getRad() {
+        return rad;
+    }
+
+    public boolean isSoloPuntoDebil() {
+        return soloPuntoDebil;
+    }
+
+    public float getRadPuntoDebil() {
+        return radPuntoDebil;
+    }
+
+    public boolean isProyectilColisionable() {
+        return isProyectilColisionable;
     }
 }

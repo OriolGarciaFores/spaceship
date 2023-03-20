@@ -1,12 +1,17 @@
 package core.gestores;
 
 import core.beans.entidades.*;
+import core.beans.entidades.bosses.Boss;
+import core.beans.entidades.bosses.Destroyer;
 import core.utils.*;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static processing.core.PApplet.println;
 
@@ -36,12 +41,15 @@ public class GestorEnemies {
     private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
     private int bornShipsInBoss = 0;
+    private int totalMaxShipsInBoss = 0;
+    private int totalShipsInBoss = 0;
 
-    //private MonsterBoss mb;
+    //private Destroyer destroyer;
     //private MonsterBossV2 mb2;
     //private MonsterBossV3 mb3;
     private Player player;
     private ArrayList<GestorParticulas> gestorParticulas;
+    private Map<Integer, Boss> bosses = new HashMap<>();
 
     public GestorEnemies(Player player, PApplet pApplet, GestorDisparos gestorDisparos) {
         this.monstersAlive[0] = 0;
@@ -53,16 +61,17 @@ public class GestorEnemies {
 
         this.player = player;
         this.gestorDisparos = gestorDisparos;
-        //this.mb = new MonsterBoss(this.player, new PVector(WIDTH + 20, 0));
+        Destroyer destroyer = new Destroyer(this.player, new PVector(Constants.WIDTH + 20, 0));
         //this.mb2 = new MonsterBossV2(this.player, new PVector(CENTRO_VENTANA_X, -100));
         //this.mb3 = new MonsterBossV3(this.player, new PVector(WIDTH - BOSS_V3_RAD, CENTRO_VENTANA_Y));
-        this.gestorParticulas = new ArrayList<GestorParticulas>();
+        bosses.put(1, destroyer);
 
+        this.gestorParticulas = new ArrayList<GestorParticulas>();
         this.parent = pApplet;
     }
 
     public void update() {
-        //mechanicalBoss(balas);
+        updateBoss();
         updateEnemies();
 
         if (this.player.getScore() < Global.gestorNiveles.getMaxScore()) {
@@ -71,10 +80,11 @@ public class GestorEnemies {
 
         updateParticles();
         //PANTALLA DE RESULTADOS Y RESETEAR EL SCORE
-        //if (this.player.getScore() >= Global.gestorNiveles.getMaxScore() && this.enemies.isEmpty()) updateResults(balas);
+        if (this.player.getScore() >= Global.gestorNiveles.getMaxScore() && this.enemies.isEmpty()) updateResults();
     }
 
     public void paint(PGraphics graphics) {
+        paintBoss(graphics);
         paintMonsters(graphics);
         paintParticles(graphics);
     }
@@ -91,24 +101,48 @@ public class GestorEnemies {
         }
     }
 
-    //OPTIMIZAR VALIDACION DE MONSTER ALIVE -> La idea es que no haya monstruos al empezar el boss.
+    private void updateBoss(){
+        if(this.player.getScore() >= Global.gestorNiveles.getMaxScore()){
+            Boss boss = bosses.get(Global.gestorNiveles.getLevel());
 
-    /*private void mechanicalBoss(ArrayList<Bala> balas) {
-        switch (gestorNiveles.getLevel()) {
+            if ((isDeadAllEnemies() || boss.isStarted()) && !boss.isDie) {
+                boss.updateBoss();
+
+                if(!boss.isStarted()){
+                    this.player.setAutoMove(true);
+                    boss.update();
+                } else {
+                    this.player.setAutoMove(false);
+                    invocacionesInBoss(boss);
+                    controlesEspecificos(boss);
+                }
+            }
+        }
+    }
+
+    private boolean isDeadAllEnemies(){
+        for (int i = 0; i < monstersAlive.length; i++) {
+            if(monstersAlive[i] > 0) return false;
+        }
+        return true;
+    }
+
+    private void mechanicalBoss(ArrayList<Bala> balas) {
+        /*switch (Global.gestorNiveles.getLevel()) {
             case 1:
-                if (this.player.score >= gestorNiveles.getMaxScore() && (this.monstersAlive[0] == 0 && this.monstersAlive[1] == 0 || mb.getIsStarted()) && !mb.isDie) {
-                    mb.updateBoss(balas);
-                    if (!mb.getIsStarted()) {
+                if (this.player.getScore() >= Global.gestorNiveles.getMaxScore() && (this.monstersAlive[0] == 0 && this.monstersAlive[1] == 0
+                        || destroyer.getIsStarted()) && !destroyer.isDie) {
+                    destroyer.updateBoss(balas);
+                    if (!destroyer.getIsStarted()) {
                         this.player.setAutoMove(true);
-                        mb.update();
+                        destroyer.update();
                     } else {
                         this.player.setAutoMove(false);
                         timerBoss(1);
                     }
-                    mb.paint();
                 }
                 break;
-            case 2:
+            /*case 2:
                 //BOSS 2n
                 if (this.player.score >= gestorNiveles.getMaxScore() && (this.monstersAlive[0] == 0 && this.monstersAlive[2] == 0 || mb2.getIsStarted()) && !mb2.isDie) {
                     mb2.updateBoss(balas);
@@ -130,9 +164,19 @@ public class GestorEnemies {
                     timerBoss(3);
                     mb3.paint();
                 }
-                break;
+                break;*/
+       // }
+    }
+
+    private void paintBoss(PGraphics graphics) {
+        if(this.player.getScore() >= Global.gestorNiveles.getMaxScore()){
+            Boss boss = bosses.get(Global.gestorNiveles.getLevel());
+
+            if ((isDeadAllEnemies() || boss.isStarted()) && !boss.isDie) {
+                boss.paint(graphics);
+            }
         }
-    }*/
+    }
 
     private void invocarEnemies() {
         if (Global.gestorNiveles.getMaxMonsterEasy() != 0) {
@@ -184,51 +228,111 @@ public class GestorEnemies {
         }
     }
 
-    /*
-    private void timerBoss(int idBoss) {
-        switch (idBoss) {
+    private void invocacionesInBoss(Boss boss){
+        if(boss.isModoInvocacion()){
+            Map<Integer, Integer> tiposInvocacion = boss.getTiposShipsInvocacion();
+
+            //Esto se deberia mejorar, podria ser parcialmente con timer y no todos.
+            if(boss.isInvocacionTimer()){
+                totalMaxShipsInBoss = 0;
+
+                for (Integer tipo : tiposInvocacion.keySet()){
+                    totalMaxShipsInBoss = totalMaxShipsInBoss + tiposInvocacion.get(tipo);
+                    switch(tipo) {
+                        case 0:
+                            if (bornShipsInBoss < tiposInvocacion.get(tipo)) {
+                                shipBasicBornTimer++;
+                                if (shipBasicBornTimer >= SHIP_BASIC_BORN_DIST) {
+                                    bornShipsInBoss++;
+                                    totalShipsInBoss++;
+                                    addShipBasicBoss(5);
+                                    shipBasicBornTimer = 0;
+                                }
+                            }
+                            break;
+                    }
+                }
+
+                if(totalMaxShipsInBoss == totalShipsInBoss && isDeadAllEnemiesInBoss(tiposInvocacion)){
+                    boss.siguienteFase();
+                }
+
+            } else {
+                //TODO SE REPITE LO MISMO DEL IF SIN TIMERS.
+            }
+        }
+    }
+
+    private void controlesEspecificos(Boss boss){
+        //Excepciones de casos especificos
+        if(boss instanceof Destroyer){
+            Destroyer destroyer = (Destroyer) boss;
+            if(!destroyer.isLoadShooters()) {
+                destroyer.setLoadShooters(true);
+                addShooterBoss();
+            }
+
+            if (this.monstersAlive[1] == 0) {
+                boss.siguienteFase();
+            }
+        }
+    }
+
+    private boolean isDeadAllEnemiesInBoss(Map<Integer, Integer> tiposInvocacion){
+        for (Integer tipo : tiposInvocacion.keySet()){
+            if(this.monstersAlive[tipo] != 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+//TODO REVISAR EL FASEO DEBERIA ESTAR INCLUIDO AL BOSS.
+    private void timerBoss(Boss boss) {
+        switch (boss.id) {
             //1r BOSS
             case 1:
+                Destroyer destroyer = (Destroyer) boss;
                 //FASES
-                switch (mb.getFase()) {
+                switch (destroyer.getFase()) {
                     case 1:
                         if (bornShipsInBoss < 50) {
-                            monsterEasyBornTimer++;
-                            if (monsterEasyBornTimer >= monsterEasyBornDist) {
+                            shipBasicBornTimer++;
+                            if (shipBasicBornTimer >= SHIP_BASIC_BORN_DIST) {
                                 bornShipsInBoss++;
-                                addMonsterEasyBoss(5);
-                                monsterEasyBornTimer = 0;
+                                addShipBasicBoss(5);
+                                shipBasicBornTimer = 0;
                             }
                         } else if (this.monstersAlive[0] == 0) {
-                            mb.setFase(2);
+                            destroyer.setFase(2);
                         }
-                        if (!mb.loadShooters) {
-                            mb.loadShooters = true;
-                            addMonsterShooterBoss();
+                        if (!destroyer.isLoadShooters()) {
+                            destroyer.setLoadShooters(true);
+                            addShooterBoss();
                         }
                         break;
                     case 2:
-                        if (mb.shield <= 0) {
-                            mb.setFase(3);
+                        if (destroyer.getShield() <= 0) {
+                            destroyer.setFase(3);
                         }
                         break;
                     case 3:
                         if (this.monstersAlive[1] == 0) {
-                            mb.setFase(4);
-                            mb.setShield(40);
+                            destroyer.setFase(4);
+                            destroyer.setShield(40);
                         }
                         break;
                     case 4:
                         //DAÑO A LA NAVE
-                        if (mb.shield <= 0) {
-                            this.player.setScore(mb.score);
-                            mb.isDie = true;
+                        if (destroyer.getShield() <= 0) {
+                            this.player.setScore(destroyer.score);
+                            destroyer.isDie = true;
                         }
                         break;
                 }
                 break;
             //2n BOSS
-            case 2:
+            /*case 2:
                 if (mb2.needShips && mb2.getShieldActive()) {
                     addMonsterWifi(5, true);
                     mb2.needShips = false;
@@ -272,10 +376,10 @@ public class GestorEnemies {
                 //FASE 1 : Invocar 2 bichos. Boss Disparo normal. Meteoritos activados.
                 //FASE 2 : Invocar 4 bichos. Boss activar bombas. Cada X tiempo rage. (Muchos disparos bombas).
                 //FASE 3 : Invocar 6 bichos. Boss activar disparos en area.
-                break;
+                break;*/
         }
     }
-*/
+
     private void addShipBasic(int i, boolean inBoss) {
         if (this.monstersAlive[0] < Global.gestorNiveles.getMaxMonsterEasy() || inBoss) {
             for (int c = 0; c < i; c++) {
@@ -320,16 +424,16 @@ public class GestorEnemies {
             }
         }
     }
-/*
-    private void addMonsterShooterBoss() {
+
+    private void addShooterBoss() {
         this.monstersAlive[1] = 5;
-        monsters.add(new Monster_shooter(this.player, new PVector(WIDTH - 50, 50), 20));
-        monsters.add(new Monster_shooter(this.player, new PVector(WIDTH - 50, HEIGHT / 2), 20));
-        monsters.add(new Monster_shooter(this.player, new PVector(WIDTH - 50, HEIGHT / 3), 20));
-        monsters.add(new Monster_shooter(this.player, new PVector(WIDTH - 50, (HEIGHT / 2) + 100), 20));
-        monsters.add(new Monster_shooter(this.player, new PVector(WIDTH - 50, HEIGHT - 50), 20));
+        enemies.add(new Shooter(this.player, new PVector(Constants.WIDTH - 50, 50), 20, this.gestorDisparos, this.parent));
+        enemies.add(new Shooter(this.player, new PVector(Constants.WIDTH - 50, Constants.HEIGHT / 2), 20, this.gestorDisparos, this.parent));
+        enemies.add(new Shooter(this.player, new PVector(Constants.WIDTH - 50, Constants.HEIGHT / 3), 20, this.gestorDisparos, this.parent));
+        enemies.add(new Shooter(this.player, new PVector(Constants.WIDTH - 50, (Constants.HEIGHT / 2) + 100), 20, this.gestorDisparos, this.parent));
+        enemies.add(new Shooter(this.player, new PVector(Constants.WIDTH - 50, Constants.HEIGHT - 50), 20, this.gestorDisparos, this.parent));
     }
-*/
+
 
     private void addMeteorito(int i, boolean inBoss) {
         if (this.monstersAlive[3] < Global.gestorNiveles.getMaxMeteoritos() || inBoss) {
@@ -424,22 +528,23 @@ public class GestorEnemies {
             }
         }
     }
-/*
-    private void updateResults(ArrayList<Bala> balas) {
+
+    private void updateResults() {
         switch (Global.gestorNiveles.getLevel()) {
             case 1:
-                if (mb.isDie) {
-                    if (mb.animationDead) {
-                        animationDestroyBossRandom(30, (WIDTH - (WIDTH / 4)), (WIDTH - 20), 50, (HEIGHT - 30));
-                        mb.animationDead = false;
+                Boss boss = this.bosses.get(1);
+                if (boss.isDie) {
+                    if (boss.isAnimationDead()) {
+                        animationDestroyBossRandom(30, (Constants.WIDTH - (Constants.WIDTH / 4)), (Constants.WIDTH - 20), 50, (Constants.HEIGHT - 30));
+                        boss.setAnimationDead(false);
                     }
                 }
-                if (mb.isDie && this.particlesSystems.isEmpty()) {
+                //if (destroyer.isDie && this.particlesSystems.isEmpty()) {
                     //procesing results -> finallvl, score, array balas, nextLvl, idBoss
-                    procesingResults(1, this.player.score, balas, 2, 1);
-                }
+                    //procesingResults(1, this.player.score, balas, 2, 1);
+                //}
                 break;
-            case 2:
+            /*case 2:
                 if (mb2.isDie && mb2.animationDead) {
                     animationDestroyBoss(10, mb2.pos);
                     mb2.animationDead = false;
@@ -456,27 +561,27 @@ public class GestorEnemies {
             case 4:
                 //RESULTS LVL 4.
                 procesingResults(4, this.player.score, balas, 5, 3);
-                break;
+                break;*/
         }
     }
 
-    private void animationDestroyBoss(int quantity, PVector pos) {
+    /*private void animationDestroyBoss(int quantity, PVector pos) {
         for (int i = 0; i < quantity; i++) {
-            ParticleSystem ps = new ParticleSystem(pos);
-            ps.addParticle(300, color(255, 152, 15));
-            this.particlesSystems.add(ps);
+            GestorParticulas ps = new GestorParticulas(pos);
+            ps.addParticle(300, new Color(255, 152, 15), this.parent);
+            this.gestorParticulas.add(ps);
         }
-    }
+    }*/
 
     private void animationDestroyBossRandom(int quantity, int rxInit, int rxFinal, int ryInit, int ryFinal) {
         for (int i = 0; i < quantity; i++) {
-            ParticleSystem ps = new ParticleSystem(new PVector(random(rxInit, rxFinal), random(ryInit, ryFinal)));
-            ps.addParticle(300, color(255, 152, 15));
-            this.particlesSystems.add(ps);
+            GestorParticulas ps = new GestorParticulas(new PVector(parent.random(rxInit, rxFinal), parent.random(ryInit, ryFinal)));
+            ps.addParticle(300, new Color(255, 152, 15), this.parent);
+            this.gestorParticulas.add(ps);
         }
     }
 
-    private void procesingResults(final int lvl, final int score, ArrayList<Bala> balas, final int nextLvl, final int idBoss) {
+    /*private void procesingResults(final int lvl, final int score, ArrayList<Bala> balas, final int nextLvl, final int idBoss) {
         finalLvl = lvl;
         finalScore = score;
         this.player.reset();
@@ -502,5 +607,9 @@ public class GestorEnemies {
 
     public ArrayList<Enemy> getEnemies() {
         return enemies;
+    }
+
+    public Map<Integer, Boss> getBosses() {
+        return bosses;
     }
 }

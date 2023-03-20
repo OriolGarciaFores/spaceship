@@ -39,9 +39,10 @@ public class GestorJuego implements EstadoJuego {
             this.gestorDisparos.update();
             this.gestorEnemies.update();
             //Se podria limitar a no validar a cada actualización. cada 5 - 10?
-            this.gestorColisiones.validarColisionesEnemies(this.player, this.gestorDisparos.getBalasPlayer(), this.gestorEnemies.getEnemies());
-            this.gestorColisiones.validarColisionesBalasEnemies(this.player, this.gestorDisparos.getBalasEnemy());
-            this.gestorColisiones.validarColisionesBallsEnemies(this.player, this.gestorDisparos.getBallsEnemies());
+            this.gestorColisiones.validarColisionesEnemies(this.gestorDisparos.getBalasPlayer(), this.gestorEnemies.getEnemies());
+            this.gestorColisiones.validarColisionesBalasEnemies(this.gestorDisparos.getBalasEnemy());
+            this.gestorColisiones.validarColisionesBallsEnemies(this.gestorDisparos.getBallsEnemies());
+            this.gestorColisiones.validarColisionesBosses(this.gestorEnemies.getBosses(), this.gestorDisparos.getBalasPlayer());
             Global.gestorNiveles.updateProgress(this.player.getScore());
         }
 
@@ -54,7 +55,7 @@ public class GestorJuego implements EstadoJuego {
         this.player = new Player(Constants.CENTRO_VENTANA_X, Constants.CENTRO_VENTANA_Y);
         this.gestorDisparos = new GestorDisparos(this.player);
         this.gestorEnemies = new GestorEnemies(this.player, this.parent, this.gestorDisparos);
-        this.gestorColisiones = new GestorColisiones();
+        this.gestorColisiones = new GestorColisiones(this.player);
         this.isLoaded = true;
     }
 

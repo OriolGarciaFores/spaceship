@@ -18,6 +18,7 @@ public class Constants {
     //COLORS CODE
     public static final int WHITE = 255;
     public static final Color COLOR_DMG = Color.decode("#D64C16");
+    public static final Color COLOR_PUNTO_DEBIL = new Color(251, 165, 146);
     public static final Color COLOR_RAGE = Color.decode("#CB1010");
     public static final Color COLOR_INMORTAL = Color.decode("#ECAAFF");
     public static final Color COLOR_ORANGE = new Color(230, 100, 50);
