@@ -84,7 +84,7 @@ public class Game extends PApplet {
         gestorEstados.update();
 
         if (Global.over && Global.outGameOver) {
-            gestorEstados = new GestorEstados(this.g, this);
+            gestorEstados = new GestorEstados(this.g, this, gestorEstados.getEstadoActual());
             Global.over = false;
             Global.outGameOver = false;
         }

@@ -23,6 +23,14 @@ public class GestorEstados {
         initEstadoActual();
     }
 
+    public GestorEstados(PGraphics pGraphics, PApplet pApplet, EstadoJuego estadoActual) {
+        this.estado = ESTADO_DEFAULT;
+        this.ESTADOS = new EstadoJuego[MAX_ESTADOS];
+
+        initEstado(pGraphics, pApplet);
+        this.estadoActual = estadoActual;
+    }
+
     private void initEstado(PGraphics pGraphics, PApplet pApplet) {
         this.ESTADOS[0] = new GestorMenu();
         this.ESTADOS[1] = new SelectorNiveles();
