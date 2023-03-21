@@ -36,7 +36,7 @@ public class GestorEstados {
         this.ESTADOS[1] = new SelectorNiveles();
         this.ESTADOS[2] = new GestorJuego(pGraphics, pApplet);
         this.ESTADOS[3] = new GestorGameOver();
-        this.ESTADOS[4] = new GestorNivelCompletado();
+        this.ESTADOS[4] = new GestorNivelCompletado(pApplet);
     }
 
     private void initEstadoActual() {

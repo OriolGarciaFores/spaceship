@@ -34,7 +34,7 @@ public class Seccion {
 
     public void paint(PGraphics graphics) {
         graphics.noStroke();
-        graphics.fill(255);
+        graphics.fill(c.getRGB());
         graphics.textAlign(PApplet.CENTER);
         graphics.textSize(this.sizeText);
         graphics.text(this.title, posX, posY);

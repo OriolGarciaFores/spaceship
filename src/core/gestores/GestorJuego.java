@@ -46,6 +46,7 @@ public class GestorJuego implements EstadoJuego {
             Global.gestorNiveles.updateProgress(this.player.getScore());
         }
 
+        if(Global.isLvlComplete) this.gestorDisparos.limpiarProyectiles();
         if (!Global.over && !Global.isLvlComplete && !this.isLoaded) init();
     }
 

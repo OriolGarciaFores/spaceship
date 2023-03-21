@@ -87,7 +87,7 @@ public class GestorColisiones {
     public void validarColisionesBosses(Map<Integer, Boss> bosses, ArrayList<Bala> balasPlayer){
         Boss boss = bosses.get(Global.gestorNiveles.getLevel());
 
-        if (boss.isStarted() && !boss.isDie) {
+        if (boss != null && boss.isStarted() && !boss.isDie) {
 
             if (PVector.dist(boss.getPos(), this.player.pos) <= this.player.r / 2 + boss.getRad() / 2) {
                 player.decreaseLife();

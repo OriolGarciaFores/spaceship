@@ -143,4 +143,10 @@ public class GestorDisparos {
     public ArrayList<Ball> getBallsEnemies() {
         return ballsEnemies;
     }
+
+    public void limpiarProyectiles(){
+        this.balasPlayer.clear();
+        this.balasEnemy.clear();
+        this.ballsEnemies.clear();
+    }
 }

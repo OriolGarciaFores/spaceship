@@ -539,10 +539,10 @@ public class GestorEnemies {
                         boss.setAnimationDead(false);
                     }
                 }
-                //if (destroyer.isDie && this.particlesSystems.isEmpty()) {
-                    //procesing results -> finallvl, score, array balas, nextLvl, idBoss
-                    //procesingResults(1, this.player.score, balas, 2, 1);
-                //}
+                if (boss.isDie && this.gestorParticulas.isEmpty()) {
+                    //procesing results -> finallvl, score, nextLvl, idBoss
+                    procesingResults(1, this.player.getScore(), 2, 1);
+                }
                 break;
             /*case 2:
                 if (mb2.isDie && mb2.animationDead) {
@@ -581,17 +581,16 @@ public class GestorEnemies {
         }
     }
 
-    /*private void procesingResults(final int lvl, final int score, ArrayList<Bala> balas, final int nextLvl, final int idBoss) {
-        finalLvl = lvl;
-        finalScore = score;
+    private void procesingResults(final int lvl, final int score, final int nextLvl, final int idBoss) {
+        Global.finalLvl = lvl;
+        Global.finalScore = score;
         this.player.reset();
-        balas.clear();
-        gestorNiveles.setLevel(nextLvl);
-        resetBoss(idBoss);
-        isLvlComplete = true;
+        Global.gestorNiveles.setLevel(nextLvl);
+        //resetBoss(idBoss); Igual si quisiera repetir bosses hace falta un reset. Por ahora no. Modo survival?
+        Global.isLvlComplete = true;
     }
 
-    private void resetBoss(final int idBoss) {
+    /*private void resetBoss(final int idBoss) {
         switch (idBoss) {
             case 1:
                 this.mb = new MonsterBoss(this.player, new PVector(WIDTH + 20, 0));
