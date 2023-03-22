@@ -46,6 +46,10 @@ public abstract class Enemy {
         this.target = new PVector(ta.x, ta.y);
     }
 
+    public PVector getTarget() {
+        return target;
+    }
+
     public void move() {
         calAcc();
         calSpeed();

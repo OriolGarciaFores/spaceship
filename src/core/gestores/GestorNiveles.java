@@ -192,4 +192,8 @@ public class GestorNiveles {
         this.maxMonsterBomb = mb;
         this.maxShooterV2 = msv2;
     }
+
+    public void siguienteNivel(){
+        this.level = this.level + 1;
+    }
 }

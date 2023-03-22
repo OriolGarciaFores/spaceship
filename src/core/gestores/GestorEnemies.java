@@ -2,6 +2,7 @@ package core.gestores;
 
 import core.beans.entidades.*;
 import core.beans.entidades.bosses.Boss;
+import core.beans.entidades.bosses.DeathStar;
 import core.beans.entidades.bosses.Destroyer;
 import core.utils.*;
 import processing.core.PApplet;
@@ -44,6 +45,8 @@ public class GestorEnemies {
     private int totalMaxShipsInBoss = 0;
     private int totalShipsInBoss = 0;
 
+    private boolean shipsInvocados = false;
+
     //private Destroyer destroyer;
     //private MonsterBossV2 mb2;
     //private MonsterBossV3 mb3;
@@ -61,13 +64,17 @@ public class GestorEnemies {
 
         this.player = player;
         this.gestorDisparos = gestorDisparos;
+        this.parent = pApplet;
+
         Destroyer destroyer = new Destroyer(this.player, new PVector(Constants.WIDTH + 20, 0));
+        DeathStar deathStar = new DeathStar(this.player, new PVector(Constants.CENTRO_VENTANA_X, -100), this.parent, this.gestorDisparos);
         //this.mb2 = new MonsterBossV2(this.player, new PVector(CENTRO_VENTANA_X, -100));
         //this.mb3 = new MonsterBossV3(this.player, new PVector(WIDTH - BOSS_V3_RAD, CENTRO_VENTANA_Y));
         bosses.put(1, destroyer);
+        bosses.put(2, deathStar);
 
         this.gestorParticulas = new ArrayList<GestorParticulas>();
-        this.parent = pApplet;
+        this.shipsInvocados = false;
     }
 
     public void update() {
@@ -109,6 +116,10 @@ public class GestorEnemies {
                 boss.updateBoss();
 
                 if(!boss.isStarted()){
+                    if(boss.getTarget().equals(player.getTargetAuto())) {
+                        this.player.setTargetAutoX(Constants.CENTRO_VENTANA_X - 200);
+                    }
+
                     this.player.setAutoMove(true);
                     boss.update();
                 } else {
@@ -245,7 +256,7 @@ public class GestorEnemies {
                                 if (shipBasicBornTimer >= SHIP_BASIC_BORN_DIST) {
                                     bornShipsInBoss++;
                                     totalShipsInBoss++;
-                                    addShipBasicBoss(5);
+                                    addShipBasicBoss(5);//Cantidad simultanea?
                                     shipBasicBornTimer = 0;
                                 }
                             }
@@ -258,8 +269,29 @@ public class GestorEnemies {
                 }
 
             } else {
-                //TODO SE REPITE LO MISMO DEL IF SIN TIMERS.
+                if(!shipsInvocados) {
+                    for (Integer tipo : tiposInvocacion.keySet()){
+                        shipsInvocados = true;
+
+                        switch(tipo) {
+                            case 0:
+                                addShipBasic(tiposInvocacion.get(tipo), true);
+                                break;
+                            case 2:
+                                addShipWifi(tiposInvocacion.get(tipo), true);
+                                break;
+                        }
+                    }
+                }
+
+                if(isDeadAllEnemiesInBoss(tiposInvocacion)){
+                    boss.siguienteFase();
+                    shipsInvocados = false;
+                }
             }
+        } else {
+            bornShipsInBoss = 0;
+            shipsInvocados = false;
         }
     }
 
@@ -530,18 +562,35 @@ public class GestorEnemies {
     }
 
     private void updateResults() {
+        Boss boss;
+
         switch (Global.gestorNiveles.getLevel()) {
             case 1:
-                Boss boss = this.bosses.get(1);
+                boss = this.bosses.get(1);
+
                 if (boss.isDie) {
                     if (boss.isAnimationDead()) {
                         animationDestroyBossRandom(30, (Constants.WIDTH - (Constants.WIDTH / 4)), (Constants.WIDTH - 20), 50, (Constants.HEIGHT - 30));
                         boss.setAnimationDead(false);
                     }
                 }
+
                 if (boss.isDie && this.gestorParticulas.isEmpty()) {
-                    //procesing results -> finallvl, score, nextLvl, idBoss
-                    procesingResults(1, this.player.getScore(), 2, 1);
+                    procesingResults();
+                }
+                break;
+            default:
+                boss = this.bosses.get(Global.gestorNiveles.getLevel());
+
+                if(boss != null && boss.isDie){
+                    if(boss.isAnimationDead()){
+                        animationDestroyBoss(10, boss.getPos());
+                        boss.setAnimationDead(false);
+                    }
+
+                    if(this.gestorParticulas.isEmpty()){
+                        procesingResults();
+                    }
                 }
                 break;
             /*case 2:
@@ -565,13 +614,13 @@ public class GestorEnemies {
         }
     }
 
-    /*private void animationDestroyBoss(int quantity, PVector pos) {
+    private void animationDestroyBoss(int quantity, PVector pos) {
         for (int i = 0; i < quantity; i++) {
             GestorParticulas ps = new GestorParticulas(pos);
             ps.addParticle(300, new Color(255, 152, 15), this.parent);
             this.gestorParticulas.add(ps);
         }
-    }*/
+    }
 
     private void animationDestroyBossRandom(int quantity, int rxInit, int rxFinal, int ryInit, int ryFinal) {
         for (int i = 0; i < quantity; i++) {
@@ -581,11 +630,11 @@ public class GestorEnemies {
         }
     }
 
-    private void procesingResults(final int lvl, final int score, final int nextLvl, final int idBoss) {
-        Global.finalLvl = lvl;
-        Global.finalScore = score;
+    private void procesingResults() {
+        Global.finalLvl = Global.gestorNiveles.getLevel();
+        Global.finalScore = player.getScore();
         this.player.reset();
-        Global.gestorNiveles.setLevel(nextLvl);
+        Global.gestorNiveles.siguienteNivel();
         //resetBoss(idBoss); Igual si quisiera repetir bosses hace falta un reset. Por ahora no. Modo survival?
         Global.isLvlComplete = true;
     }

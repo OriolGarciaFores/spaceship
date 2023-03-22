@@ -220,5 +220,9 @@ public class Player {
         }
     }
 
+    public PVector getTargetAuto(){
+        return new PVector(this.targetAutoX, this.targetAutoY);
+    }
+
 
 }
