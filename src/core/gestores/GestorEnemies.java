@@ -112,7 +112,7 @@ public class GestorEnemies {
         if(this.player.getScore() >= Global.gestorNiveles.getMaxScore()){
             Boss boss = bosses.get(Global.gestorNiveles.getLevel());
 
-            if ((isDeadAllEnemies() || boss.isStarted()) && !boss.isDie) {
+            if (boss != null && (isDeadAllEnemies() || boss.isStarted()) && !boss.isDie) {
                 boss.updateBoss();
 
                 if(!boss.isStarted()){
@@ -183,7 +183,7 @@ public class GestorEnemies {
         if(this.player.getScore() >= Global.gestorNiveles.getMaxScore()){
             Boss boss = bosses.get(Global.gestorNiveles.getLevel());
 
-            if ((isDeadAllEnemies() || boss.isStarted()) && !boss.isDie) {
+            if (boss != null && (isDeadAllEnemies() || boss.isStarted()) && !boss.isDie) {
                 boss.paint(graphics);
             }
         }
@@ -582,35 +582,21 @@ public class GestorEnemies {
             default:
                 boss = this.bosses.get(Global.gestorNiveles.getLevel());
 
-                if(boss != null && boss.isDie){
-                    if(boss.isAnimationDead()){
-                        animationDestroyBoss(10, boss.getPos());
-                        boss.setAnimationDead(false);
-                    }
+                if(boss != null){
+                    if(boss.isDie) {
+                        if(boss.isAnimationDead()){
+                            animationDestroyBoss(10, boss.getPos());
+                            boss.setAnimationDead(false);
+                        }
 
-                    if(this.gestorParticulas.isEmpty()){
-                        procesingResults();
+                        if(this.gestorParticulas.isEmpty()){
+                            procesingResults();
+                        }
                     }
+                } else {
+                    procesingResults();
                 }
                 break;
-            /*case 2:
-                if (mb2.isDie && mb2.animationDead) {
-                    animationDestroyBoss(10, mb2.pos);
-                    mb2.animationDead = false;
-                }
-                if (mb2.isDie && this.particlesSystems.isEmpty()) {
-                    //procesing results -> finallvl, score, array balas, nextLvl, idBoss
-                    this.player.setScore(mb2.score);// ?¿?¿?¿?¿??¿
-                    procesingResults(2, this.player.score, balas, 3, 2);
-                }
-                break;
-            case 3:
-                procesingResults(3, this.player.score, balas, 4, 0);
-                break;
-            case 4:
-                //RESULTS LVL 4.
-                procesingResults(4, this.player.score, balas, 5, 3);
-                break;*/
         }
     }
 
