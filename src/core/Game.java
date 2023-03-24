@@ -3,6 +3,7 @@ package core;
 import core.gestores.GestorEstados;
 import core.gestores.GestorNiveles;
 import core.gestores.GestorSaveData;
+import core.gestores.GestorSonido;
 import processing.core.PApplet;
 import processing.opengl.PJOGL;
 import core.utils.*;
@@ -49,7 +50,7 @@ public class Game extends PApplet {
         loadScreen();
 
         Global.gestorSaveData = new GestorSaveData(this);
-        //this.systemSound = new SystemSound(this);
+        Global.gestorSonido = new GestorSonido(this);
         Global.gestorNiveles = new GestorNiveles();
         gestorEstados = new GestorEstados(this.g, this);
     }

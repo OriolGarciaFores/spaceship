@@ -13,7 +13,7 @@ public class Constants {
     public static final int CENTRO_VENTANA_X = WIDTH / 2;
     public static final int CENTRO_VENTANA_Y = HEIGHT / 2;
     public static final int FRAMES = 60;
-    public static final int MAX_LVLS = 4;
+    public static final int MAX_LVLS = 3;
 
     //COLORS CODE
     public static final int WHITE = 255;
@@ -34,8 +34,8 @@ public class Constants {
     public static final float BOSS_V3_RAD = 50F;
 
     //FILES
-    public static final String ROUTE_SAVE = USER + "/Documents/Spaceship/Save/data_dev.json";
-    //public static final String ROUTE_SAVE = USER + "/Documents/Spaceship/Save/data.json";
+    //public static final String ROUTE_SAVE = USER + "/Documents/Spaceship/Save/data_dev.json";
+    public static final String ROUTE_SAVE = USER + "/Documents/Spaceship/Save/data.json";
     public static final String ROUTE_DIRECTORY_CONFIG = USER + "/Documents/Spaceship/configuration";
     public static final String ROUTE_CONFIG = USER + "/Documents/Spaceship/configuration/config_dev.properties";
     //public static final String ROUTE_CONFIG = USER + "/Documents/Spaceship/configuration/config.properties";

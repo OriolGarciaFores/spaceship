@@ -40,7 +40,7 @@ public class GestorNivelCompletado implements EstadoJuego {
     @Override
     public void update() {
         if (!Global.gestorSaveData.isSaved) {
-            //systemSound.beforeStop();
+            Global.gestorSonido.beforeStop();
             //SAVE DATA JSON
             Global.gestorSaveData.update(new DataNivel(Global.finalLvl, Global.finalScore));
             Global.gestorSaveData.isSaved = true;
@@ -55,7 +55,7 @@ public class GestorNivelCompletado implements EstadoJuego {
                 Global.isLvlComplete = false;
                 if (Global.finalLvl >= Constants.MAX_LVLS) {
                     //RELOAD JSON ?
-                    //systemSound.play(0);
+                    Global.gestorSonido.play(0);
                     Global.isSelection = true;
                     pApplet.delay(300);
                 } else {
@@ -74,6 +74,9 @@ public class GestorNivelCompletado implements EstadoJuego {
         graphics.text(this.title, Constants.CENTRO_VENTANA_X, Constants.CENTRO_VENTANA_Y - 200);
 
         if (!this.subTitle.equals("")) {
+            if (Global.finalLvl >= Constants.MAX_LVLS) {
+                graphics.text("END DEMO", Constants.CENTRO_VENTANA_X, Constants.CENTRO_VENTANA_Y - 30);
+            }
             newHability(graphics);
             graphics.fill(255);
             graphics.textSize(32f);

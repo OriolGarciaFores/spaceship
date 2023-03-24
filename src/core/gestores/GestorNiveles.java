@@ -43,24 +43,24 @@ public class GestorNiveles {
                 //MONSTEREASY, SHOOTER, METEORITOS, WIFI, BOMB, shooter v2.
                 init_monsters(20, 5, 0, 0, 0, 0);
                 this.maxScore = 200;
-                //systemSound.beforeStop();
-                //systemSound.play(1);
+                Global.gestorSonido.beforeStop();
+                Global.gestorSonido.play(1);
                 this.fase = 0;
                 break;
             case 2:
                 setMaxLevel(this.level);
                 init_monsters(5, 0, 4, 8, 0, 0);
                 this.maxScore = 400;
-                //systemSound.beforeStop();
-                //systemSound.play(2);
+                Global.gestorSonido.beforeStop();
+                Global.gestorSonido.play(2);
                 this.fase = 0;
                 break;
             case 3:
                 setMaxLevel(this.level);
                 init_monsters(30, 0, 0, 5, 1, 0);
-                this.maxScore = 2100;
-                //systemSound.beforeStop();
-                //systemSound.play(3);
+                this.maxScore = 21;
+                Global.gestorSonido.beforeStop();
+                Global.gestorSonido.play(3);
                 this.fase = 0;
                 this.isFinalProgress = false;
                 this.scoreMaxNextFase = this.maxScore / this.MAX_FASES;
@@ -70,8 +70,8 @@ public class GestorNiveles {
                 setMaxLevel(this.level);
                 init_monsters(0, 0, 0, 0, 0, 0);
                 this.maxScore = 0;
-                //systemSound.beforeStop();
-                //systemSound.play(3);
+                Global.gestorSonido.beforeStop();
+                Global.gestorSonido.play(3);
                 this.fase = 0;
                 this.isFinalProgress = false;
                 break;

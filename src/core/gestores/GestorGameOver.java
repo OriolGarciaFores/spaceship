@@ -35,7 +35,7 @@ public class GestorGameOver implements EstadoJuego {
 
     @Override
     public void update() {
-        //systemSound.beforeStop();
+        Global.gestorSonido.beforeStop();
         if (this.title.length() != this.sizeTitle) {
             timer();
         } else {
@@ -56,10 +56,6 @@ public class GestorGameOver implements EstadoJuego {
 
         if (!this.subTitle.equals("")) {
             graphics.text("SCORE: " + Global.finalScore, Constants.CENTRO_VENTANA_X, Constants.CENTRO_VENTANA_Y + 50);
-            //TEMPORAL
-            if (Global.endGame) {
-                graphics.text("END DEMO", Constants.CENTRO_VENTANA_X, Constants.CENTRO_VENTANA_Y + 120);
-            }
             animationSubtitle();
             graphics.fill(cSubtitle.getRGB());
             graphics.textSize(18f);

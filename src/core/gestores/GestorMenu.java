@@ -8,7 +8,9 @@ import processing.core.PGraphics;
 
 import java.awt.*;
 
-public class GestorMenu extends PApplet implements EstadoJuego {
+import static processing.core.PApplet.println;
+
+public class GestorMenu implements EstadoJuego {
 
     private final Seccion[] secciones;
     private final Seccion[] seccionesControls;
@@ -22,13 +24,15 @@ public class GestorMenu extends PApplet implements EstadoJuego {
     private boolean onChange = false;
     private boolean isMenuControls = false;
     private boolean isMenuAudio = false;
+    private PApplet pApplet;
 
-    public GestorMenu() {
+    public GestorMenu(PApplet pApplet) {
         println("GESTOR MENU INIT");
         this.secciones = new Seccion[maxPositions];
         this.position = 0;
         this.seccionesControls = new Seccion[12];
-        //if(!inGame)systemSound.play(0);
+        if(!Global.inGame) Global.gestorSonido.play(0);
+        this.pApplet = pApplet;
         initSections();
     }
 
@@ -69,13 +73,13 @@ public class GestorMenu extends PApplet implements EstadoJuego {
         if (this.isMenuControls) {
             if (Constants.KEYBOARD.enter) {
                 this.isMenuControls = false;
-                delay(300);
+                pApplet.delay(300);
             }
         } else if (this.isMenuAudio) {
-            //systemSound.update();
+            Global.gestorSonido.update();
             if (Constants.KEYBOARD.enter) {
                 this.isMenuAudio = false;
-                delay(300);
+                pApplet.delay(300);
             }
         } else {
             allSectionsUpdate();
@@ -96,19 +100,18 @@ public class GestorMenu extends PApplet implements EstadoJuego {
 
     @Override
     public void paint(PGraphics graphics) {
-        this.g = graphics;
-        showMenus();
+        showMenus(graphics);
     }
 
     public int getSeccionActual() {
         return this.position;
     }
 
-    private void paintSections() {
+    private void paintSections(PGraphics graphics) {
         for (int i = 0; i < this.secciones.length; i++) {
-            secciones[i].paint(g);
+            secciones[i].paint(graphics);
             if (i == position) {
-                secciones[i].selected(this.g);
+                secciones[i].selected(graphics);
             }
         }
     }
@@ -136,15 +139,15 @@ public class GestorMenu extends PApplet implements EstadoJuego {
             switch (this.position) {
                 case 0:
                     Global.isSelection = true;
-                    delay(300);
+                    pApplet.delay(300);
                     break;
                 case 2:
                     this.isMenuAudio = true;
-                    delay(300);
+                    pApplet.delay(300);
                     break;
                 case 3:
                     isMenuControls = true;
-                    delay(300);
+                    pApplet.delay(300);
                     break;
                 case 4:
                     Global.isExit = true;
@@ -153,24 +156,25 @@ public class GestorMenu extends PApplet implements EstadoJuego {
         }
     }
 
-    private void showMenus() {
+    private void showMenus(PGraphics graphics) {
         if (this.isMenuControls) {
-            showControls();
-            textSize(24f);
-            textAlign(CENTER);
-            text("ENTER to exit", Constants.CENTRO_VENTANA_X, Constants.HEIGHT - 10);
+            showControls(graphics);
+            graphics.textSize(24f);
+            graphics.textAlign(pApplet.CENTER);
+            graphics.text("ENTER to exit", Constants.CENTRO_VENTANA_X, Constants.HEIGHT - 10);
         } else if (this.isMenuAudio) {
-            textSize(24f);
-            textAlign(CENTER);
-            text("ENTER to exit", Constants.CENTRO_VENTANA_X, Constants.HEIGHT - 10);
+            Global.gestorSonido.paint(graphics);
+            graphics.textSize(24f);
+            graphics.textAlign(pApplet.CENTER);
+            graphics.text("ENTER to exit", Constants.CENTRO_VENTANA_X, Constants.HEIGHT - 10);
         } else {
-            paintSections();
+            paintSections(graphics);
         }
     }
 
-    private void showControls() {
+    private void showControls(PGraphics graphics) {
         for (int i = 0; i < this.seccionesControls.length; i++) {
-            seccionesControls[i].paint(this.g);
+            seccionesControls[i].paint(graphics);
         }
     }
 }

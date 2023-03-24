@@ -32,7 +32,7 @@ public class GestorEstados {
     }
 
     private void initEstado(PGraphics pGraphics, PApplet pApplet) {
-        this.ESTADOS[0] = new GestorMenu();
+        this.ESTADOS[0] = new GestorMenu(pApplet);
         this.ESTADOS[1] = new SelectorNiveles();
         this.ESTADOS[2] = new GestorJuego(pGraphics, pApplet);
         this.ESTADOS[3] = new GestorGameOver();
