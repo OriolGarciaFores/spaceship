@@ -37,6 +37,6 @@ public class Constants {
     //public static final String ROUTE_SAVE = USER + "/Documents/Spaceship/Save/data_dev.json";
     public static final String ROUTE_SAVE = USER + "/Documents/Spaceship/Save/data.json";
     public static final String ROUTE_DIRECTORY_CONFIG = USER + "/Documents/Spaceship/configuration";
-    public static final String ROUTE_CONFIG = USER + "/Documents/Spaceship/configuration/config_dev.properties";
-    //public static final String ROUTE_CONFIG = USER + "/Documents/Spaceship/configuration/config.properties";
+    //public static final String ROUTE_CONFIG = USER + "/Documents/Spaceship/configuration/config_dev.properties";
+    public static final String ROUTE_CONFIG = USER + "/Documents/Spaceship/configuration/config.properties";
 }
