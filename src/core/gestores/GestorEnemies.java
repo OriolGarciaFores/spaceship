@@ -116,7 +116,7 @@ public class GestorEnemies {
                 boss.updateBoss();
 
                 if(!boss.isStarted()){
-                    if(boss.getTarget().equals(player.getTargetAuto())) {
+                    if(boss.getTarget() != null && boss.getTarget().equals(player.getTargetAuto())) {
                         this.player.setTargetAutoX(Constants.CENTRO_VENTANA_X - 200);
                     }
 
