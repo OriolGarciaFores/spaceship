@@ -30,7 +30,7 @@ public class GestorMenu implements EstadoJuego {
         println("GESTOR MENU INIT");
         this.secciones = new Seccion[maxPositions];
         this.position = 0;
-        this.seccionesControls = new Seccion[12];
+        this.seccionesControls = new Seccion[13];
         if(!Global.inGame) Global.gestorSonido.play(0);
         this.pApplet = pApplet;
         initSections();
@@ -61,7 +61,8 @@ public class GestorMenu implements EstadoJuego {
         this.seccionesControls[8] = new Seccion("ABAJO         ↓", Constants.CENTRO_VENTANA_X, 340, size);
         this.seccionesControls[9] = new Seccion("DERECHA      ←", Constants.CENTRO_VENTANA_X, 370, size);
         this.seccionesControls[10] = new Seccion("----- HABILIDADES --------", Constants.CENTRO_VENTANA_X, 420, size);
-        this.seccionesControls[11] = new Seccion("ESCUDO     Q", Constants.CENTRO_VENTANA_X, 450, size);
+        this.seccionesControls[11] = new Seccion("HABILIDAD PRIMARIA         Q", Constants.CENTRO_VENTANA_X, 450, size);
+        this.seccionesControls[12] = new Seccion("HABILIDAD SECUNDARIA     E", Constants.CENTRO_VENTANA_X, 480, size);
     }
 
     @Override
