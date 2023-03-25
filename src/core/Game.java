@@ -1,9 +1,6 @@
 package core;
 
-import core.gestores.GestorEstados;
-import core.gestores.GestorNiveles;
-import core.gestores.GestorSaveData;
-import core.gestores.GestorSonido;
+import core.gestores.*;
 import processing.core.PApplet;
 import processing.opengl.PJOGL;
 import core.utils.*;
@@ -49,6 +46,7 @@ public class Game extends PApplet {
 
         loadScreen();
 
+        Global.logger = new Logger(this.g);
         Global.gestorSaveData = new GestorSaveData(this);
         Global.gestorSonido = new GestorSonido(this);
         Global.gestorNiveles = new GestorNiveles();
@@ -56,6 +54,7 @@ public class Game extends PApplet {
     }
 
     public void draw() {
+        Global.logger.inicializarLogRendimiento("Loop inicial");
 
         if (isFrequenciaSincFPS) {
             update();
@@ -71,6 +70,8 @@ public class Game extends PApplet {
         background(0);
         gestorEstados.paint(this.g);
         Util.showFPS(true, this.g, this);
+        Global.logger.finalizarLogRendimiento("Loop inicial");
+        Global.logger.pintarLogsRendimiento();
     }
 
     private void loadScreen() {
