@@ -15,8 +15,9 @@ public class Constants {
     public static final int FRAMES = 60;
     public static final int MAX_LVLS = 3;
 
-    //COLORS CODE
+    //COLORS CODE TODO DEMASIADOS OBJETOS, CALCULAR EL RGB Y METERLO EN UN INT ?
     public static final int WHITE = 255;
+    public static final Color COLOR_WHITE = new Color(255, 255, 255);
     public static final Color COLOR_DMG = Color.decode("#D64C16");
     public static final Color COLOR_PUNTO_DEBIL = new Color(251, 165, 146);
     public static final Color COLOR_RAGE = Color.decode("#CB1010");
@@ -39,4 +40,6 @@ public class Constants {
     public static final String ROUTE_DIRECTORY_CONFIG = USER + "/Documents/Spaceship/configuration";
     //public static final String ROUTE_CONFIG = USER + "/Documents/Spaceship/configuration/config_dev.properties";
     public static final String ROUTE_CONFIG = USER + "/Documents/Spaceship/configuration/config.properties";
+
+    public static final boolean DEBUG = true;
 }
