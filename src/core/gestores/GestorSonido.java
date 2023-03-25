@@ -56,6 +56,7 @@ public class GestorSonido {
     }
 
     public void paint(PGraphics graphics) {
+        graphics.fill(Constants.COLOR_WHITE.getRGB());
         graphics.textSize(24f);
         graphics.textAlign(PApplet.CENTER);
         graphics.text("VOLUME: " + this.volumeTotal + "%", Constants.CENTRO_VENTANA_X, Constants.CENTRO_VENTANA_Y);
